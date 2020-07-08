@@ -18,6 +18,8 @@ class Filters(commands.Cog):
                 logchannel = self.bot.get_channel(variables.MESSAGELOGS) # Channel #message-logs.
                 if ownerrole in ctx.author.roles or modrole in ctx.author.roles or botrole in ctx.author.roles:
                     pass
+                elif ctx.channel.id in arrays.UNFILTERCHANNELS:
+                    pass
                 else:
                     print("Filter has been set off.")
                     await ctx.delete()
