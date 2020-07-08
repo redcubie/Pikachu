@@ -1,7 +1,6 @@
 import discord, os, importlib, pymongo, re
 from discord.ext import commands; from pymongo import MongoClient
 import configuration.variables as variables
-ACCOUNT = os.environ["DATABASE_ACCOUNT"]
 
 class FindMember(commands.IDConverter):
     async def convert(self, ctx, argument) -> discord.User:
@@ -21,13 +20,14 @@ class General(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def help(self, ctx): # p!help
-        embed=discord.Embed(title="Pikachu Wiki", url="https://github.com/NoahAbc12345/Pikachu/wiki", description="Check the wiki on Github for information on commands, features, etc.", color=0xffff00)
-        await ctx.send(embed=embed)
+        pass
+        # embed=discord.Embed(title="Pikachu Wiki", url="https://github.com/NoahAbc12345/Pikachu/wiki", description="Check the wiki on Github for information on commands, features, etc.", color=0xffff00)
+        # await ctx.send(embed=embed)
         
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def build(self, ctx): # p!build
-        embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/pikachu-discord-bot", description="A utility bot for the Nincord server.", color=0xffff00)
+        embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://cdn.discordapp.com/avatars/421448353889517579/377a5e8b2e44f3c26e03a905c8c59c14.webp?size=512")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
         embed.add_field(name="Build Date", value=variables.VERSION, inline=False)
@@ -50,7 +50,7 @@ class General(commands.Cog):
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        cluster = MongoClient(ACCOUNT)
+        cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
         if ownerrole in ctx.author.roles or modrole in ctx.author.roles or botrole in ctx.author.roles:
