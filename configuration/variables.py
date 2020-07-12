@@ -1,7 +1,7 @@
 import discord, os
 
 # General Cofiguration
-VERSION = "July 6, 2020" # The date when the bot's current version was built.
+VERSION = "July 11, 2020" # The date when the bot's current version was built.
 STATUSTYPE = discord.ActivityType.watching # The current action type that appears by default.
 STATUSACTIVITY = "Nincord" # The current action activity that appears by default.
 DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.

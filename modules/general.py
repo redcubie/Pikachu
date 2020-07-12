@@ -39,6 +39,11 @@ class General(commands.Cog):
     async def ping(self, ctx): # p!ping
         await ctx.send(f"Pong! {round(self.bot.latency*1000)}ms.")
 
+    @commands.guild_only()
+    @commands.command()
+    async def membercount(self, ctx):
+        await ctx.send(f"{ctx.guild.name} has {ctx.guild.member_count} members at this moment!")
+
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def invite(self, ctx): # p!invite
