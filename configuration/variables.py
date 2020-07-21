@@ -1,11 +1,9 @@
 import discord, os
 
 # General Cofiguration
-VERSION = "July 11, 2020" # The date when the bot's current version was built.
+VERSION = "July 21, 2020" # The date when the bot's current version was built.
 STATUSTYPE = discord.ActivityType.watching # The current action type that appears by default.
 STATUSACTIVITY = "Nincord" # The current action activity that appears by default.
-DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.
-BOTTOKEN = os.environ["BOT_TOKEN"] # The Discord bot authorization token.
 
 # Role Configuration
 SERVERBOT = 450886915340763151 # The ID of the @Server Bot role.
@@ -69,3 +67,12 @@ REQUESTLOGS = 707106126902198302 # The ID of the #request-logs channel.
 ACTIONLOGS = 701634899937067018 # The ID of the #action-logs channel.
 MESSAGELOGS = 701635047115063376 # The ID of the #message-logs channel.
 SERVERLOGS = 701634953410248775 # The ID of the #server-logs channel.
+
+# Essential Configuration
+if os.path.exists("configuration/secrets.py"):
+    import configuration.secrets as secrets
+    DBACCOUNT = secrets.DBACCOUNT # The key URL for the database account.
+    BOTTOKEN = secrets.BOTTOKEN # The Discord bot authorization token.
+else:
+    DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.
+    BOTTOKEN = os.environ["BOT_TOKEN"] # The Discord bot authorization token.
