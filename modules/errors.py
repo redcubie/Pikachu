@@ -8,13 +8,14 @@ class Errors(commands.Cog):
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
             pass
-        if isinstance(error, commands.CommandOnCooldown):
+            return
+        elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"{ctx.author.mention}, this command is on cooldown. Please try again in {error.retry_after:.0f} seconds.")
             return
-        if isinstance(error, commands.MissingPermissions):
+        elif isinstance(error, commands.MissingPermissions):
             await ctx.send(f"{ctx.author.mention}, you don't have permission to use this command!")
             return
-        if isinstance(error, commands.CheckFailure):
+        elif isinstance(error, commands.CheckFailure):
             await ctx.send(f"{ctx.author.mention}, you don't have permission to use this command!")
             return
 
