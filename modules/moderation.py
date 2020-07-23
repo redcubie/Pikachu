@@ -1,4 +1,4 @@
-import discord, os, importlib, asyncio, pymongo, re
+import discord, os, importlib, asyncio, pymongo, re, typing
 from discord.ext import commands; from pymongo import MongoClient
 import configuration.variables as variables; import configuration.arrays as arrays
 
@@ -250,44 +250,34 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: FindMember, *, reason=None): # p!ban
+    async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None): # p!ban
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerrole in member.roles or modrole in member.roles or botrole in member.roles:
-            await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
-        else:
+        if isinstance(member, int):
             try:
-                if reason == None: await member.send(f"You have been banned from {ctx.guild.name} for \"{reason}\". If you wish to rejoin, you must reach out to a member of the moderation team.")
-                else: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
-            except discord.errors.Forbidden:
+                member = await self.bot.fetch_user(member)
+                await ctx.guild.ban(member, reason=reason)
+                await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
+            except discord.errors.NotFound:
+                await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
+                return
+            else:
                 pass
-            await member.ban(member, reason=reason)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(administrator=True)
-    async def banid(self, ctx, memberid, *, reason=None): # p!banid
-        try:
-            member = await self.bot.fetch_user(memberid)
-        except discord.errors.NotFound:
-            await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
-            return
-        if reason != None:
-            try:
-                await member.send(f"You have been banned from {ctx.guild.name} for \"{reason}\". If you wish to rejoin, you must reach out to a member of the moderation team.")
-            except discord.errors.Forbidden:
-                pass
-            await ctx.guild.ban(member, reason=reason)
-            await ctx.send(f"{member.mention} has been banned from the server.")
-        else:
-            try:
-                await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
-            except discord.errors.Forbidden:
-                pass
-            await ctx.guild.ban(member, reason=reason)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
+        if isinstance(member, discord.Member):
+            if ownerrole in member.roles or modrole in member.roles or botrole in member.roles:
+                await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
+                return
+            else:
+                try:
+                    if reason != None:
+                        await member.send(f"You have been banned from {ctx.guild.name} for \"{reason}\". If you wish to rejoin, you must reach out to a member of the moderation team.")
+                    else: 
+                        await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
+                except discord.errors.Forbidden:
+                    pass
+                await ctx.guild.ban(member, reason=reason)
+                await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
 
     @commands.command()
     @commands.guild_only()
@@ -312,7 +302,7 @@ class Moderation(commands.Cog):
         if ownerrole in member.roles or modrole in member.roles or botrole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
         else:
-            await member.ban(reason=reason)
+            await ctx.guild.ban(member, reason=reason)
             await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
 
     @commands.command()

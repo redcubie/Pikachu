@@ -1,7 +1,7 @@
 import discord, os
 
 # General Cofiguration
-VERSION = "July 21, 2020" # The date when the bot's current version was built.
+VERSION = "July 23, 2020" # The date when the bot's current version was built.
 STATUSTYPE = discord.ActivityType.watching # The current action type that appears by default.
 STATUSACTIVITY = "Nincord" # The current action activity that appears by default.
 
