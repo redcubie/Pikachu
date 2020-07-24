@@ -65,28 +65,28 @@ class General(commands.Cog):
                 embed=discord.Embed(title=user.display_name, description=role, color=0xffff00)
             else:
                 embed=discord.Embed(title=user.display_name, color=0xffff00)
-                embed.set_thumbnail(url=user.avatar_url_as(static_format="png"))
-                embed.add_field(name="Account Name:", value=user.name, inline=True)
-                embed.add_field(name="Discriminator:", value="#"+user.discriminator, inline=True)
-                embed.add_field(name="Account Identification:", value=user.id, inline=False)
-                formatcreate = user.created_at
-                formatcreate2 = formatcreate.strftime("%B %d, %Y (%I:%M %p)")
-                if isinstance(user, discord.Member): formatjoin = user.joined_at
-                if isinstance(user, discord.Member): formatjoin2 = formatjoin.strftime("%B %d, %Y (%I:%M %p)")
-                embed.add_field(name="Created:", value="{}".format(formatcreate2), inline=False)
-                if isinstance(user, discord.Member): embed.add_field(name="Joined:", value="{}".format(formatjoin2), inline=False)
-                if collection.count_documents({"_id": user.id}, limit = 1) != 0:
-                    results = collection.find({"_id": user.id})
-                    for result in results:
-                        checkwarn1 = result["Warn 1"]
-                        checkwarn2 = result["Warn 2"]
-                        checkwarn3 = result["Warn 3"]
-                    if checkwarn3 != None: warns = "3"
-                    elif checkwarn3 == None and checkwarn2 != None: warns = "2"
-                    elif checkwarn2 == None and checkwarn1 != None: warns = "1"
-                    embed.add_field(name="Warns:", value=warns, inline=True)
-                else:
-                    embed.add_field(name="Warns:", value="0", inline=True)
+            embed.set_thumbnail(url=user.avatar_url_as(static_format="png"))
+            embed.add_field(name="Account Name:", value=user.name, inline=True)
+            embed.add_field(name="Discriminator:", value="#"+user.discriminator, inline=True)
+            embed.add_field(name="Account Identification:", value=user.id, inline=False)
+            formatcreate = user.created_at
+            formatcreate2 = formatcreate.strftime("%B %d, %Y (%I:%M %p)")
+            if isinstance(user, discord.Member): formatjoin = user.joined_at
+            if isinstance(user, discord.Member): formatjoin2 = formatjoin.strftime("%B %d, %Y (%I:%M %p)")
+            embed.add_field(name="Created:", value="{}".format(formatcreate2), inline=False)
+            if isinstance(user, discord.Member): embed.add_field(name="Joined:", value="{}".format(formatjoin2), inline=False)
+            if collection.count_documents({"_id": user.id}, limit = 1) != 0:
+                results = collection.find({"_id": user.id})
+                for result in results:
+                    checkwarn1 = result["Warn 1"]
+                    checkwarn2 = result["Warn 2"]
+                    checkwarn3 = result["Warn 3"]
+                if checkwarn3 != None: warns = "3"
+                elif checkwarn3 == None and checkwarn2 != None: warns = "2"
+                elif checkwarn2 == None and checkwarn1 != None: warns = "1"
+                embed.add_field(name="Warns:", value=warns, inline=True)
+            else:
+                embed.add_field(name="Warns:", value="0", inline=True)
             if not isinstance(user, discord.Member):
                 try:
                     banned = await ctx.guild.fetch_ban(user)
