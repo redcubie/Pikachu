@@ -7,6 +7,8 @@ The bot is a work-in-progress, so stay tuned for more updates.
 
 Feel free to contribute by creating a pull request which shortens or simplifies code, adds new commands you want to see, or anything else! Contributors are elligible to receive the **@Bot Contributor** role on the Nincord server.
 
+This code should not be looked at if you're trying to learn how to code in Python. At it's current state, this code is not good code, and is probably even an example of bad coding practices. Everything done here could probably be simplified.
+
 This bot is heavily inspired by [Kurisu](https://github.com/nh-server/Kurisu) for Nintendo Homebrew.
 
 **Discord Server Invite:** https://discord.gg/mYjeaZQ
