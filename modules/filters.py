@@ -3,6 +3,7 @@ from discord.ext import commands; from string import printable
 import configuration.variables as variables; import configuration.arrays as arrays
 
 class Filters(commands.Cog):
+    "Word filter that will delete messages which trigger it."
     def __init__(self, bot): self.bot = bot
 
     @commands.Cog.listener()

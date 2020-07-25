@@ -15,12 +15,14 @@ class FindMember(commands.IDConverter):
         return result
 
 class Moderation(commands.Cog):
+    "Commands which can be used by staff members."
     def __init__(self, bot): self.bot = bot
 
     @commands.command()
     @commands.guild_only()
     @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
     async def checkactivity(self, ctx, days = 30): # p!checkactivity
+        "Check the amount of active members on the server, plus those with roles."
         if days < 1:
             await ctx.send(f"{ctx.author.mention}, the minimum allowed days is 1.")
             return
@@ -39,6 +41,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=1): # p!clear
+        "Clear the specified amount of messages last sent."
         deleted = await ctx.channel.purge(limit=amount+1)
         logchannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         if amount != 0:
@@ -48,6 +51,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason): # p!warn
+        "Warns a user on the server. Two warns will kick automatically, three will ban."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -105,6 +109,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def pardon(self, ctx, member: discord.Member): # p!warn
+        "Removes a warn from a user on the server."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -147,6 +152,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def listwarn(self, ctx, member: discord.Member = None): # p!listwarn
+        "Lists the warns that a user has received. Staff can see other users' warns."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -200,6 +206,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def clearwarn(self, ctx, member: discord.Member): # p!clearwarn
+        "Clears all warns from a specified user."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -230,6 +237,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None): # p!kick
+        "Kicks a user from the server."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -251,6 +259,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None): # p!ban
+        "Bans a member from the server."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -283,6 +292,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def silentkick(self, ctx, member: discord.Member, *, reason=None): # p!silentkick
+        "Kicks a member from the server without messaging."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -296,6 +306,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def silentban(self, ctx, member: discord.Member, *, reason=None): # p!silentban
+        "Bans a member from the server without messaging."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -308,21 +319,20 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, *, member): # p!unban
-        banned_users = await ctx.guild.bans()
-        member_name, member_discriminator = member.split("#")
-        for ban_entry in banned_users:
-            user = ban_entry.user
-            if (user.name, user.discriminator) == (member_name, member_discriminator):
-                try: await member.send(f"You have been unbanned from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.")
-                except discord.errors.Forbidden: pass
-                await ctx.guild.unban(user)
-                await ctx.send(f"{ctx.author.mention}, {user.mention} has been unbanned from the server.")
+    async def unban(self, ctx, member: FindMember, *, reason=None): # p!unban
+        "Unbans a member from the server."
+        try: await ctx.guild.fetch_ban(member)
+        except discord.errors.NotFound: return await ctx.safe_send(f"{ctx.author.mention}, {member.mention} is not banned!")
+        try: await member.send(f"You have been unbanned from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.")
+        except discord.errors.Forbidden: pass
+        await ctx.guild.unban(member, reason=reason)
+        await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
 
     @commands.command()
     @commands.guild_only()
     @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
     async def slowmode(self, ctx, time: int, channel: discord.TextChannel = None): # p!slowmode
+        "Enables slowmode in the specified channel."
         if channel == None: channel = ctx.channel
         if time > 21600: return await ctx.send(f"{ctx.author.mention}, you cannot set a slowmode for this amount of time!")
         await channel.edit(slowmode_delay=time)
@@ -332,6 +342,7 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
     async def lockmode(self, ctx, channel: discord.TextChannel = None): # p!lockmode
+        "Disables the sending of messages in the specified channel for regular users."
         if channel == None: channel = ctx.channel
         if channel.id in arrays.LOCKDOWNCHANNELS:
             sendpermissions = channel.overwrites_for(ctx.guild.default_role)

@@ -3,11 +3,13 @@ from discord.ext import commands
 import configuration.variables as variables
 
 class Administration(commands.Cog):
+    "Powerful commands which can be used by an administrator."
     def __init__(self, bot): self.bot = bot
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
+        "Sends a message to a specified channel."
         checkchannel = self.bot.get_channel(channel.id)
         pollchannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
         if checkchannel == pollchannel:
@@ -25,6 +27,7 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def send(self, ctx, member: discord.Member, *, message): # p!send
+        "Sends a message to a specified user."
         async with member.typing():
             characters = len(message)
             await asyncio.sleep(characters/10)
@@ -39,6 +42,7 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def sendrole(self, ctx, role: discord.Role, *, message): # p!sendrole
+        "Sends a message to everyone with a specified role."
         members = (member for member in role.members if not member.bot)
         count = 0
         for member in members:
@@ -60,6 +64,7 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def botstatus(self, ctx, status): # p!botstatus
+        "Changes the current presense of the bot."
         status = status.lower()
         if status == "online":
             await self.bot.change_presence(status=discord.Status.online)
@@ -75,6 +80,7 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def botaction(self, ctx, action, *, text=None): # p!botaction
+        "Changes the text which shows under the bot."
         action = action.lower()
         if action == "playing" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.playing)
@@ -95,7 +101,8 @@ class Administration(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def vote(self, ctx, text, question, *choices: str): # p!poll
+    async def poll(self, ctx, text, question, *choices: str): # p!poll
+        "Sends a poll to #voting which can be reacted to."
         if len(choices) <= 1:
             await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
         elif len(choices) > 10:
@@ -128,12 +135,14 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_roles=True)
     async def rolecopy(self, ctx, source: discord.Role, destination: discord.Role): # p!rolecopy
+        "Grabs the permissions of one role and copies them to another."
         await destination.edit(permissions=source.permissions, hoist=source.hoist, mentionable=source.mentionable)
         await ctx.send(f"{ctx.author.mention}, role permissions from {source.mention} have sucessfully been copied to {destination.mention}.")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def reboot(self, ctx): # p!reboot
+        "Logs out of the bot's Discord account."
         print("Bot reboot has been requested.")
         await ctx.send(f"{ctx.author.mention}, rebooting the system. Please wait a moment.")
         await ctx.bot.logout()

@@ -1,18 +1,21 @@
 import discord, asyncio, os, shutil, youtube_dl, importlib
 from discord.ext import commands; from discord.utils import get
+import configuration.variables as variables
  
 queues = {}
 
 class Audio(commands.Cog):
+    "A basic, built-in audio player for the bot."
     def __init__(self, bot): self.bot = bot
  
     @commands.command()
     async def join(self, ctx): # p!join
+        "Joins the user's current voice channel."
         channel = ctx.author.voice.channel
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         channelcheck = self.bot.get_channel(channel.id)
-        audiochannel = self.bot.get_channel(469988877180993546) # Channel #Bot Commands.
-        modchannel = self.bot.get_channel(482916026674053120) # Channel #Moderator Chat.
+        audiochannel = self.bot.get_channel(variables.BOTCOMMANDSV) # Channel #Bot Commands.
+        modchannel = self.bot.get_channel(variables.MODERATORCHATV) # Channel #Moderator Chat.
         if channelcheck == audiochannel or channelcheck == modchannel:
             if voice != None: return await voice.move_to(channel)
             await channel.connect()
@@ -21,6 +24,7 @@ class Audio(commands.Cog):
     @commands.command()
     @commands.has_guild_permissions(move_members=True)
     async def leave(self, ctx): # p!leave
+        "Leaves the voice channel the bot is in."
         channel = ctx.author.voice.channel
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         if voice and voice.is_connected():
@@ -34,6 +38,7 @@ class Audio(commands.Cog):
     
     @commands.command()
     async def play(self, ctx, *url: str): # p!play
+        "Plays a video's audio off YouTube using text or a URL."
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         if voice and voice.is_connected():
             def check_queue():
@@ -111,6 +116,7 @@ class Audio(commands.Cog):
     @commands.command()
     @commands.has_guild_permissions(move_members=True)
     async def pause(self, ctx): # p!pause
+        "Pauses any currently playing audio."
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         if voice and voice.is_playing():
             print("Audio paused.")
@@ -122,6 +128,7 @@ class Audio(commands.Cog):
     @commands.command()
     @commands.has_guild_permissions(move_members=True)
     async def resume(self, ctx): # p!resume
+        "Resumes any currently playing audio."
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         if voice and voice.is_paused():
             print("Resumed audio.")
@@ -134,6 +141,7 @@ class Audio(commands.Cog):
     @commands.command()
     @commands.has_guild_permissions(move_members=True)
     async def stop(self, ctx): # p!stop
+        "Stops the audio currently playing entirely."
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         queues.clear()
         queue_infile = os.path.isdir("./queue")
@@ -152,6 +160,7 @@ class Audio(commands.Cog):
 
     @commands.command()
     async def volume(self, ctx, volume: int): # p!volume
+        "Changes the volume of the audio playing."
         channel = ctx.author.voice.channel
         membercheck = channel.members
         membercount = len(membercheck)

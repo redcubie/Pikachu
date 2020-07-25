@@ -15,18 +15,13 @@ class FindMember(commands.IDConverter):
         return result
 
 class General(commands.Cog):
+    "Simple commands which anybody can use."
     def __init__(self, bot): self.bot = bot
-
-    @commands.command()
-    @commands.cooldown(1, 30, commands.BucketType.channel)
-    async def help(self, ctx): # p!help
-        pass
-        # embed=discord.Embed(title="Pikachu Wiki", url="https://github.com/NoahAbc12345/Pikachu/wiki", description="Check the wiki on Github for information on commands, features, etc.", color=0xffff00)
-        # await ctx.send(embed=embed)
         
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def build(self, ctx): # p!build
+        "Shows information regarding the bot."
         embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://cdn.discordapp.com/avatars/421448353889517579/377a5e8b2e44f3c26e03a905c8c59c14.webp?size=512")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
@@ -37,21 +32,25 @@ class General(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def ping(self, ctx): # p!ping
+        "Shows the bot's ping."
         await ctx.send(f"Pong! {round(self.bot.latency*1000)}ms.")
 
     @commands.guild_only()
     @commands.command()
     async def membercount(self, ctx):
+        "Counts the amount of members currently on the server."
         await ctx.send(f"{ctx.guild.name} has {ctx.guild.member_count} members at this moment!")
 
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def invite(self, ctx): # p!invite
+        "Shares a link to the Nincord server."
         await ctx.send(f"{ctx.author.mention}, share this link to invite people to Nincord! https://discord.gg/mYjeaZQ")
 
     @commands.command()
     @commands.guild_only()
     async def userinfo(self, ctx, user: FindMember = None): # p!userinfo
+        "Displays information regarding a user's account. Staff members can use this command on others."
         ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botrole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
@@ -137,6 +136,7 @@ class General(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def serverinfo(self, ctx): # p!serverinfo
+        "Displays information regarding a server."
         embed = discord.Embed(title=ctx.guild.name, color=0xffff00)
         embed.add_field(name="Server Identification:", value=ctx.guild.id, inline=False)
         embed.add_field(name="Server Owner:", value=ctx.guild.owner, inline=True)
@@ -151,6 +151,7 @@ class General(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 21600, commands.BucketType.user)
     async def suggest(self, ctx, *, idea): # p!suggest
+        "Suggest something which could be changed or added to the server."
         requestlog = self.bot.get_channel(variables.REQUESTLOGS) # Channel #request-logs.
         embed=discord.Embed(color=0x8080ff)
         embed.add_field(name="Suggestion:", value=f"{idea}", inline=False)

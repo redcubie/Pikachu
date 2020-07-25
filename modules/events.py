@@ -3,6 +3,7 @@ from discord.ext import commands; from discord.utils import get
 import configuration.variables as variables; import configuration.arrays as arrays
 
 class Events(commands.Cog):
+    "Actions called when certain things happen."
     def __init__(self, bot): self.bot = bot
 
     @commands.Cog.listener() # The bot startup process.

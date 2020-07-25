@@ -2,6 +2,7 @@ import discord, os, importlib
 from discord.ext import commands
 
 class Errors(commands.Cog):
+    "When something goes wrong with the bot."
     def __init__(self, bot): self.bot = bot
 
     @commands.Cog.listener() # Ignore wrong commands.
