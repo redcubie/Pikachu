@@ -20,10 +20,9 @@ CONTENTCREATOR = 664603430853148706 # The ID of the @Content Creator role.
 ACTIVEMEMBER = 665364949765324800 # The ID of the @Active Member role.
 
 # Channel Configuration
-RULES = 450903022613168129 # The ID of the #rules channel.
-AFFILIATES = 500342143039176725 # The ID of the #affiliates channel.
-ANNOUNCEMENTS = 450903120872996884 # The ID of the #announcements channel.
-GIVEAWAYS = 450903526894338049 # The ID of the #giveaways channel.
+SERVERRULES = 450903022613168129 # The ID of the #rules channel.
+SERVERAFFILIATES = 500342143039176725 # The ID of the #affiliates channel.
+ANNOUNCEMENTS = 738920609630912604 # The ID of the #announcements channel.
 VOTING = 450903547911864321 # The ID of the #voting channel.
 GENERALCHAT = 469302882974433290 # The ID of the #general-chat text channel.
 RANDOMCHAT = 450875176486305792 # The ID of the #random-chat text channel.
@@ -73,6 +72,16 @@ if os.path.exists("configuration/secrets.py"):
     import configuration.secrets as secrets
     DBACCOUNT = secrets.DBACCOUNT # The key URL for the database account.
     BOTTOKEN = secrets.BOTTOKEN # The Discord bot authorization token.
+    MONGODBURI = secrets.MONGODBURI # The URI for the bot's database.
+    TWITTERAPI = secrets.TWITTERAPI # The key to access the Twitter API.
+    TWITTERSECRET = secrets.TWITTERSECRET # The secret key to access the API key.
+    TWITTERBEARER = secrets.TWITTERBEARER # The bearer key to authorize access to Twitter.
+    SAKURAIHOOK = secrets.SAKURAIHOOK # The intergration URL for the Masahiro Sakurai webhook.
 else:
     DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.
     BOTTOKEN = os.environ["BOT_TOKEN"] # The Discord bot authorization token.
+    MONGODBURI = os.environ["MONGODB_URI"] # The URI for the bot's database.
+    TWITTERAPI = os.environ["TWITTER_API"] # The key to access the Twitter API.
+    TWITTERSECRET = os.environ["TWITTER_SECRET"] # The secret key to access the API key.
+    TWITTERBEARER = os.environ["TWITTER_BEARER"] # The bearer key to authorize access to Twitter.
+    SAKURAIHOOK = os.environ["SAKURAI_WEBHOOK"] # The intergration URL for the Masahiro Sakurai webhook.

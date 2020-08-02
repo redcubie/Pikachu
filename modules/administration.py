@@ -10,9 +10,9 @@ class Administration(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
         "Sends a message to a specified channel."
-        checkchannel = self.bot.get_channel(channel.id)
-        pollchannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
-        if checkchannel == pollchannel:
+        checkChannel = self.bot.get_channel(channel.id)
+        pollChannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
+        if checkChannel == pollChannel:
             await ctx.send(f"{ctx.author.mention}, in order to send messages to {channel.mention}, please use `p!poll`.")
         else:
             async with channel.typing():
@@ -101,8 +101,8 @@ class Administration(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def poll(self, ctx, text, question, *choices: str): # p!poll
-        "Sends a poll to #voting which can be reacted to."
+    async def poll(self, ctx, question, *choices: str): # p!poll
+        "Sends a poll to the specified vote channel which can be reacted to."
         if len(choices) <= 1:
             await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
         elif len(choices) > 10:
@@ -124,13 +124,13 @@ class Administration(commands.Cog):
             for x, option in enumerate(choices):
                 description += "\n {} {}".format(reactions[x], option)
             embed = discord.Embed(title=question, description="".join(description), color=0xffff40)
-            checkchannel = self.bot.get_channel(ctx.channel.id)
-            pollchannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
-            pollmessage = await pollchannel.send(f"{text}", embed=embed)
+            checkChannel = self.bot.get_channel(ctx.channel.id)
+            pollChannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
+            pollMessage = await pollChannel.send(embed=embed)
             for reaction in reactions[:len(choices)]:
-                await pollmessage.add_reaction(reaction)
-            if checkchannel != pollchannel:
-                await ctx.send(f"{ctx.author.mention}, successfully sent the poll to {pollchannel.mention}. A preview is attached.", embed=embed)
+                await pollMessage.add_reaction(reaction)
+            if checkChannel != pollChannel:
+                await ctx.send(f"{ctx.author.mention}, successfully sent the poll to {pollChannel.mention}. A preview is attached.", embed=embed)
 
     @commands.command()
     @commands.has_permissions(manage_roles=True)

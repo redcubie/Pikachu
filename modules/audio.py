@@ -11,39 +11,39 @@ class Audio(commands.Cog):
     @commands.command()
     async def join(self, ctx): # p!join
         "Joins the user's current voice channel."
-        channel = ctx.author.voice.channel
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
-        channelcheck = self.bot.get_channel(channel.id)
-        audiochannel = self.bot.get_channel(variables.BOTCOMMANDSV) # Channel #Bot Commands.
-        modchannel = self.bot.get_channel(variables.MODERATORCHATV) # Channel #Moderator Chat.
-        if channelcheck == audiochannel or channelcheck == modchannel:
-            if voice != None: return await voice.move_to(channel)
-            await channel.connect()
-        else: await ctx.send(f"{ctx.author.mention}, please join {audiochannel} to use this command.")
+        currentChannel = ctx.author.voice.channel
+        botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+        channelCheck = self.bot.get_channel(currentChannel.id)
+        audioChannel = self.bot.get_channel(variables.BOTCOMMANDSV) # Channel #Bot Commands.
+        modChannel = self.bot.get_channel(variables.MODERATORCHATV) # Channel #Moderator Chat.
+        if channelCheck == audioChannel or channelCheck == modChannel:
+            if botVoice != None: return await botVoice.move_to(currentChannel)
+            await currentChannel.connect()
+        else: await ctx.send(f"{ctx.author.mention}, please join {audioChannel} to use this command.")
  
     @commands.command()
     @commands.has_guild_permissions(move_members=True)
     async def leave(self, ctx): # p!leave
         "Leaves the voice channel the bot is in."
-        channel = ctx.author.voice.channel
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
-        if voice and voice.is_connected():
-            await voice.disconnect()
+        currentChannel = ctx.author.voice.channel
+        botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+        if botVoice and botVoice.is_connected():
+            await botVoice.disconnect()
             queues.clear()
-            queue_infile = os.path.isdir("./queue")
-            if queue_infile is True: shutil.rmtree("./queue")
-            song_there = os.path.isfile("song.mp3")
-            if song_there: os.remove("song.mp3")
-            await ctx.send(f"{ctx.author.mention}, sucessfully left {channel}.")
+            queueInFile = os.path.isdir("./queue")
+            if queueInFile is True: shutil.rmtree("./queue")
+            songThere = os.path.isfile("song.mp3")
+            if songThere: os.remove("song.mp3")
+            await ctx.send(f"{ctx.author.mention}, sucessfully left {currentChannel}.")
     
     @commands.command()
     async def play(self, ctx, *url: str): # p!play
         "Plays a video's audio off YouTube using text or a URL."
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
-        if voice and voice.is_connected():
+        botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+        if botVoice and botVoice.is_connected():
             def check_queue():
-                song_there = os.path.isfile("song.mp3")
-                if song_there: os.remove("song.mp3")
+                songThere = os.path.isfile("song.mp3")
+                if songThere: os.remove("song.mp3")
                 Queue_infile = os.path.isdir("./queue")
                 if Queue_infile is True:
                     filedir = os.path.abspath(os.path.realpath("queue"))
@@ -59,8 +59,8 @@ class Audio(commands.Cog):
                     if length != 0:
                         print("Song done, playing next queued.")
                         print(f"Queue: {still_q}")
-                        song_there = os.path.isfile("song.mp3")
-                        if song_there: os.remove("song.mp3")
+                        songThere = os.path.isfile("song.mp3")
+                        if songThere: os.remove("song.mp3")
                         shutil.move(song_path, main_location)
                         for file in os.listdir("./"):
                             if file.endswith(".mp3"): os.rename(file, "song.mp3")
@@ -73,8 +73,8 @@ class Audio(commands.Cog):
                 else:
                     queues.clear()
                     print("No audio was queued before the ending of the last song.")
-            song_there = os.path.isfile("song.mp3")
-            if song_there:
+            songThere = os.path.isfile("song.mp3")
+            if songThere:
                 await ctx.send(f"{ctx.author.mention}, please wait until the current audio is over before requesting new audio.")
                 return
             Queue_infile = os.path.isdir("./queue")
@@ -117,10 +117,10 @@ class Audio(commands.Cog):
     @commands.has_guild_permissions(move_members=True)
     async def pause(self, ctx): # p!pause
         "Pauses any currently playing audio."
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
-        if voice and voice.is_playing():
+        botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+        if botVoice and botVoice.is_playing():
             print("Audio paused.")
-            voice.pause()
+            botVoice.pause()
         else:
             print("Audio not playing, failed pause.")
             await ctx.send(f"{ctx.author.mention}, there is no audio playing.")
@@ -129,10 +129,10 @@ class Audio(commands.Cog):
     @commands.has_guild_permissions(move_members=True)
     async def resume(self, ctx): # p!resume
         "Resumes any currently playing audio."
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
-        if voice and voice.is_paused():
+        botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+        if botVoice and botVoice.is_paused():
             print("Resumed audio.")
-            voice.resume()
+            botVoice.resume()
             await ctx.send("Resumed audio.")
         else:
             print("Audio is not paused.")
@@ -142,17 +142,17 @@ class Audio(commands.Cog):
     @commands.has_guild_permissions(move_members=True)
     async def stop(self, ctx): # p!stop
         "Stops the audio currently playing entirely."
-        voice = get(self.bot.voice_clients, guild=ctx.guild)
+        botVoice = get(self.bot.voice_clients, guild=ctx.guild)
         queues.clear()
-        queue_infile = os.path.isdir("./queue")
-        if queue_infile is True:
+        queueInFile = os.path.isdir("./queue")
+        if queueInFile is True:
             shutil.rmtree("./queue")
-        if voice and voice.is_playing():
+        if botVoice and botVoice.is_playing():
             print("Audio stopped.")
-            voice.stop()
+            botVoice.stop()
             await ctx.send(f"{ctx.author.mention}, the audio has been stopped.")
-            song_there = os.path.isfile("song.mp3")
-            if song_there:
+            songThere = os.path.isfile("song.mp3")
+            if songThere:
                 os.remove("song.mp3")
         else:
             print("No audio playing, failed to stop.")
@@ -161,10 +161,10 @@ class Audio(commands.Cog):
     @commands.command()
     async def volume(self, ctx, volume: int): # p!volume
         "Changes the volume of the audio playing."
-        channel = ctx.author.voice.channel
-        membercheck = channel.members
-        membercount = len(membercheck)
-        if membercount == 2 or ctx.author.guild_permissions.move_members==True:
+        currentChannel = ctx.author.voice.channel
+        memberCheck = currentChannel.members
+        memberCount = len(memberCheck)
+        if memberCount == 2 or ctx.author.guild_permissions.move_members==True:
             if ctx.voice_client is None: return await ctx.send(f"{ctx.author.mention}, not connected to a voice channel.")
             ctx.voice_client.source.volume = volume / 100
             await ctx.send(f"{ctx.author.mention}, changed the volume to {volume}%.")
@@ -175,13 +175,13 @@ class Audio(commands.Cog):
     async def pause_error(self, ctx, error): # p!pause error handlers.
         if isinstance(error, commands.CheckFailure):
             channel = ctx.author.voice.channel
-            membercheck = channel.members
-            membercount = len(membercheck)
-            if membercount <= 2:
-                voice = get(self.bot.voice_clients, guild=ctx.guild)
-                if voice and voice.is_paused():
+            memberCheck = channel.members
+            memberCount = len(memberCheck)
+            if memberCount <= 2:
+                botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+                if botVoice and botVoice.is_paused():
                     print("Resumed audio.")
-                    voice.resume()
+                    botVoice.resume()
                     await ctx.send("Resumed audio.")
                 else:
                     print("Audio is not paused.")
@@ -191,14 +191,14 @@ class Audio(commands.Cog):
     @resume.error
     async def resume_error(self, ctx, error): # p!resume error handlers.
         if isinstance(error, commands.CheckFailure):
-            channel = ctx.author.voice.channel
-            membercheck = channel.members
-            membercount = len(membercheck)
-            if membercount <= 2:
-                voice = get(self.bot.voice_clients, guild=ctx.guild)
-                if voice and voice.is_playing():
+            currentChannel = ctx.author.voice.channel
+            memberCheck = currentChannel.members
+            memberCount = len(memberCheck)
+            if memberCount <= 2:
+                botVoice = get(self.bot.voice_clients, guild=ctx.guild)
+                if botVoice and botVoice.is_playing():
                     print("Audio paused.")
-                    voice.pause()
+                    botVoice.pause()
                 else:
                     print("Audio not playing, failed pause.")
                     await ctx.send(f"{ctx.author.mention}, there is no audio playing.")
@@ -207,21 +207,21 @@ class Audio(commands.Cog):
     @stop.error
     async def stop_error(self, ctx, error): # p!stop error handlers.
         if isinstance(error, commands.CheckFailure):
-            channel = ctx.author.voice.channel
-            membercheck = channel.members
-            membercount = len(membercheck)
-            if membercount <= 2:
-                voice = get(self.bot.voice_clients, guild=ctx.guild)
+            currentChannel = ctx.author.voice.channel
+            memberCheck = currentChannel.members
+            memberCount = len(memberCheck)
+            if memberCount <= 2:
+                botVoice = get(self.bot.voice_clients, guild=ctx.guild)
                 queues.clear()
-                queue_infile = os.path.isdir("./queue")
-                if queue_infile is True:
+                queueInFile = os.path.isdir("./queue")
+                if queueInFile is True:
                     shutil.rmtree("./queue")
-                if voice and voice.is_playing():
+                if botVoice and botVoice.is_playing():
                     print("Audio stopped.")
-                    voice.stop()
+                    botVoice.stop()
                     await ctx.send(f"{ctx.author.mention}, the audio has been stopped.")
-                    song_there = os.path.isfile("song.mp3")
-                    if song_there:
+                    songThere = os.path.isfile("song.mp3")
+                    if songThere:
                         os.remove("song.mp3")
                 else:
                     print("No audio playing, failed to stop.")
