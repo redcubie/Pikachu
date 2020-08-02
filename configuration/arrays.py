@@ -24,20 +24,6 @@ LOCKDOWNCHANNELS = {
     variables.SPLATOONCHAT # Channel #splatoon-chat.
 }
 
-UNFILTERCHANNELS = {
-    variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.NITROBOOSTERCHAT, # Channel #nitro-booster-chat.
-    variables.CHAMPIONCHAT, # Channel #champion-chat.
-    variables.AMBASSADORCHAT, # Channel #ambassador-chat.
-    variables.AFFILIATECHAT, # Channel #affiliate-chat.
-    variables.MODERATORCHAT, # Channel #moderator-chat.
-    variables.BOTLOGS, # Channel #bot-logs.
-    variables.REQUESTLOGS, # Channel #request-logs.
-    variables.ACTIONLOGS, # Channel #action-logs.
-    variables.MESSAGELOGS, # Channel #message-logs.
-    variables.SERVERLOGS, # Channel #server-logs.
-}
-
 LOCKDOWNCHANNELSV = {
     variables.GENERALCHATV, # Channel General Chat.
     variables.RANDOMCHATV, # Channel Random Chat.
@@ -56,39 +42,3 @@ LOGCHANNELS = {
     variables.MESSAGELOGS, # Channel #message-logs.
     variables.SERVERLOGS, # Channel #server-logs.
 }
-
-MESSAGEFILTER = {
-    "freeshop",
-    "freshop",
-    "freehop",
-    "freesh0p",
-    "threeshop",
-    "freestore", # Variations of "freeshop."
-    "ciangel",
-    "tikdevil",
-    "tikshop",
-    "utikdownloadhelper",
-    "utik", # Variation of "utikdownloadhelper."
-    "funkii",
-    "funk11",
-    "funki",
-    "funkey", # Variations of "funkii."
-    "usbhelper",
-    "villian3ds",
-    "vi11ian3ds", # Variation of "villian3ds."
-    "wareznx",
-    "homebrewgeneralshop",
-    "hbgshop", # Variation of "homebrewgeneralshop."
-    "goldbrick",
-    "3dsiso",
-    "3dscia",
-    "wiiuiso",
-    "emuparadise",
-    "loveroms",
-    "coolroms",
-    "doperoms",
-    "vimm",
-    "unbanmii",
-    "easymode9",
-    "sysconfig",
-} # The filter is mostly just piracy-related terms. I'll probably add more soon.
