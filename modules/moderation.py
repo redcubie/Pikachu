@@ -52,14 +52,14 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason): # p!warn
         "Warns a user on the server. Two warns will kick automatically, three will ban."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         else:
             if collection.count_documents({"_id": member.id}, limit = 1) == 0:
@@ -110,14 +110,14 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def pardon(self, ctx, member: discord.Member): # p!warn
         "Removes a warn from a user on the server."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         else:
             if collection.count_documents({"_id": member.id}, limit = 1) == 0:
@@ -153,15 +153,15 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     async def listwarn(self, ctx, member: discord.Member = None): # p!listwarn
         "Lists the warns that a user has received. Staff can see other users' warns."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerrole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
+        if ownerRole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
             if member == None: member = ctx.author
-            if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+            if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
                 await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
             else:
                 if collection.count_documents({"_id": member.id}, limit = 1) == 0:
@@ -184,7 +184,7 @@ class Moderation(commands.Cog):
                 await ctx.send(f"{ctx.author.mention}, using this command on others is only allowed for staff members.")
             else:
                 member = ctx.author
-                if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+                if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
                     await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
                 else:
                     if collection.count_documents({"_id": member.id}, limit = 1) == 0:
@@ -207,14 +207,14 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def clearwarn(self, ctx, member: discord.Member): # p!clearwarn
         "Clears all warns from a specified user."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         else:
             if collection.count_documents({"_id": member.id}, limit = 1) != 0:
@@ -238,10 +238,10 @@ class Moderation(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None): # p!kick
         "Kicks a user from the server."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
         else:
             if reason != None:
@@ -260,7 +260,7 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason=None): # p!ban
         "Bans a member from the server."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
         if isinstance(member, int):
@@ -274,7 +274,7 @@ class Moderation(commands.Cog):
             else:
                 pass
         if isinstance(member, discord.Member):
-            if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+            if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
                 await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
                 return
             else:
@@ -293,10 +293,10 @@ class Moderation(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def silentkick(self, ctx, member: discord.Member, *, reason=None): # p!silentkick
         "Kicks a member from the server without messaging."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
         else:
             await member.kick(reason=reason)
@@ -307,10 +307,10 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def silentban(self, ctx, member: discord.Member, *, reason=None): # p!silentban
         "Bans a member from the server without messaging."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerrole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
         else:
             await ctx.guild.ban(member, reason=reason)

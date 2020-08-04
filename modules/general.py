@@ -51,13 +51,13 @@ class General(commands.Cog):
     @commands.guild_only()
     async def userinfo(self, ctx, user: FindMember = None): # p!userinfo
         "Displays information regarding a user's account. Staff members can use this command on others."
-        ownerrole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
+        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerrole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
+        if ownerRole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
             if user == None: user = ctx.author
             if isinstance(user, discord.Member):
                 role = user.top_role.name

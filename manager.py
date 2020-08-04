@@ -37,5 +37,6 @@ async def reload(ctx, extension): # p!reload
 
 for filename in os.listdir("./modules"):
     if filename.endswith(".py"): bot.load_extension(f"modules.{filename[:-3]}")
+    if filename.startswith("filters"): bot.unload_extension(f"modules.{filename[:-3]}")
 
 bot.run(variables.BOTTOKEN)
