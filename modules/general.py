@@ -25,7 +25,6 @@ class General(commands.Cog):
         embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://cdn.discordapp.com/avatars/421448353889517579/377a5e8b2e44f3c26e03a905c8c59c14.webp?size=512")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
-        embed.add_field(name="Build Date", value=variables.VERSION, inline=False)
         embed.set_footer(text=f"Check out my source code on GitHub!")
         await ctx.send(embed=embed)
 
