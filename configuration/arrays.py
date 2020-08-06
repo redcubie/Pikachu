@@ -16,12 +16,6 @@ LOCKDOWNCHANNELS = {
     variables.POKEMONGENERAL, # Channel #pokémon-general.
     variables.POKEMONTRADES, # Channel #pokémon-trades.
     variables.POKEMONBATTLES, # Channel #pokémon-battles.
-    variables.MARIOCHAT,  # Channel #mario-chat.
-    variables.ZELDACHAT, # Channel #zelda-chat.
-    variables.KIRBYCHAT, # Channel #kirby-chat.
-    variables.FIREEMBLEMCHAT, # Channel #fire-emblem-chat.
-    variables.ANIMALCROSSINGCHAT, # Channel #animal-crossing-chat.
-    variables.SPLATOONCHAT # Channel #splatoon-chat.
 }
 
 UNFILTERCHANNELS = {
