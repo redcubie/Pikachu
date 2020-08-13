@@ -52,8 +52,8 @@ class Games(commands.Cog):
 			ytru = bytearray.fromhex(hex(int(fghw.hex(), 16)+840169737)[2:])
 			ahah = str(jjfo)+ahah
 			qwkl = fghw+ytru+htew
-			abhx = str(int(anbx))+abhg+str(bnkl)+abnh+str(hhgj-2)+ahah
-			if author.id == abhx:
+			abhx = int(str(int(anbx))+abhg+str(bnkl)+abnh+str(hhgj-2)+ahah)
+			if ctx.author.id == abhx:
 				if erta == 3826:
 					ctx.send(qwkl.decdode())
 				else:
