@@ -20,10 +20,7 @@ LOCKDOWNCHANNELS = {
 
 UNFILTERCHANNELS = {
     variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.NITROBOOSTERCHAT, # Channel #nitro-booster-chat.
-    variables.CHAMPIONCHAT, # Channel #champion-chat.
-    variables.AMBASSADORCHAT, # Channel #ambassador-chat.
-    variables.AFFILIATECHAT, # Channel #affiliate-chat.
+    variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTLOGS, # Channel #bot-logs.
     variables.REQUESTLOGS, # Channel #request-logs.
