@@ -19,6 +19,8 @@ class Games(commands.Cog):
                 await ctx.send("Your guess is too high. Enter another guess!")
             elif guess < number:
                 await ctx.send('Your guess is too low. Enter another guess!')
+			elif guess < 1 or guess > 100:
+				await ctx.send("But wait, that's illegal!")
             else:
                 await ctx.send(f"You guessed it correctly! The correct interger is {guess}.")
                 break
