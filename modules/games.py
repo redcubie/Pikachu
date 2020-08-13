@@ -27,7 +27,9 @@ class Games(commands.Cog):
 	@commands.command()
     async def ohno(self, ctx):
 		"OH NO!"
-		if message.channel.id == "725061309237952632": # this is #bot-discussion
+		checkChannel = self.bot.get_channel(ctx.channel.id)
+        pollChannel = self.bot.get_channel(variables.BOTDISCUSSION)
+        if checkChannel == pollChannel: # this is #bot-discussion
 			anbx = 0x32
 			bnkl = 40
 			hhgj = 64
