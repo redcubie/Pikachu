@@ -141,10 +141,10 @@ class Administration(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def reboot(self, ctx): # p!reboot
-        "Logs out of the bot's Discord account."
-        print("Bot reboot has been requested.")
-        await ctx.send(f"{ctx.author.mention}, rebooting the system. Please wait a moment.")
+    async def shutdown(self, ctx): # p!reboot
+        "Shutdowns and logs out of the bot's Discord account."
+        print("Bot shutdown has been requested.")
+        await ctx.send(f"{ctx.author.mention}, shutting down the system. Please wait a moment.")
         await ctx.bot.logout()
 
     @botstatus.error
