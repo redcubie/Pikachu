@@ -6,23 +6,29 @@ class Games(commands.Cog):
     def __init__(self, bot): self.bot = bot
 
     @commands.command()
-    async def guessing(self, ctx):
+    async def guessing(self, ctx, difficulty = "medium"):
         "A simple number guessing game that you can play!"
-        number = random.randint(0, 100)
-        await ctx.send("A random interger has been generated from 1 to 100. Enter your guess!")
+        if difficulty.lower()  == "easy": difficultyNumber = 10
+        elif difficulty.lower() == "hard": difficultyNumber = 1000
+        else: difficultyNumber = 100
+        number = random.randint(0, difficultyNumber)
+        await ctx.send(f"A random integer has been generated from 1 to {difficultyNumber}. Enter your guess!")
         while True:
             response = await self.bot.wait_for("message")
-            guess = int(response.content)
-            if isinstance(guess, int) == False:
-                break
-            if guess < 1 or guess > 100:
-                await ctx.send("But wait, that's illegal!")
-            elif guess > number:
-                await ctx.send("Your guess is too high. Enter another guess!")
-            elif guess < number:
-                await ctx.send('Your guess is too low. Enter another guess!')
+            if ctx.author.id == response.author.id and ctx.channel.id == response.channel.id:
+                guess = int(response.content)
+                if isinstance(guess, int) == False:
+                    break
+                if guess < 1 or guess > difficultyNumber:
+                    await ctx.send("But wait, that's illegal!")
+                elif guess > number:
+                    await ctx.send("Your guess is too high. Enter another guess!")
+                elif guess < number:
+                    await ctx.send('Your guess is too low. Enter another guess!')
+                else:
+                    await ctx.send(f"You guessed it correctly! The correct integer is {guess}.")
+                    break
             else:
-                await ctx.send(f"You guessed it correctly! The correct interger is {guess}.")
-                break
+                pass
 
 def setup(bot): bot.add_cog(Games(bot)) 
