@@ -1,7 +1,7 @@
 import discord, os, importlib
 from discord.ext import commands
 import configuration.variables as variables
-bot = commands.Bot(command_prefix="p!", case_insensitive=True)
+bot = commands.Bot(command_prefix=("p!", "P!"), case_insensitive=True)
 
 @bot.event # The #bot-commands check.
 async def on_message(ctx):
