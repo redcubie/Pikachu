@@ -46,7 +46,7 @@ class General(commands.Cog):
         "Shares a link to the Nincord server."
         await ctx.send(f"{ctx.author.mention}, share this link to invite people to Nincord! https://discord.gg/mYjeaZQ")
 
-    @commands.command()
+    @commands.command(aliases=['ui'])
     @commands.guild_only()
     async def userinfo(self, ctx, user: FindMember = None): # p!userinfo
         "Displays information regarding a user's account. Staff members can use this command on others."
