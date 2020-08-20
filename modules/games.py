@@ -7,11 +7,12 @@ class Games(commands.Cog):
 
     @commands.command()
     async def guessing(self, ctx, difficulty = "medium"):
-        "A simple number guessing game that you can play!"
-        if difficulty.lower()  == "easy": difficultyNumber = 10
+        "A simple number guessing game that you can play! Choose from easy, medium, hard, or extreme difficulties."
+        if difficulty.lower() == "easy": difficultyNumber = 10
         elif difficulty.lower() == "hard": difficultyNumber = 1000
+        elif difficulty.lower() == "extreme": difficultyNumber = 10000
         else: difficultyNumber = 100
-        number = random.randint(0, difficultyNumber)
+        number = random.randint(1, difficultyNumber)
         await ctx.send(f"A random integer has been generated from 1 to {difficultyNumber}. Enter your guess!")
         while True:
             response = await self.bot.wait_for("message")
