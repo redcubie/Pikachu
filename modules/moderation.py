@@ -285,7 +285,7 @@ class Moderation(commands.Cog):
                         await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
                 except discord.errors.Forbidden:
                     pass
-                await ctx.guild.ban(member, reason=reason)
+                await ctx.guild.ban(member, reason=reason, delete_message_days=0)
                 await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
 
     @commands.command()
