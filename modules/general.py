@@ -34,8 +34,8 @@ class General(commands.Cog):
         "Shows the bot's ping."
         await ctx.send(f"Pong! {round(self.bot.latency*1000)}ms.")
 
+    @commands.command(aliases=["mc"])
     @commands.guild_only()
-    @commands.command()
     async def membercount(self, ctx):
         "Counts the amount of members currently on the server."
         await ctx.send(f"{ctx.guild.name} has {ctx.guild.member_count} members at this moment!")
@@ -46,7 +46,7 @@ class General(commands.Cog):
         "Shares a link to the Nincord server."
         await ctx.send(f"{ctx.author.mention}, share this link to invite people to Nincord! https://discord.gg/mYjeaZQ")
 
-    @commands.command(aliases=['ui'])
+    @commands.command(aliases=["ui"])
     @commands.guild_only()
     async def userinfo(self, ctx, user: FindMember = None): # p!userinfo
         "Displays information regarding a user's account. Staff members can use this command on others."
@@ -56,7 +56,7 @@ class General(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
+        if ownerRole or modRole or botRole in ctx.author.roles:
             if user == None: user = ctx.author
             if isinstance(user, discord.Member):
                 role = user.top_role.name
@@ -131,7 +131,7 @@ class General(commands.Cog):
                         # embed.add_field(name="Banned:", value="N/A", inline=False)
                 await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=["si"])
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def serverinfo(self, ctx): # p!serverinfo

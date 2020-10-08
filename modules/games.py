@@ -5,7 +5,7 @@ class Games(commands.Cog):
     "Games which can be played through the Discord platform."
     def __init__(self, bot): self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=["guess"])
     async def guessing(self, ctx, difficulty = "medium"):
         "A simple number guessing game that you can play! Choose from easy, medium, hard, or extreme difficulties."
         if difficulty.lower() == "easy": difficultyNumber = 10

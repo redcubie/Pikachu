@@ -18,13 +18,13 @@ class Administration(commands.Cog):
             async with channel.typing():
                 characters = len(message)
                 await asyncio.sleep(characters/10)
-            await channel.send(f"{message}")
+            await channel.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
             if channel != ctx.channel:
                 embed=discord.Embed(color=0x80ff80)
                 embed.add_field(name="Sent Message:", value=message, inline=False)
                 await ctx.send(f"{ctx.author.mention}, successfully sent the message to {channel.mention}.", embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=["dm"])
     @commands.has_permissions(administrator=True)
     async def send(self, ctx, member: discord.Member, *, message): # p!send
         "Sends a message to a specified user."
@@ -32,14 +32,14 @@ class Administration(commands.Cog):
             characters = len(message)
             await asyncio.sleep(characters/10)
         try:
-            await member.send(f"{message}")
+            await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
             embed=discord.Embed(color=0x80ff80)
             embed.add_field(name="Sent Message:", value=message, inline=False)
             await ctx.send(f"{ctx.author.mention}, successfully sent the message to {member.mention}.", embed=embed)
         except discord.errors.Forbidden:
             pass
 
-    @commands.command()
+    @commands.command(aliases=["dmrole"])
     @commands.has_permissions(administrator=True)
     async def sendrole(self, ctx, role: discord.Role, *, message): # p!sendrole
         "Sends a message to everyone with a specified role."
@@ -47,10 +47,10 @@ class Administration(commands.Cog):
         count = 0
         for member in members:
             async with member.typing():
-                characters = len(message)
+                characters = len(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
                 await asyncio.sleep(characters/10)
             try:
-                await member.send(f"{message}")
+                await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
                 count += 1
             except discord.errors.Forbidden:
                 pass
@@ -99,7 +99,7 @@ class Administration(commands.Cog):
         elif action != "playing" or action != "watching" or action != "listening" and action != None:
             await ctx.send(f"{ctx.author.mention}, that is not a valid action for the activity.")
 
-    @commands.command()
+    @commands.command(aliases=["vote"])
     @commands.has_permissions(administrator=True)
     async def poll(self, ctx, question, *choices: str): # p!poll
         "Sends a poll to the specified vote channel which can be reacted to."

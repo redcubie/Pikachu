@@ -1,18 +1,17 @@
 import discord, os, importlib
 from discord.ext import commands
-import configuration.variables as variables
-bot = commands.Bot(command_prefix=("p!", "P!"), case_insensitive=True)
+import configuration.variables as variables; import configuration.arrays as arrays
+bot = commands.Bot(command_prefix=("P!", "p!"), case_insensitive=True, allowed_mentions=discord.AllowedMentions(everyone=False, roles=False, users=False))
+bot.remove_command('help')
 
 @bot.event # The #bot-commands check.
-async def on_message(ctx):
-    if not isinstance(ctx.channel, discord.channel.DMChannel):
-        ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER)
-        modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR)
-        if ctx.content.lower().startswith("p!"):
-            try:
-                if ownerRole in ctx.author.roles or modRole in ctx.author.roles: await bot.process_commands(ctx)
-                elif ctx.channel.id == variables.BOTCOMMANDS or ctx.channel.id == variables.TRUSTEDCHAT or ctx.channel.id == variables.MODERATORCHAT or ctx.channel.id == variables.BOTDISCUSSION: await bot.process_commands(ctx)
-            except AttributeError: pass # Doesn't really help, but I'll figure it out eventually.
+async def on_message(message):
+    if not isinstance(message.channel, discord.channel.DMChannel) and message.content.lower().startswith("p!"):
+        try:
+            if message.channel.id in arrays.BOTCHANNELS or any(item in arrays.STAFFROLES for item in message.author.roles):
+                await bot.process_commands(message)
+        except AttributeError:
+            pass # Doesn't really help, but I'll figure it out eventually.
 
 @bot.command(hidden=True)
 @commands.has_permissions(administrator=True)

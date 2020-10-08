@@ -16,7 +16,8 @@ class Audio(commands.Cog):
         channelCheck = self.bot.get_channel(currentChannel.id)
         audioChannel = self.bot.get_channel(variables.BOTCOMMANDSV) # Channel #Bot Commands.
         modChannel = self.bot.get_channel(variables.MODERATORCHATV) # Channel #Moderator Chat.
-        if channelCheck == audioChannel or channelCheck == modChannel:
+        trustedChannel = self.bot.get_channeL(variables.TRUSTEDCHATV)
+        if channelCheck == audioChannel or modChannel or trustedChannel:
             if botVoice != None: return await botVoice.move_to(currentChannel)
             await currentChannel.connect()
         else: await ctx.send(f"{ctx.author.mention}, please join {audioChannel} to use this command.")
