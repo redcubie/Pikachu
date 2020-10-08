@@ -1,20 +1,20 @@
 import discord
 import configuration.variables as variables
 
-STAFFROLES = (
+STAFFROLES = {
     variables.SERVERBOT, # Role @Server Bot.
     variables.SERVEROWNER, # Role @Server Owner.
     variables.SERVERMODERATOR, # Role @Server Moderator.
-)
+}
 
-BOTCHANNELS = (
+BOTCHANNELS = {
     variables.BOTCOMMANDS, # Channel #bot-commands.
     variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTDISCUSSION, # Channel #bot-discussion.
-)
+}
 
-LOCKDOWNCHANNELS = (
+LOCKDOWNCHANNELS = {
     variables.GENERALCHAT, # Channel #general-chat.
     variables.RANDOMCHAT, # Channel #random-chat.
     variables.BOTCOMMANDS, # Channel #bot-commands.
@@ -23,9 +23,9 @@ LOCKDOWNCHANNELS = (
     variables.POKEMONGENERAL, # Channel #pokémon-general.
     variables.POKEMONTRADES, # Channel #pokémon-trades.
     variables.POKEMONBATTLES, # Channel #pokémon-battles.
-)
+}
 
-UNFILTERCHANNELS = (
+UNFILTERCHANNELS = {
     variables.BOTDISCUSSION, # Channel #bot-discussion.
     variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
@@ -34,9 +34,9 @@ UNFILTERCHANNELS = (
     variables.ACTIONLOGS, # Channel #action-logs.
     variables.MESSAGELOGS, # Channel #message-logs.
     variables.SERVERLOGS, # Channel #server-logs.
-)
+}
 
-MESSAGEFILTER = (
+MESSAGEFILTER = {
     "freeshop",
     "freshop",
     "freehop",
@@ -70,12 +70,12 @@ MESSAGEFILTER = (
     "unbanmii",
     "easymode9",
     "sysconfig",
-) # The filter is mostly just piracy-related terms. I'll probably add more soon.
+ } # The filter is mostly just piracy-related terms. I'll probably add more soon.
 
-LOGCHANNELS = (
+LOGCHANNELS = {
     variables.BOTLOGS, # Channel #bot-logs.
     variables.REQUESTLOGS, # Channel #request-logs.
     variables.ACTIONLOGS, # Channel #action-logs.
     variables.MESSAGELOGS, # Channel #message-logs.
     variables.SERVERLOGS, # Channel #server-logs.
-)
+}
