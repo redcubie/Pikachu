@@ -10,8 +10,8 @@ async def on_message(ctx):
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR)
         if ctx.content.lower().startswith("p!"):
             try:
-                if ownerRole or modRole in ctx.author.roles: await bot.process_commands(ctx)
-                elif ctx.channel.id == variables.BOTCOMMANDS or variables.TRUSTEDCHAT or variables.MODERATORCHAT or variables.BOTDISCUSSION: await bot.process_commands(ctx)
+                if ownerRole in ctx.author.roles or modRole in ctx.author.roles: await bot.process_commands(ctx)
+                elif ctx.channel.id == variables.BOTCOMMANDS or ctx.channel.id == variables.TRUSTEDCHAT or ctx.channel.id == variables.MODERATORCHAT or ctx.channel.id == variables.BOTDISCUSSION: await bot.process_commands(ctx)
             except AttributeError: pass # Doesn't really help, but I'll figure it out eventually.
 
 @bot.command(hidden=True)

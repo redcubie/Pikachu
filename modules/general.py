@@ -56,7 +56,7 @@ class General(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole or modRole or botRole in ctx.author.roles:
+        if ownerRole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
             if user == None: user = ctx.author
             if isinstance(user, discord.Member):
                 role = user.top_role.name
@@ -142,7 +142,7 @@ class General(commands.Cog):
         servercreate = ctx.guild.created_at
         servercreate2 = servercreate.strftime("%B %d, %Y (%I:%M %p)")
         embed.add_field(name="Created:", value="{}".format(servercreate2), inline=False)
-        embed.add_field(name="Members:", value=len(ctx.guild.members))
+        embed.add_field(name="Members:", value= ctx.guild.member_count)
         embed.add_field(name="Role Count:", value=len(ctx.guild.roles), inline=True)
         embed.set_thumbnail(url=ctx.guild.icon_url_as(static_format="png"))
         await ctx.send(embed=embed)

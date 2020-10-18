@@ -59,7 +59,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         else:
             if collection.count_documents({"_id": member.id}, limit = 1) == 0:
@@ -117,7 +117,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         else:
             if collection.count_documents({"_id": member.id}, limit = 1) == 0:
@@ -159,7 +159,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             if member == None: member = ctx.author
             if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
                 await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
@@ -214,7 +214,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         else:
             if collection.count_documents({"_id": member.id}, limit = 1) != 0:
@@ -241,7 +241,7 @@ class Moderation(commands.Cog):
         ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
         else:
             if reason != None:
@@ -274,7 +274,7 @@ class Moderation(commands.Cog):
             else:
                 pass
         if isinstance(member, discord.Member):
-            if ownerRole or modRole or botRole in member.roles:
+            if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
                 await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
                 return
             else:
@@ -296,7 +296,7 @@ class Moderation(commands.Cog):
         ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
         else:
             await member.kick(reason=reason)
@@ -310,7 +310,7 @@ class Moderation(commands.Cog):
         ownerRole = discord.utils.get(ctx.guild.roles, id=variables.SERVEROWNER) # Role @Server Owner.
         modRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERMODERATOR) # Role @Server Moderator.
         botRole = discord.utils.get(ctx.guild.roles, id=variables.SERVERBOT) # Role @Server Bot.
-        if ownerRole or modRole or botRole in member.roles:
+        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
             await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
         else:
             await ctx.guild.ban(member, reason=reason)
