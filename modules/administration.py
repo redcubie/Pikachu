@@ -17,7 +17,7 @@ class Administration(commands.Cog):
         else:
             async with channel.typing():
                 characters = len(message)
-                await asyncio.sleep(characters/10)
+                await asyncio.sleep(characters/25)
             await channel.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
             if channel != ctx.channel:
                 embed=discord.Embed(color=0x80ff80)
@@ -30,7 +30,7 @@ class Administration(commands.Cog):
         "Sends a message to a specified user."
         async with member.typing():
             characters = len(message)
-            await asyncio.sleep(characters/10)
+            await asyncio.sleep(characters/25)
         try:
             await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
             embed=discord.Embed(color=0x80ff80)
@@ -48,7 +48,7 @@ class Administration(commands.Cog):
         for member in members:
             async with member.typing():
                 characters = len(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
-                await asyncio.sleep(characters/10)
+                await asyncio.sleep(characters/25)
             try:
                 await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
                 count += 1
