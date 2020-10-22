@@ -7,7 +7,7 @@ class Administration(commands.Cog):
     def __init__(self, bot): self.bot = bot
 
     @commands.command()
-    @commands.has_permissions(administrator=True)
+    @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
         "Sends a message to a specified channel."
         checkChannel = self.bot.get_channel(channel.id)
@@ -133,7 +133,7 @@ class Administration(commands.Cog):
                 await ctx.send(f"{ctx.author.mention}, successfully sent the poll to {pollChannel.mention}. A preview is attached.", embed=embed)
 
     @commands.command()
-    @commands.has_permissions(manage_roles=True)
+    @commands.has_permissions(administrator=True)
     async def rolecopy(self, ctx, source: discord.Role, destination: discord.Role): # p!rolecopy
         "Grabs the permissions of one role and copies them to another."
         await destination.edit(permissions=source.permissions, hoist=source.hoist, mentionable=source.mentionable)
