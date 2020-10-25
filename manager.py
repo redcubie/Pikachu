@@ -1,7 +1,10 @@
 import discord, os, importlib
 from discord.ext import commands
 import configuration.variables as variables; import configuration.arrays as arrays
-bot = commands.Bot(command_prefix=("P!", "p!"), case_insensitive=True, allowed_mentions=discord.AllowedMentions(everyone=False, roles=False, users=False))
+intents = discord.Intents.default()
+intents.members = True
+intents.presences = True
+bot = commands.Bot(command_prefix=("P!", "p!"), case_insensitive=True, allowed_mentions=discord.AllowedMentions(everyone=False, roles=False, users=False), intents=intents)
 
 @bot.event # The #bot-commands check.
 async def on_message(ctx):

@@ -147,6 +147,17 @@ class General(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon_url_as(static_format="png"))
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=["stafflist"])
+    @commands.guild_only()
+    @commands.cooldown(1, 30, commands.BucketType.channel)
+    async def liststaff(self, ctx):
+        modRole = ctx.guild.get_role(variables.SERVERMODERATOR)
+        description = []
+        for member in modRole.members:
+            description.append(f"\n {member.mention}")
+        embed = discord.Embed(title=f"{ctx.guild.name} Staff Team", description="".join(description), color=0xffff40)
+        await ctx.send(embed=embed)
+
     @commands.command()
     @commands.cooldown(1, 21600, commands.BucketType.user)
     async def suggest(self, ctx, *, idea): # p!suggest
