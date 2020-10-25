@@ -159,7 +159,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
+        if ownerRole in ctx.author.roles or modRole in ctx.author.roles or botRole in ctx.author.roles:
             if member == None: member = ctx.author
             if ownerRole in member.roles or modRole in member.roles or botRole in member.roles:
                 await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
