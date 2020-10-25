@@ -7,7 +7,7 @@ class Administration(commands.Cog):
     def __init__(self, bot): self.bot = bot
 
     @commands.command()
-    @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
+    @commands.has_any_role(variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Owner, @Server Moderator.
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
         "Sends a message to a specified channel."
         checkChannel = self.bot.get_channel(channel.id)
@@ -122,7 +122,7 @@ class Administration(commands.Cog):
             ]
             description = []
             for x, option in enumerate(choices):
-                description += "\n {} {}".format(reactions[x], option)
+                description += f"\n {reactions[x]} {option}"
             embed = discord.Embed(title=question, description="".join(description), color=0xffff40)
             checkChannel = self.bot.get_channel(ctx.channel.id)
             pollChannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
