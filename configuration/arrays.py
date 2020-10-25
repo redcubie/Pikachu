@@ -2,7 +2,6 @@ import discord
 import configuration.variables as variables
 
 STAFFROLES = {
-    variables.SERVERBOT, # Role @Server Bot.
     variables.SERVEROWNER, # Role @Server Owner.
     variables.SERVERMODERATOR, # Role @Server Moderator.
 }

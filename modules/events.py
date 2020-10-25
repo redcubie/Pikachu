@@ -29,7 +29,7 @@ class Events(commands.Cog):
         embed.add_field(name="Created:", value="{}".format(formatCreate2), inline=False)
         embed.add_field(name="Joined:", value="{}".format(formatJoin2), inline=False)
         embed.set_footer(text="Use the command \"p!userinfo\" for more information.")
-        await channel.send(f"{user} ({user.id}) has joined the server.", embed=embed)
+        await channel.send(f"{user.mention} ({user.id}) has joined the server.", embed=embed)
 
     @commands.Cog.listener() # When a user leaves.
     async def on_member_remove(self, user):
@@ -44,7 +44,7 @@ class Events(commands.Cog):
         embed.add_field(name="Creation Date and Time:", value="{}".format(formatCreate2), inline=False)
         embed.add_field(name="Server Join Date and Time:", value="{}".format(formatJoin2), inline=False)
         embed.set_footer(text="Use the command \"p!userinfo\" for more information.")
-        await channel.send(f"{user} ({user.id}) has left the server.", embed=embed)
+        await channel.send(f"{user.mention} ({user.id}) has left the server.", embed=embed)
 
     @commands.Cog.listener() # When a message is edited.
     async def on_message_edit(self, before, after):
@@ -55,7 +55,7 @@ class Events(commands.Cog):
                 embed=discord.Embed(color=0x80ff80)
                 embed.add_field(name="Message Before:", value=before.content, inline=False)
                 embed.add_field(name="Message After:", value=after.content, inline=False)
-                try: await logChannel.send(f"A message by {before.author} ({before.author.id}) has been edited in {before.channel.mention}.", embed=embed)
+                try: await logChannel.send(f"A message by {before.author.mention} ({before.author.id}) has been edited in {before.channel.mention}.", embed=embed)
                 except AttributeError: pass
             else: pass
 
@@ -69,7 +69,7 @@ class Events(commands.Cog):
                 logChannel = self.bot.get_channel(variables.MESSAGELOGS)
                 embed=discord.Embed(color=0x80ff80)
                 embed.add_field(name="Deleted Message:", value=ctx.content, inline=False)
-                try: await logChannel.send(f"A message by {ctx.author} ({ctx.author.id}) has been deleted in {ctx.channel.mention}.", embed=embed)
+                try: await logChannel.send(f"A message by {ctx.author.mention} ({ctx.author.id}) has been deleted in {ctx.channel.mention}.", embed=embed)
                 except AttributeError: pass
 
     @commands.Cog.listener() # When a member update is detected.

@@ -20,7 +20,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
+    @commands.has_any_role(variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Owner, @Server Moderator.
     async def checkactivity(self, ctx, days = 30): # p!checkactivity
         "Check the amount of active members on the server, plus those with roles."
         if days < 1:
@@ -45,7 +45,7 @@ class Moderation(commands.Cog):
         deleted = await ctx.channel.purge(limit=amount+1)
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         if amount != 0:
-            await logChannel.send(f"{ctx.author} ({ctx.author.id}) has cleared {len(deleted)-1} messages in {ctx.channel}.")
+            await logChannel.send(f"{ctx.author.mention} has cleared {len(deleted)-1} messages in {ctx.channel}.")
 
     @commands.command(aliases=["addwarn"])
     @commands.guild_only()
@@ -76,7 +76,7 @@ class Moderation(commands.Cog):
                     embed.add_field(name="Warning 1:", value=reason, inline=False)
                     try: await member.send(f"You have been warned in {ctx.guild.name} for \"{reason}\". This is your first warning and only warning without an automatic punishment. Please reconsider the rules before participating in the server. Your next offense will result in an automatic kick.")
                     except discord.errors.Forbidden: pass
-                    await logChannel.send(f"{ctx.author} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}).", embed=embed)
+                    await logChannel.send(f"{ctx.author.mention} has given a warning to {member.mention} ({member.id}).", embed=embed)
                     await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}.")
             else:
                 results = collection.find({"_id": member.id})
@@ -99,7 +99,7 @@ class Moderation(commands.Cog):
                     embed.add_field(name="Warning 3:", value=reason, inline=False)
                     try: await member.send(f"You have been warned in {ctx.guild.name} for \"{reason}\". This is your third warning, therefore you have automatically been banned from the server. Please contact a staff member if you feel you have been wrongfully punished.")
                     except discord.errors.Forbidden: pass
-                    await logChannel.send(f"{ctx.author} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}).", embed=embed)
+                    await logChannel.send(f"{ctx.author.mention} has given a warning to {member.mention} ({member.id}).", embed=embed)
                     await member.ban(reason=f"{checkWarn1}, {checkWarn2}, {reason}")
                     await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}. A ban has been initiated automatically.")
                 elif checkWarn3 != None and checkWarn2 != None:
@@ -131,19 +131,19 @@ class Moderation(commands.Cog):
                 if checkWarn3 != None:
                     embed = discord.Embed(color=0xff8080)
                     embed.add_field(name="Warning 3:", value=checkWarn3, inline=False)
-                    await logChannel.send(f"{ctx.author} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
+                    await logChannel.send(f"{ctx.author.mention} has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                     collection.update_one({"_id": member.id}, {"$set":{"Warn 3": None}})
                     await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
                 elif checkWarn2 != None and checkWarn3 == None:
                     embed = discord.Embed(color=0xff8080)
                     embed.add_field(name="Warning 2:", value=checkWarn2, inline=False)
-                    await logChannel.send(f"{ctx.author} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
+                    await logChannel.send(f"{ctx.author.mention} has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                     collection.update_one({"_id": member.id}, {"$set":{"Warn 2": None}})
                     await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
                 elif checkWarn1 != None and checkWarn2 == None:
                     embed = discord.Embed(color=0xff8080)
                     embed.add_field(name="Warning 1:", value=checkWarn1, inline=False)
-                    await logChannel.send(f"{ctx.author} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
+                    await logChannel.send(f"{ctx.author.mention} has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                     collection.delete_one({"_id": member.id})
                     await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
                 else:
@@ -228,7 +228,7 @@ class Moderation(commands.Cog):
                 if checkWarn2 != None: embed.add_field(name="Warning 2:", value=checkWarn2, inline=False)
                 if checkWarn3 != None: embed.add_field(name="Warning 3:", value=checkWarn3, inline=False)
                 collection.delete_one({"_id": member.id})
-                await logChannel.send(f"{ctx.author} ({ctx.author.id}) has cleared all warnings from {member.mention} ({member.id}).", embed=embed)
+                await logChannel.send(f"{ctx.author.mention} has cleared all warnings from {member.mention} ({member.id}).", embed=embed)
                 await ctx.send(f"{ctx.author.mention}, all warnings given to {member.mention} have been cleared sucessfully.")
             else:
                 await ctx.send(f"{ctx.author.mention}, there are no warnings given to {member.mention}.")
@@ -330,7 +330,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
+    @commands.has_any_role(variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Owner, @Server Moderator.
     async def slowmode(self, ctx, time: int, channel: discord.TextChannel = None): # p!slowmode
         "Enables slowmode in the specified channel."
         if channel == None: channel = ctx.channel
@@ -340,7 +340,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.has_any_role(variables.SERVERBOT, variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Bot, @Server Owner, @Server Moderator.
+    @commands.has_any_role(variables.SERVEROWNER, variables.SERVERMODERATOR) # Roles @Server Owner, @Server Moderator.
     async def lockmode(self, ctx, channel: discord.TextChannel = None): # p!lockmode
         "Disables the sending of messages in the specified channel for regular users."
         if channel == None: channel = ctx.channel
