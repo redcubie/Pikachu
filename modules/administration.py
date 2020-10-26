@@ -1,6 +1,6 @@
 import discord, os, importlib, asyncio
 from discord.ext import commands
-import configuration.variables as variables
+import configuration.variables as variables; import configuration.arrays as arrays
 
 class Administration(commands.Cog):
     "Powerful commands which can be used by an administrator."
@@ -11,9 +11,9 @@ class Administration(commands.Cog):
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
         "Sends a message to a specified channel."
         checkChannel = self.bot.get_channel(channel.id)
-        pollChannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
-        if checkChannel == pollChannel:
-            await ctx.send(f"{ctx.author.mention}, in order to send messages to {channel.mention}, please use `p!poll`.")
+        pollChannel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
+        if checkChannel == pollChannel or checkChannel.id in arrays.LOGCHANNELS:
+            await ctx.send(f"{ctx.author.mention}, you are not allowed to send messages to {channel.mention}.")
         else:
             async with channel.typing():
                 characters = len(message)
@@ -125,7 +125,7 @@ class Administration(commands.Cog):
                 description += f"\n {reactions[x]} {option}"
             embed = discord.Embed(title=question, description="".join(description), color=0xffff40)
             checkChannel = self.bot.get_channel(ctx.channel.id)
-            pollChannel = self.bot.get_channel(variables.VOTING) # Channel #voting.
+            pollChannel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
             pollMessage = await pollChannel.send(embed=embed)
             for reaction in reactions[:len(choices)]:
                 await pollMessage.add_reaction(reaction)

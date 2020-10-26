@@ -7,10 +7,11 @@ STAFFROLES = {
 }
 
 BOTCHANNELS = {
-    variables.BOTCOMMANDS, # Channel #bot-commands.
     variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
+    variables.BOTCOMMANDS, # Channel #bot-commands.
     variables.BOTDISCUSSION, # Channel #bot-discussion.
+    variables.BOTTESTING, # Channel #bot-testing.
 }
 
 LOCKDOWNCHANNELS = {
@@ -26,6 +27,7 @@ LOCKDOWNCHANNELS = {
 
 UNFILTERCHANNELS = {
     variables.BOTDISCUSSION, # Channel #bot-discussion.
+    variables.BOTTESTING, # Channel #bot-testing.
     variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTLOGS, # Channel #bot-logs.
