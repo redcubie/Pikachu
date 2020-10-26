@@ -1,7 +1,7 @@
 # Pikachu
 A utility bot for the Nincord server.
 
-Pikachu is a simple bot that is currently being developed and maintained by NoahAbc12345. It is primarily a moderation bot, however it has other purposes, such as being a simple music bot. Unfortunately, Pikachu is not made with any other server in mind besides Nincord, so in order to make the bot properly work in other servers, it will have to be heavily modified. The source code is open for anyone to view and see how Pikachu works. Pikachu is written in Python, and uses the Discord.py package.
+Pikachu is a simple bot that is currently being developed and maintained by NoahAbc12345. It is primarily a moderation bot, however it has other purposes. Unfortunately, Pikachu is not made with any other server in mind besides Nincord, so in order to make the bot properly work in other servers, it will have to be heavily modified. The source code is open for anyone to view and see how Pikachu works. Pikachu is written in Python, and uses the Discord.py package.
 
 The bot is a work-in-progress, so stay tuned for more updates.
 
