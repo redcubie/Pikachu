@@ -30,7 +30,7 @@ class Filters(commands.Cog):
                         await ctx.author.send(f"Your message has been automatically deleted as it violated the server rules. Please read <#450903022613168129> for more information.", embed=embed)
                     except discord.errors.Forbidden:
                         pass
-                    await logChannel.send(f"{ctx.author} ({ctx.author.id}) has sent a message in {ctx.channel.mention} in violation of the server rules which was automatically deleted.", embed=embed)
+                    await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has sent a message in {ctx.channel.mention} in violation of the server rules which was automatically deleted.", embed=embed)
             except AttributeError:
                 pass
 
@@ -54,7 +54,7 @@ class Filters(commands.Cog):
                         embed.add_field(name="Deleted Message:", value=after.content, inline=False)
                         try: await after.author.send(f"Your message has been automatically deleted as it violated the server rules. Please read <#450903022613168129> for more information.", embed=embed)
                         except discord.errors.Forbidden: pass
-                        await logChannel.send(f"{after.author} ({after.author.id}) has sent a message in violation of the server rules which was automatically deleted.", embed=embed)
+                        await logChannel.send(f"{after.author.mention} ({after.author.id}) has sent a message in violation of the server rules which was automatically deleted.", embed=embed)
                 except AttributeError: pass
 
 def setup(bot): bot.add_cog(Filters(bot))
