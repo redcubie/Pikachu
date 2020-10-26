@@ -151,6 +151,7 @@ class General(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def liststaff(self, ctx):
+        "Lists the current staff team members on the server."
         modRole = ctx.guild.get_role(variables.SERVERMODERATOR)
         description = []
         for member in modRole.members:
