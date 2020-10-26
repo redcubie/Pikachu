@@ -62,15 +62,7 @@ if os.path.exists("configuration/secrets.py"):
     DBACCOUNT = secrets.DBACCOUNT # The key URL for the database account.
     BOTTOKEN = secrets.BOTTOKEN # The Discord bot authorization token.
     MONGODBURI = secrets.MONGODBURI # The URI for the bot's database.
-    TWITTERAPI = secrets.TWITTERAPI # The key to access the Twitter API.
-    TWITTERSECRET = secrets.TWITTERSECRET # The secret key to access the API key.
-    TWITTERBEARER = secrets.TWITTERBEARER # The bearer key to authorize access to Twitter.
-    SAKURAIHOOK = secrets.SAKURAIHOOK # The intergration URL for the Masahiro Sakurai webhook.
 else:
     DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.
     BOTTOKEN = os.environ["BOT_TOKEN"] # The Discord bot authorization token.
     MONGODBURI = os.environ["MONGODB_URI"] # The URI for the bot's database.
-    TWITTERAPI = os.environ["TWITTER_API"] # The key to access the Twitter API.
-    TWITTERSECRET = os.environ["TWITTER_SECRET"] # The secret key to access the API key.
-    TWITTERBEARER = os.environ["TWITTER_BEARER"] # The bearer key to authorize access to Twitter.
-    SAKURAIHOOK = os.environ["SAKURAI_WEBHOOK"] # The intergration URL for the Masahiro Sakurai webhook.
