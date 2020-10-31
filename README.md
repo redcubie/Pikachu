@@ -9,6 +9,4 @@ Feel free to contribute by creating a pull request which shortens or simplifies 
 
 This code should not be looked at if you're trying to learn how to code in Python. At it's current state, this code is not good code, and is probably even an example of bad coding practices. Everything done here could probably be simplified.
 
-This bot is heavily inspired by [Kurisu](https://github.com/nh-server/Kurisu) for Nintendo Homebrew.
-
 **Discord Server Invite:** https://discord.gg/mYjeaZQ
