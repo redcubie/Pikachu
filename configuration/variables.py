@@ -1,32 +1,34 @@
 import discord, os
 
-# General Cofiguration
+# General Configuration
 STATUSTYPE = discord.ActivityType.watching # The current action type that appears by default.
 STATUSACTIVITY = "Nincord" + " (p!)" # The current action activity that appears by default.
 
-# Role Configuration
+# Role Definitions
 SERVERBOT = 450886915340763151 # The ID of the @Server Bot role.
 SERVEROWNER = 450886695760691220 # The ID of the @Server Owner role.
 SERVERMODERATOR = 450903750648004608 # The ID of the @Server Moderator role.
 SERVERAFFILIATE = 473862508415811585 # The ID of the @Server Affiliate role.
 SERVERBOOSTER = 616335384791482389 # The ID of the @Server Booster role.
-NINCORDSINGLESCHAMPION = 495714353199317012 # The ID of the @Nincord Singles Champion role.
-NINCORDDOUBLESCHAMPION = 600451199472369675 # The ID of the @Nincord Doubles Champion role.
-NINCORDSIDEVENTCHAMPION = 600451603748618260 # The ID of the @Nincord Side Event Champion role.
-PROJECTDEVELOPER = 711046740400406570 # The ID of the @Project Developer role.
 BOTCONTRIBUTOR = 743198831000158218 # The ID of the @Bot Contributor role.
 CONTENTCREATOR = 664603430853148706 # The ID of the @Content Creator role.
 TRUSTEDMEMBER = 665364949765324800 # The ID of the @Trusted Member role.
+PROJECTDEVELOPER = 711046740400406570 # The ID of the @Project Developer role.
+NINTENDOCOLLECTOR = 757769140529528922 # The ID of the @Nintendo Collector role.
 
-# Channel Configuration
+# Channel Definitions
 SERVERRULES = 450903022613168129 # The ID of the #rules channel.
 SERVERAFFILIATES = 500342143039176725 # The ID of the #affiliates channel.
 ANNOUNCEMENTS = 738920609630912604 # The ID of the #announcements channel.
 EVERYBODYVOTES = 450903547911864321 # The ID of the #everybody-votes channel.
 GENERALCHAT = 469302882974433290 # The ID of the #general-chat text channel.
 RANDOMCHAT = 450875176486305792 # The ID of the #random-chat text channel.
+TRUSTEDCHAT = 742819077009047666 # The ID of the #trusted-chat channel.
+MODERATORCHAT = 478388911350087709 # The ID of the #moderator-chat text channel.
 GENERALCHATV = 453355810794242059 # The ID of the General Chat voice channel.
 RANDOMCHATV = 450910610251710465 # The ID of the Random Channel voice channel.
+TRUSTEDCHATV = 743275160790106261 # The ID of the Trusted Chat voice channel.
+MODERATORCHATV = 482916026674053120 # The ID of the Moderator Chat voice channel.
 BOTCOMMANDS = 707036038295584889 # The ID of the #bot-commands text channel.
 BOTDISCUSSION = 725061309237952632 # The ID of the #bot-discussion channel.
 BOTTESTING = 770115158713303110 # The ID of the #bot-testing channel.
@@ -44,15 +46,11 @@ DIRECTCHAT = 734148916559478845 # The ID of the #direct-chat text channel.
 TOURNAMENTCHAT = 649020355310125067 # The ID of the #tournament-chat text channel.
 DIRECTCHATV = 551841037363052546 # The ID of the Direct Chat voice channel.
 TOURNAMENTCHATV = 551841124608901150 # The ID of the Tournament Chat voice channel.
-TRUSTEDCHAT = 742819077009047666 # The ID of the #trusted-chat channel.
-MODERATORCHAT = 478388911350087709 # The ID of the #moderator-chat text channel.
-TRUSTEDCHATV = 743275160790106261 # The ID of the Trusted Chat voice channel.
-MODERATORCHATV = 482916026674053120 # The ID of the Moderator Chat voice channel.
 BOTLOGS = 725045178720583756 # The ID of the #bot-logs channel.
 REQUESTLOGS = 707106126902198302 # The ID of the #request-logs channel.
-ACTIONLOGS = 701634899937067018 # The ID of the #action-logs channel.
-MESSAGELOGS = 701635047115063376 # The ID of the #message-logs channel.
-SERVERLOGS = 701634953410248775 # The ID of the #server-logs channel.
+ACTIONLOGS = 772214347363516418 # The ID of the #action-logs channel.
+MESSAGELOGS = 772229066924228608 # The ID of the #message-logs channel.
+SERVERLOGS = 772229127138443264 # The ID of the #server-logs channel.
 
 # Essential Configuration
 if os.path.exists("configuration/secrets.py"):
