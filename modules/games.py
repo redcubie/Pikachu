@@ -9,7 +9,7 @@ class Games(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def guessing(self, ctx, difficulty = "normal"):
-        "A simple number guessing game that you can play!\nValid difficulties are \"easy\", \"normal\", \"hard\", and \"extreme\"."
+        "A simple number guessing game that you can play.\nValid difficulties are \"easy\", \"normal\", \"hard\", and \"extreme\"."
         guessList = []
         guessCounter = 0
         if difficulty.lower() == "easy": difficultyNumber = 10
@@ -54,7 +54,7 @@ class Games(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def magicball(self, ctx):
-        "Let the bot predict the answer to everything!"
+        "Randomly selects a prediction from a list."
         magicAnswers = [
             "As I see it, yes.",
             "Ask again later.",
@@ -78,8 +78,10 @@ class Games(commands.Cog):
             "You may rely on it.",
         ]
         magicAnswer = random.choice(magicAnswers)
-        if random.randint(1, 100) == 1: magicAnswer = "My uncle says it's confirmed."
-        elif random.randint(1, 100) == 2: magicAnswer = "My uncle says it's deconfirmed."
-        await ctx.send(f"{ctx.author.mention}, the magical ball has spoken! {magicAnswer}")
+        if random.randint(1, 100) == 1: magicAnswer = "My uncle says it's confirmed." # Secret prediction. :)
+        elif random.randint(1, 100) == 2: magicAnswer = "My uncle says it's deconfirmed." # Secret prediction. :)
+        embed = discord.Embed(color=0xffff00)
+        embed.add_field(name="Prediction", value=magicAnswer)
+        await ctx.send(f"{ctx.author.mention}, the magical ball has spoken!", embed=embed)
 
 def setup(bot): bot.add_cog(Games(bot))
