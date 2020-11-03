@@ -1,5 +1,5 @@
 import discord, os, importlib, pymongo, re, typing
-from discord.ext import commands; from pymongo import MongoClient
+from discord.ext import commands; from pymongo import MongoClient; from subprocess import check_output
 import configuration.variables as variables
 import configuration.arrays as arrays
 
@@ -11,9 +11,20 @@ class General(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def build(self, ctx): # p!build
         "Shows information regarding the bot."
+        commit = os.environ.get("COMMIT_SHA", "Unknown")
+        branch = os.environ.get("COMMIT_BRANCH", "Unknown")
+        if commit == "Unknown" or branch == "Unknown":
+            try:
+                commit = check_output(["git", "rev-parse", "HEAD"]).decode("ascii")[:-1]
+                branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode()[:-1]
+            except:
+                commit = "Unknown"
+                branch = "Unknown"
         embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://avatars3.githubusercontent.com/u/63483138?s=460&u=2efd374ab56a340cc3f9e8dd5aa359307a9d1523&v=4")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
+        embed.add_field(name="Branch", value=branch, inline=True)
+        embed.add_field(name="Commit", value=commit[0:6], inline=True)
         embed.set_footer(text=f"Check out my source code on GitHub!")
         await ctx.send(embed=embed)
 
