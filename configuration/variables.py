@@ -48,9 +48,9 @@ DIRECTCHATV = 551841037363052546 # The ID of the Direct Chat voice channel.
 TOURNAMENTCHATV = 551841124608901150 # The ID of the Tournament Chat voice channel.
 BOTLOGS = 725045178720583756 # The ID of the #bot-logs channel.
 REQUESTLOGS = 707106126902198302 # The ID of the #request-logs channel.
-ACTIONLOGS = 701634899937067018 # The ID of the #action-logs channel.
-MESSAGELOGS = 701635047115063376 # The ID of the #message-logs channel.
-SERVERLOGS = 701634953410248775 # The ID of the #server-logs channel.
+ACTIONLOGS = 772214347363516418 # The ID of the #action-logs channel.
+MESSAGELOGS = 772229066924228608 # The ID of the #message-logs channel.
+SERVERLOGS = 772229127138443264 # The ID of the #server-logs channel.
 
 # Essential Configuration
 if os.path.exists("configuration/secrets.py"):
