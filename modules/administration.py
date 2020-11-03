@@ -173,30 +173,5 @@ class Administration(commands.Cog):
         print("Bot shutdown has been requested.")
         await ctx.send(f"{ctx.author.mention}, shutting down the system. Please wait a moment.")
         await ctx.bot.logout()
-
-    @say.error
-    async def say_error(self, ctx, error): # p!botstatus error handlers.
-        if isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(f"{ctx.author.mention}, please specify both a channel and a message.")
-
-    @send.error
-    async def send_error(self, ctx, error): # p!send error handlers.
-        if isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(f"{ctx.author.mention}, please specify both a recipient and a message.")
-
-    @sendrole.error
-    async def sendrole_error(self, ctx, error): # p!sendrole error handlers.
-        if isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(f"{ctx.author.mention}, please specify both a recipient and a message.")
-
-    @botstatus.error
-    async def botstatus_error(self, ctx, error): # p!botstatus error handlers.
-        if isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(f"{ctx.author.mention}, please specifiy a status to set the bot to.")
-
-    @botaction.error
-    async def botaction_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument): # p!botaction error handlers.
-            return await ctx.send(f"{ctx.author.mention}, please specifiy an action for the activity.")
     
 def setup(bot): bot.add_cog(Administration(bot))
