@@ -24,7 +24,8 @@ class General(commands.Cog):
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://avatars3.githubusercontent.com/u/63483138?s=460&u=2efd374ab56a340cc3f9e8dd5aa359307a9d1523&v=4")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
         embed.add_field(name="Branch", value=branch, inline=True)
-        embed.add_field(name="Commit", value=commit[0:6], inline=True)
+        if commit != "Unknown": embed.add_field(name="Commit", value=commit[0:6], inline=True)
+        else: embed.add_field(name="Commit", value=commit, inline=True)
         embed.set_footer(text=f"Check out my source code on GitHub!")
         await ctx.send(embed=embed)
 
