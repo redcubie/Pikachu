@@ -11,6 +11,7 @@ class Administration(commands.Cog):
     @commands.command(aliases=["countactive"])
     @commands.guild_only()
     @is_staff_member()
+    @commands.cooldown(1, 30, commands.BucketType.channel)
     async def activecount(self, ctx, days = 30): # p!checkactivity
         "Estimates the amount of active members on the server.\nThis command is only usable by staff members."
         if days < 1:
@@ -80,8 +81,9 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @is_staff_member()
+    @commands.cooldown(1, 30, commands.BucketType.guild)
     async def botaction(self, ctx, action, *, text = None): # p!botaction
-        "Changes the text which shows under the bot.\nThis command is only usable by staff members.\nValid options are \"playing\", \"watching\", and \"listening\". You can also use \"default\" to reset the text.\nIncompatible with p!botstatus."
+        "Changes the text which shows under the bot.\nThis command is only usable by staff members.\nValid argument options are \"playing\", \"watching\", and \"listening\". You can also use \"default\" to reset the text.\nIncompatible with p!botstatus."
         action = action.lower()
         if action == "playing" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.playing)
@@ -106,8 +108,9 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
+    @commands.cooldown(1, 30, commands.BucketType.guild)
     async def botstatus(self, ctx, status): # p!botstatus
-        "Changes the current presense of the bot.\nThis command is only usable by administrators.\nValid options are \"online\", \"idle\", \"do-not-disturb\", \"invisible\", and \"offline\".\nIncompatible with p!botaction."
+        "Changes the current presense of the bot.\nThis command is only usable by administrators.\nValid argument options are \"online\", \"idle\", \"do-not-disturb\", \"dnd\", \"invisible\", and \"offline\".\nIncompatible with p!botaction."
         status = status.lower()
         if status == "online":
             await self.bot.change_presence(status=discord.Status.online)
@@ -127,9 +130,10 @@ class Administration(commands.Cog):
 
     @commands.command(aliases=["vote"])
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @is_staff_member()
+    @commands.cooldown(1, 86400, commands.BucketType.guild)
     async def poll(self, ctx, question, *choices: str): # p!poll
-        "Sends a poll to the specified voting channel.\nThis command is only usable by administrators."
+        "Sends a poll to the specified voting channel.\nThis command is only usable by staff members."
         if len(choices) <= 1:
             await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
         elif len(choices) > 10:
@@ -160,6 +164,7 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
+    @commands.cooldown(1, 30, commands.BucketType.guild)
     async def rolecopy(self, ctx, source: discord.Role, destination: discord.Role): # p!rolecopy
         "Grabs the permissions of one role and copies them to another.\nThis command is only usable by administrators."
         await destination.edit(permissions=source.permissions, hoist=source.hoist, mentionable=source.mentionable)

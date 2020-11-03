@@ -61,7 +61,7 @@ class Moderation(commands.Cog):
                 try: await member.send(f"You have been warned in {ctx.guild.name}. This is your second warning, therefore you have automatically been kicked from the server. Please reconsider the rules before participating in the server. Your next offense will result in an automatic ban.", embed=embed)
                 except discord.errors.Forbidden: pass
                 await logChannel.send(f"{ctx.author} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}). A kick has been initiated automatically.", embed=embed)
-                await member.kick(reason=f"{checkWarn1}, {reason}")
+                await member.kick(reason=f"Automatically kicked. ({checkWarn1}, {reason})")
                 await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}. A kick has been initiated automatically.")
             elif checkWarn3 == None and checkWarn2 != None:
                 collection.update_one({"_id": member.id}, {"$set":{"Warn 3": reason}})
@@ -70,7 +70,7 @@ class Moderation(commands.Cog):
                 try: await member.send(f"You have been warned in {ctx.guild.name}. This is your third warning, therefore you have automatically been banned from the server. Please contact a staff member if you feel you have been wrongfully punished.", embed=embed)
                 except discord.errors.Forbidden: pass
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}). A ban has been initiated automatically.", embed=embed)
-                await member.ban(reason=f"{checkWarn1}, {checkWarn2}, {reason}")
+                await member.ban(reason=f"Automatically banned. ({checkWarn1}, {checkWarn2}, {reason})")
                 await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}. A ban has been initiated automatically.")
             elif checkWarn3 != None and checkWarn2 != None:
                 await ctx.send(f"{ctx.author.mention}, there are too many warnings recorded for {member.mention}.")
@@ -117,6 +117,7 @@ class Moderation(commands.Cog):
                     
     @commands.command(aliases=["listwarns"])
     @commands.guild_only()
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def listwarn(self, ctx, member: discord.Member = None): # p!listwarn
         "Lists the warns that a user has received.\nStaff members can use this command on others."
         cluster = MongoClient(variables.DBACCOUNT)
@@ -330,6 +331,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @is_staff_member()
+    @commands.cooldown(1, 43200, commands.BucketType.guild)
     async def sendrules(self, ctx):
         "Sends the rule messages in the specified rules channel.\nThis command is only usable by staff members."
         rulesChannel = self.bot.get_channel(variables.SERVERRULES) # Channel #rules.
