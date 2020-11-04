@@ -62,3 +62,4 @@ else:
     DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.
     BOTTOKEN = os.environ["BOT_TOKEN"] # The Discord bot authorization token.
     MONGODBURI = os.environ["MONGODB_URI"] # The URI for the bot's database.
+    HEROKUCOMMIT = os.environ["HEROKU_SLUG_COMMIT"] # The commit ID provided by Heroku.
