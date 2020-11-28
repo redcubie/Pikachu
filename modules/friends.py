@@ -57,7 +57,7 @@ class Friends(commands.Cog):
 
     @commands.command(aliases=["fcview", "fc"])
     @commands.guild_only()
-    @commands.cooldown(1, 15, commands.BucketType.channel)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def accountcheck(self, ctx, member: discord.Member = None): # p!accountcheck
         "Shows a user's linked friend codes and usernames.\nLinked accounts can include \"Nintendo 3DS\", \"Nintendo Switch\", and \"Nintendo Wii U\"."
         cluster = MongoClient(variables.DBACCOUNT)
