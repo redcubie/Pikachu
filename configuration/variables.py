@@ -14,7 +14,7 @@ BOTCONTRIBUTOR = 743198831000158218 # The ID of the @Bot Contributor role.
 CONTENTCREATOR = 664603430853148706 # The ID of the @Content Creator role.
 TRUSTEDMEMBER = 665364949765324800 # The ID of the @Trusted Member role.
 PROJECTDEVELOPER = 711046740400406570 # The ID of the @Project Developer role.
-NINTENDOCOLLECTOR = 757769140529528922 # The ID of the @Nintendo Collector role.
+GAMENIGHTPLAYER = 782122240547618866 # The ID of the @Game Night Player role.
 
 # Channel Definitions
 SERVERRULES = 450903022613168129 # The ID of the #rules channel.
