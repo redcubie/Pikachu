@@ -10,7 +10,7 @@ class Friends(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def accountlink(self, ctx, system, code): # p!accountlink
-        "Links a friend code or username to the database.\nValid argument options are \"3ds\", \"switch\", \"nx\", and \"wiiu\".\nLinked profiles can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
+        "Links a friend code or username to the database.\nValid argument options are \"3ds\", \"switch\", \"nx\", and \"wiiu\".\nLinked accounts can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Friends"]
         async def checkIDWiiU(code):
@@ -44,16 +44,16 @@ class Friends(commands.Cog):
             elif len(code) == 14 and code.startswith("SW") == False: code = "SW-" + code
         else: await ctx.send(f"{ctx.author.mention}, the system you have specified is not supported.")
         if collection.count_documents({"_id": ctx.author.id}, limit = 1) == 0:
-            post = {"_id": ctx.author.id, "Profile": None}
+            post = {"_id": ctx.author.id, "Account": None}
             collection.insert_one(post)
-        collection.update_one({"_id": ctx.author.id}, {"$set":{"Profile": code}})
+        collection.update_one({"_id": ctx.author.id}, {"$set":{"Account": code}})
         await ctx.send(f"{ctx.author.mention}, your account has been linked successfully.")
 
     @commands.command(aliases=["friendunlink", "fcremove"])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def accountunlink(self, ctx, system): # p!accountunlink
-        "Unlinks a friend code or profile from the database.\nValid argument options are \"3ds\", \"switch\", \"nx\", and \"wiiu\".\nLinked profiles can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
+        "Unlinks a friend code or username from the database.\nValid argument options are \"3ds\", \"switch\", \"nx\", and \"wiiu\".\nLinked accounts can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Friends"]
         if system.lower() == "wiiu": collection = database["Nintendo Wii U"]
@@ -92,7 +92,7 @@ class Friends(commands.Cog):
             results = collection.find({"_id": member.id})
             for result in results: accountCode = result["Account"]
             embed.add_field(name="Nintendo Wii U", value=accountCode, inline=False)
-        embed.set_footer(text=f"Update accounts with p!friendadd.")
+        embed.set_footer(text=f"Update accounts with p!accountlink.")
         if accountCounter > 0 and member == ctx.author: return await ctx.send(f"{ctx.author.mention}, here's your list of linked accounts.", embed=embed)
         elif accountCounter > 0 and member != ctx.author: return await ctx.send(f"{ctx.author.mention}, here's the list of linked accounts for {member.mention}.", embed=embed)
         elif accountCounter == 0 and member != ctx.author: return await ctx.send(f"{ctx.author.mention}, {member.mention} has not linked any accounts.")
