@@ -87,9 +87,7 @@ class Moderation(commands.Cog):
         for role in member.roles:
             if role.id in arrays.STAFFROLES:
                 return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
-        if collection.count_documents({"_id": member.id}, limit = 1) == 0:
-            await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")
-        else:
+        if collection.count_documents({"_id": member.id}, limit = 1) == 1:
             results = collection.find({"_id": member.id})
             for result in results:
                 checkWarn1 = result["Warn 1"]
@@ -100,20 +98,21 @@ class Moderation(commands.Cog):
                 embed.add_field(name="Warning 3", value=checkWarn3, inline=False)
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                 collection.update_one({"_id": member.id}, {"$set":{"Warn 3": None}})
-                await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
+                return await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
             elif checkWarn2 != None and checkWarn3 == None:
                 embed = discord.Embed(color=0xff8080)
                 embed.add_field(name="Warning 2", value=checkWarn2, inline=False)
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                 collection.update_one({"_id": member.id}, {"$set":{"Warn 2": None}})
-                await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
+                return await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
             elif checkWarn1 != None and checkWarn2 == None:
                 embed = discord.Embed(color=0xff8080)
                 embed.add_field(name="Warning 1", value=checkWarn1, inline=False)
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                 collection.delete_one({"_id": member.id})
-                await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
-            else: await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")
+                return await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
+            else: return await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")            
+        else: return await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")
                     
     @commands.command(aliases=["listwarns"])
     @commands.guild_only()

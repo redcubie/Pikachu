@@ -34,7 +34,7 @@ class General(commands.Cog):
         if commit != "Unknown": embed.add_field(name="Commit", value=commit[0:7], inline=True)
         else: embed.add_field(name="Commit", value=commit, inline=True)
         embed.set_footer(text=f"Check out my source code on GitHub!")
-        await ctx.send(embed=embed)
+        await ctx.send(f"{ctx.author.mention}, here's some information about me!", embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
@@ -157,15 +157,15 @@ class General(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def roletoggle(self, ctx, role): # p!roletoggle
-        "Grants a user the specified role.\nValid options are \"collector\" for @Nintendo Collector."
-        collectorRole = discord.utils.get(ctx.guild.roles, id=variables.NINTENDOCOLLECTOR)
-        if role.lower() == "collector" or role == variables.NINTENDOCOLLECTOR:
-            if collectorRole in ctx.author.roles:
-                await ctx.author.remove_roles(collectorRole)
-                await ctx.send(f"{ctx.author.mention}, you have lost the <@&{variables.NINTENDOCOLLECTOR}> role.")
+        "Grants a user the specified role.\nValid options are \"gamenight\" for \"@Game Night Player\"."
+        gamenightRole = discord.utils.get(ctx.guild.roles, id=variables.GAMENIGHTPLAYER)
+        if role.lower() == "gamenight" or role == variables.GAMENIGHTPLAYER:
+            if gamenightRole in ctx.author.roles:
+                await ctx.author.remove_roles(gamenightRole)
+                await ctx.send(f"{ctx.author.mention}, you have lost the <@&{variables.GAMENIGHTPLAYER}> role.")
             else:
-                await ctx.author.add_roles(collectorRole)
-                await ctx.send(f"{ctx.author.mention}, you have gained the <@&{variables.NINTENDOCOLLECTOR}> role.")
+                await ctx.author.add_roles(gamenightRole)
+                await ctx.send(f"{ctx.author.mention}, you have gained the <@&{variables.GAMENIGHTPLAYER}> role.")
         else: await ctx.send(f"{ctx.author.mention}, this is not a valid togglable role.")
 
     @commands.command()
