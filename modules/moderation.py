@@ -359,25 +359,26 @@ class Moderation(commands.Cog):
     @commands.command(aliases=["filter"])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    async def filters(self, ctx, action = None): # p!filter
-        "Toggles the filter module for the bot.\nThis command is only usable by staff members.\nPass \"check\" as an argument to see if the filter is loaded, or \"list\" to see all filtered phrases."
-        if action != None and action.lower() == "check":
+    async def filters(self, ctx, action): # p!filter
+        "Toggles the filter module for the bot.\nThis command is only usable by staff members.\nPass \"check\" as an argument to see if the filter is loaded, \"toggle\" to change the status of the filter, or \"list\" to see all filtered phrases."
+        if action.lower() == "check":
             try:
                 self.bot.load_extension("modules.filters")
                 self.bot.unload_extension("modules.filters")
-                await ctx.send(f"{ctx.author.mention}, the filters module is currently unloaded.")
+                return await ctx.send(f"{ctx.author.mention}, the filters module is currently unloaded.")
             except commands.ExtensionAlreadyLoaded:
-                await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
-        elif action != None and action.lower() == "list":
-            await ctx.send(f"{ctx.author.mention}, the following phrases are automatically detected while the filter is loaded.\n```" + ", ".join(arrays.MESSAGEFILTER) + "```")
-        else:
+                return await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
+        elif action.lower() == "toggle":
             try:
                 self.bot.load_extension("modules.filters")
                 print(f"Filters module has been loaded.")
-                await ctx.send(f"{ctx.author.mention}, the filters module has been loaded.")
+                return await ctx.send(f"{ctx.author.mention}, the filters module has been loaded.")
             except commands.ExtensionAlreadyLoaded:
                 self.bot.unload_extension("modules.filters")
                 print(f"Filters module has been unloaded.")
-                await ctx.send(f"{ctx.author.mention}, the filters module has been unloaded.")
+                return await ctx.send(f"{ctx.author.mention}, the filters module has been unloaded.")        
+        elif action.lower() == "list":
+            return await ctx.send(f"{ctx.author.mention}, the following phrases are automatically detected while the filter is loaded.\n```" + ", ".join(arrays.MESSAGEFILTER) + "```")
+        else: await ctx.send(f"{ctx.author.mention}, that is not a valid action for the filter.")
 
 def setup(bot): bot.add_cog(Moderation(bot))
