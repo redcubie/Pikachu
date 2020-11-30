@@ -55,10 +55,10 @@ class Friends(commands.Cog):
             return await ctx.send(f"{ctx.author.mention}, your account has been unlinked successfully.")
         else: return await ctx.send(f"{ctx.author.mention}, no account for this system has been linked.")
 
-    @commands.command(aliases=["fcview", "fc"])
+    @commands.command(aliases=["friendcheck", "fc"])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
-    async def accountcheck(self, ctx, member: discord.Member = None): # p!accountcheck
+    async def accountview(self, ctx, member: discord.Member = None): # p!accountcheck
         "Shows a user's linked friend codes and usernames.\nLinked accounts can include \"Nintendo 3DS\", \"Nintendo Switch\", and \"Nintendo Wii U\"."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Friends"]
