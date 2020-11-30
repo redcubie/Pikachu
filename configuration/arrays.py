@@ -13,7 +13,6 @@ BOTCHANNELS = [
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTCOMMANDS, # Channel #bot-commands.
     variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.BOTTESTING, # Channel #bot-testing.
 ]
 
 LOCKDOWNCHANNELS = [
@@ -26,7 +25,7 @@ LOCKDOWNCHANNELS = [
     variables.POKEMONTRADES, # Channel #pokémon-trades.
     variables.POKEMONBATTLES, # Channel #pokémon-battles.
     variables.DIRECTCHAT, # Channel #direct-chat.
-    variables.TOURNAMENTCHAT, # Channel #tournament-chat.
+    variables.EVENTCHAT, # Channel #event-chat.
 ]
 
 LOGCHANNELS = [
@@ -39,7 +38,6 @@ LOGCHANNELS = [
 
 UNFILTERCHANNELS = [
     variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.BOTTESTING, # Channel #bot-testing.
     variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTLOGS, # Channel #bot-logs.
