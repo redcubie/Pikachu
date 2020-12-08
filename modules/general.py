@@ -8,7 +8,7 @@ class General(commands.Cog):
     def __init__(self, bot): self.bot = bot
         
     @commands.command(aliases=["about"])
-    @commands.cooldown(1, 30, commands.BucketType.channel)
+    @commands.cooldown(1, 15, commands.BucketType.channel)
     async def build(self, ctx): # p!build
         "Shows information regarding the bot."
         commit = os.environ.get("COMMIT_SHA", "Unknown")
@@ -37,14 +37,14 @@ class General(commands.Cog):
         await ctx.send(f"{ctx.author.mention}, here's some information about me!", embed=embed)
 
     @commands.command()
-    @commands.cooldown(1, 30, commands.BucketType.channel)
+    @commands.cooldown(1, 15, commands.BucketType.channel)
     async def ping(self, ctx): # p!ping
         "Shows the bot's ping on the network."
         await ctx.send(f"{ctx.author.mention}, pong! {round(self.bot.latency*1000)}ms.")
 
     @commands.command(aliases=["mc"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.channel)
+    @commands.cooldown(1, 15, commands.BucketType.channel)
     async def membercount(self, ctx):
         "Counts the amount of members currently on the server."
         await ctx.send(f"{ctx.guild.name} has {ctx.guild.member_count} members at this moment!")
@@ -134,7 +134,7 @@ class General(commands.Cog):
 
     @commands.command(aliases=["stafflist"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.channel)
+    @commands.cooldown(1, 15, commands.BucketType.channel)
     async def liststaff(self, ctx): # p!liststaff
         "Lists the current staff team members on the server."
         staffList = []
@@ -155,7 +155,7 @@ class General(commands.Cog):
 
     @commands.command(aliases=["togglerole", "role"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def roletoggle(self, ctx, role): # p!roletoggle
         "Grants a user the specified role.\nValid options are \"gamenight\" for \"@Game Night Player\"."
         gamenightRole = discord.utils.get(ctx.guild.roles, id=variables.GAMENIGHTPLAYER)

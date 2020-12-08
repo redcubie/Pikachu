@@ -116,7 +116,7 @@ class Moderation(commands.Cog):
                     
     @commands.command(aliases=["listwarns"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def listwarn(self, ctx, member: discord.Member = None): # p!listwarn
         "Lists the warns that a user has received.\nStaff members can use this command on others."
         cluster = MongoClient(variables.DBACCOUNT)
@@ -330,7 +330,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @is_staff_member()
-    @commands.cooldown(1, 43200, commands.BucketType.guild)
+    @commands.cooldown(1, 3600, commands.BucketType.guild)
     async def sendrules(self, ctx):
         "Sends the rule messages in the specified rules channel.\nThis command is only usable by staff members."
         rulesChannel = self.bot.get_channel(variables.SERVERRULES) # Channel #rules.

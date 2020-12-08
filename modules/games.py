@@ -7,7 +7,7 @@ class Games(commands.Cog):
 
     @commands.command(aliases=["guess"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def guessing(self, ctx, difficulty = "normal"):
         "A simple number guessing game that you can play.\nValid difficulties are \"easy\", \"normal\", \"hard\", and \"extreme\"."
         guessList = []
