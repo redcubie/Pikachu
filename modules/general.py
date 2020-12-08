@@ -7,7 +7,7 @@ class General(commands.Cog):
     "Simple commands which anybody can use."
     def __init__(self, bot): self.bot = bot
         
-    @commands.command()
+    @commands.command(aliases=["about"])
     @commands.cooldown(1, 30, commands.BucketType.channel)
     async def build(self, ctx): # p!build
         "Shows information regarding the bot."
@@ -20,13 +20,21 @@ class General(commands.Cog):
             except:
                 commit = "Unknown"
                 branch = "Unknown"
+        if commit == "Unknown" or branch == "Unknown":
+            try:
+                commit = variables.HEROKUCOMMIT
+                branch = "master"
+            except:
+                commit = "Unknown"
+                branch = "Unknown"
         embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://avatars3.githubusercontent.com/u/63483138?s=460&u=2efd374ab56a340cc3f9e8dd5aa359307a9d1523&v=4")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
         embed.add_field(name="Branch", value=branch, inline=True)
-        embed.add_field(name="Commit", value=commit[0:6], inline=True)
+        if commit != "Unknown": embed.add_field(name="Commit", value=commit[0:7], inline=True)
+        else: embed.add_field(name="Commit", value=commit, inline=True)
         embed.set_footer(text=f"Check out my source code on GitHub!")
-        await ctx.send(embed=embed)
+        await ctx.send(f"{ctx.author.mention}, here's some information about me!", embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.channel)
@@ -149,15 +157,15 @@ class General(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def roletoggle(self, ctx, role): # p!roletoggle
-        "Grants a user the specified role.\nValid options are \"collector\" for @Nintendo Collector."
-        collectorRole = discord.utils.get(ctx.guild.roles, id=variables.NINTENDOCOLLECTOR)
-        if role.lower() == "collector" or role == variables.NINTENDOCOLLECTOR:
-            if collectorRole in ctx.author.roles:
-                await ctx.author.remove_roles(collectorRole)
-                await ctx.send(f"{ctx.author.mention}, you have lost the <@&{variables.NINTENDOCOLLECTOR}> role.")
+        "Grants a user the specified role.\nValid options are \"gamenight\" for \"@Game Night Player\"."
+        gamenightRole = discord.utils.get(ctx.guild.roles, id=variables.GAMENIGHTPLAYER)
+        if role.lower() == "gamenight" or role == variables.GAMENIGHTPLAYER:
+            if gamenightRole in ctx.author.roles:
+                await ctx.author.remove_roles(gamenightRole)
+                await ctx.send(f"{ctx.author.mention}, you have lost the <@&{variables.GAMENIGHTPLAYER}> role.")
             else:
-                await ctx.author.add_roles(collectorRole)
-                await ctx.send(f"{ctx.author.mention}, you have gained the <@&{variables.NINTENDOCOLLECTOR}> role.")
+                await ctx.author.add_roles(gamenightRole)
+                await ctx.send(f"{ctx.author.mention}, you have gained the <@&{variables.GAMENIGHTPLAYER}> role.")
         else: await ctx.send(f"{ctx.author.mention}, this is not a valid togglable role.")
 
     @commands.command()

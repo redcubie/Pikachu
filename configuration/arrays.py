@@ -13,7 +13,6 @@ BOTCHANNELS = [
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTCOMMANDS, # Channel #bot-commands.
     variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.BOTTESTING, # Channel #bot-testing.
 ]
 
 LOCKDOWNCHANNELS = [
@@ -26,7 +25,7 @@ LOCKDOWNCHANNELS = [
     variables.POKEMONTRADES, # Channel #pokémon-trades.
     variables.POKEMONBATTLES, # Channel #pokémon-battles.
     variables.DIRECTCHAT, # Channel #direct-chat.
-    variables.TOURNAMENTCHAT, # Channel #tournament-chat.
+    variables.EVENTCHAT, # Channel #event-chat.
 ]
 
 LOGCHANNELS = [
@@ -39,7 +38,6 @@ LOGCHANNELS = [
 
 UNFILTERCHANNELS = [
     variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.BOTTESTING, # Channel #bot-testing.
     variables.TRUSTEDCHAT, # Channel #trusted-chat.
     variables.MODERATORCHAT, # Channel #moderator-chat.
     variables.BOTLOGS, # Channel #bot-logs.
@@ -59,7 +57,7 @@ ROLEINFORMATION = {
     variables.CONTENTCREATOR: {"Nick": "Creator", "Public": False, "Private": True}, # Role @Content Creator.
     variables.TRUSTEDMEMBER: {"Nick": "Trusted", "Public": False, "Private": True}, # Role @Trusted Member.
     variables.PROJECTDEVELOPER: {"Nick": "Developer", "Public": False, "Private": True}, # Role @Project Developer.
-    variables.NINTENDOCOLLECTOR: {"Nick": "Collector", "Public": True, "Private": True}, # Role @Nintendo Collector.
+    variables.GAMENIGHTPLAYER: {"Nick": "GameNight", "Public": True, "Private": True}, # Role @Game Night Player.
 }
 
 # Filter Configuration

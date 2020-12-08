@@ -88,22 +88,20 @@ class Administration(commands.Cog):
         if action == "playing" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.playing)
             await self.bot.change_presence(activity=activity)
-            await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Playing {text}\".")
+            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Playing {text}\".")
         elif action == "watching" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.watching)
             await self.bot.change_presence(activity=activity)
-            await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Watching {text}\".")
+            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Watching {text}\".")
         elif action == "listening" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.listening)
             await self.bot.change_presence(activity=activity)
-            await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Listening to {text}\".")
+            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Listening to {text}\".")
         elif action == "default" and text == None:
             activity = discord.Activity(name=variables.STATUSACTIVITY, type=variables.STATUSTYPE)
             await self.bot.change_presence(activity=activity)
-            await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Watching {variables.STATUSACTIVITY}\".")
-        # Some simple error handling.
-        elif action != "playing" or action != "watching" or action != "listening":
-            await ctx.send(f"{ctx.author.mention}, that is not a valid action for the activity.")
+            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Watching {variables.STATUSACTIVITY}\".")
+        else: return await ctx.send(f"{ctx.author.mention}, that is not a valid action for the activity.") # Some simple error handling.
         
     @commands.command()
     @commands.guild_only()
@@ -127,6 +125,7 @@ class Administration(commands.Cog):
         elif status == "offline":
             await self.bot.change_presence(status=discord.Status.offline)
             await ctx.send(f"{ctx.author.mention}, the status has been successfully changed to show as offline.")
+        else: return await ctx.send(f"{ctx.author.mention}, that is not a valid status for the bot.") # Some simple error handling.
 
     @commands.command(aliases=["vote"])
     @commands.guild_only()
@@ -135,9 +134,9 @@ class Administration(commands.Cog):
     async def poll(self, ctx, question, *choices: str): # p!poll
         "Sends a poll to the specified voting channel.\nThis command is only usable by staff members."
         if len(choices) <= 1:
-            await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
+            return await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
         elif len(choices) > 10:
-            await ctx.send(f"{ctx.author.mention}, you cannot make a poll with more than ten choices!")
+            return await ctx.send(f"{ctx.author.mention}, you cannot make a poll with more than ten choices!")
         else:
             reactions = [
             "\U0001F1E6",
@@ -159,7 +158,7 @@ class Administration(commands.Cog):
             pollChannel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
             pollMessage = await pollChannel.send(embed=embed)
             for reaction in reactions[:len(choices)]: await pollMessage.add_reaction(reaction)
-            if checkChannel != pollChannel: await ctx.send(f"{ctx.author.mention}, successfully sent the poll to {pollChannel.mention}. A preview is attached.", embed=embed)
+            if checkChannel != pollChannel: return await ctx.send(f"{ctx.author.mention}, successfully sent the poll to {pollChannel.mention}. A preview is attached.", embed=embed)
 
     @commands.command()
     @commands.guild_only()

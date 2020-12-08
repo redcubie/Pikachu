@@ -14,7 +14,7 @@ BOTCONTRIBUTOR = 743198831000158218 # The ID of the @Bot Contributor role.
 CONTENTCREATOR = 664603430853148706 # The ID of the @Content Creator role.
 TRUSTEDMEMBER = 665364949765324800 # The ID of the @Trusted Member role.
 PROJECTDEVELOPER = 711046740400406570 # The ID of the @Project Developer role.
-NINTENDOCOLLECTOR = 757769140529528922 # The ID of the @Nintendo Collector role.
+GAMENIGHTPLAYER = 782122240547618866 # The ID of the @Game Night Player role.
 
 # Channel Definitions
 SERVERRULES = 450903022613168129 # The ID of the #rules channel.
@@ -30,8 +30,7 @@ RANDOMCHATV = 450910610251710465 # The ID of the Random Channel voice channel.
 TRUSTEDCHATV = 743275160790106261 # The ID of the Trusted Chat voice channel.
 MODERATORCHATV = 482916026674053120 # The ID of the Moderator Chat voice channel.
 BOTCOMMANDS = 707036038295584889 # The ID of the #bot-commands text channel.
-BOTDISCUSSION = 725061309237952632 # The ID of the #bot-discussion channel.
-BOTTESTING = 770115158713303110 # The ID of the #bot-testing channel.
+BOTDISCUSSION = 770115158713303110 # The ID of the #bot-discussion channel.
 SMASHGENERAL = 552296826376814592 # The ID of the #smash-general channel.
 SMASHBATTLES = 649017775825616902 # The ID of the #smash-battles channel.
 SINGLESCHATV = 649018265544294430 # The ID of the Singles Chat voice channel.
@@ -43,9 +42,9 @@ POKEMONBATTLES = 649017998195032084 # The ID of the #pokémon-battles channel.
 TRADECHATV = 649018461623812150 # The ID of the Trade Chat voice channel.
 BATTLECHATV = 649018657741078555 # The ID of the Battle Chat voice channel.
 DIRECTCHAT = 734148916559478845 # The ID of the #direct-chat text channel.
-TOURNAMENTCHAT = 649020355310125067 # The ID of the #tournament-chat text channel.
+EVENTCHAT = 649020355310125067 # The ID of the #event-chat text channel.
 DIRECTCHATV = 551841037363052546 # The ID of the Direct Chat voice channel.
-TOURNAMENTCHATV = 551841124608901150 # The ID of the Tournament Chat voice channel.
+EVENTCHATV = 551841124608901150 # The ID of the Event Chat voice channel.
 BOTLOGS = 725045178720583756 # The ID of the #bot-logs channel.
 REQUESTLOGS = 707106126902198302 # The ID of the #request-logs channel.
 ACTIONLOGS = 772214347363516418 # The ID of the #action-logs channel.
@@ -62,3 +61,4 @@ else:
     DBACCOUNT = os.environ["DATABASE_ACCOUNT"] # The key URL for the database account.
     BOTTOKEN = os.environ["BOT_TOKEN"] # The Discord bot authorization token.
     MONGODBURI = os.environ["MONGODB_URI"] # The URI for the bot's database.
+    HEROKUCOMMIT = os.environ["HEROKU_SLUG_COMMIT"] # The commit ID provided by Heroku.
