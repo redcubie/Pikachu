@@ -16,8 +16,7 @@ TRUSTEDMEMBER = 665364949765324800 # The ID of the @Trusted Member role.
 GAMENIGHTPLAYER = 782122240547618866 # The ID of the @Game Night Player role.
 
 # Channel Definitions
-SERVERRULES = 450903022613168129 # The ID of the #rules channel.
-SERVERAFFILIATES = 500342143039176725 # The ID of the #affiliates channel.
+SERVERRULES = 450903022613168129 # The ID of the #server-rules channel.
 ANNOUNCEMENTS = 738920609630912604 # The ID of the #announcements channel.
 EVERYBODYVOTES = 450903547911864321 # The ID of the #everybody-votes channel.
 GENERALCHAT = 469302882974433290 # The ID of the #general-chat text channel.

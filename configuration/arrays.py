@@ -79,3 +79,10 @@ MESSAGEFILTER = [
     "easymode9",
     "sysconfig",
 ] # The filter is mostly just piracy-related terms. I'll probably add more soon.
+
+# Other Settings
+INVITECODES = {
+    "Nincord": "mYjeaZQ",
+    "Apple": "cnNdKdg",
+    "Resistance": "ab6P4gB",
+}

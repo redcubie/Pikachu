@@ -18,16 +18,10 @@ class General(commands.Cog):
             try:
                 commit = check_output(["git", "rev-parse", "HEAD"]).decode("ascii")[:-1]
                 branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode()[:-1]
-            except:
-                commit = "Unknown"
-                branch = "Unknown"
+            except: commit = "Unknown"; branch = "Unknown"
         if commit == "Unknown" or branch == "Unknown":
-            try:
-                commit = variables.HEROKUCOMMIT
-                branch = "master"
-            except:
-                commit = "Unknown"
-                branch = "Unknown"
+            try: commit = variables.HEROKUCOMMIT; branch = "master"
+            except: commit = "Unknown"; branch = "Unknown"
         embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://avatars3.githubusercontent.com/u/63483138?s=460&u=2efd374ab56a340cc3f9e8dd5aa359307a9d1523&v=4")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
@@ -52,28 +46,28 @@ class General(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.channel)
-    async def invite(self, ctx): # p!invite
+    @commands.cooldown(1, 15, commands.BucketType.channel)
+    async def invite(self, ctx, server = None): # p!invite
         "Shares a link to an invite for the server."
-        await ctx.send(f"{ctx.author.mention}, share this link to invite people to {ctx.guild.name}! https://discord.gg/mYjeaZQ")
+        code = arrays.INVITECODES.get(server.capitalize())
+        if server == None or code == None: server = "Nincord"; code = arrays.INVITECODES.get(server.capitalize())
+        if server.capitalize() == "Nincord": await ctx.send(f"{ctx.author.mention}, share this link to invite people to our server! https://discord.gg/{code}")
+        else: await ctx.send(f"{ctx.author.mention}, here is the link for the affiliated server you requested! https://discord.gg/{code}")
 
     @commands.command(aliases=["ui"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def userinfo(self, ctx, user: typing.Union[discord.Member, discord.User, int] = None): # p!userinfo
         "Displays information regarding a user's account.\nStaff members can use this command on others."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        warnCheck = []
-        if isinstance(user, (discord.User, int)):
-            user = await self.bot.fetch_user(user)
+        if isinstance(user, (discord.User, int)): user = await self.bot.fetch_user(user)
         async def showUserProfile(user):
             if isinstance(user, discord.Member):
                 role = user.top_role.name
                 embed=discord.Embed(title=user.display_name, description=role, color=0xffff00)
-            else:
-                embed=discord.Embed(title=user.display_name, color=0xffff00)
+            else: embed=discord.Embed(title=user.display_name, color=0xffff00)
             embed.set_thumbnail(url=user.avatar_url_as(static_format="png"))
             embed.add_field(name="Account Name", value=user.name, inline=True)
             embed.add_field(name="Discriminator", value="#"+user.discriminator, inline=False)
