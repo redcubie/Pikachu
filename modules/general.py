@@ -48,8 +48,8 @@ class General(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def invite(self, ctx, server = None): # p!invite
-        "Shares a link to an invite for the server."
-        code = arrays.INVITECODES.get(server.capitalize())
+        "Shares a link to an invite for this server and affiliated servers.\nServers include \"apple\" and \"resistance\"."
+        if server != None: code = arrays.INVITECODES.get(server.capitalize())
         if server == None or code == None: server = "Nincord"; code = arrays.INVITECODES.get(server.capitalize())
         if server.capitalize() == "Nincord": await ctx.send(f"{ctx.author.mention}, share this link to invite people to our server! https://discord.gg/{code}")
         else: await ctx.send(f"{ctx.author.mention}, here is the link for the affiliated server you requested! https://discord.gg/{code}")
