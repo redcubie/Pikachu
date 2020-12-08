@@ -11,13 +11,11 @@ class Administration(commands.Cog):
     @commands.command(aliases=["countactive"])
     @commands.guild_only()
     @is_staff_member()
-    @commands.cooldown(1, 30, commands.BucketType.channel)
+    @commands.cooldown(1, 15, commands.BucketType.channel)
     async def activecount(self, ctx, days = 30): # p!checkactivity
         "Estimates the amount of active members on the server.\nThis command is only usable by staff members."
-        if days < 1:
-            return await ctx.send(f"{ctx.author.mention}, the minimum allowed days is 1.")
-        if days > 30:
-            return await ctx.send(f"{ctx.author.mention}, the maximum allowed days is 30.")
+        if days < 1: return await ctx.send(f"{ctx.author.mention}, the minimum allowed days is 1.")
+        if days > 30: return await ctx.send(f"{ctx.author.mention}, the maximum allowed days is 30.")
         async with ctx.channel.typing():
             count = await ctx.guild.estimate_pruned_members(days=days)
             await asyncio.sleep(1)
@@ -29,19 +27,18 @@ class Administration(commands.Cog):
     @is_staff_member()
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
         "Sends a message to a specified channel.\nThis command is only usable by staff members."
-        checkChannel = self.bot.get_channel(channel.id)
-        pollChannel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
-        if checkChannel == pollChannel or checkChannel.id in arrays.LOGCHANNELS:
-            await ctx.send(f"{ctx.author.mention}, you are not allowed to send messages to {channel.mention}.")
-        else:
-            async with channel.typing():
-                characters = len(message)
-                await asyncio.sleep(characters/25)
-            await channel.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
-            if channel != ctx.channel:
-                embed=discord.Embed(color=0x80ff80)
-                embed.add_field(name="Sent Message", value=message, inline=False)
-                await ctx.send(f"{ctx.author.mention}, successfully sent the message to {channel.mention}.", embed=embed)
+        if channel.id in arrays.CHANNELINFORMATION:
+            info = arrays.CHANNELINFORMATION.get(channel.id)
+            saySetting = info.get("Say")
+            if not saySetting: return await ctx.send(f"{ctx.author.mention}, you are not allowed to send messages to {channel.mention}.")
+        async with channel.typing():
+            characters = len(message)
+            await asyncio.sleep(characters/25)
+        await channel.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
+        if channel != ctx.channel:
+            embed=discord.Embed(color=0x80ff80)
+            embed.add_field(name="Sent Message", value=message, inline=False)
+            await ctx.send(f"{ctx.author.mention}, successfully sent the message to {channel.mention}.", embed=embed)
 
     @commands.command(aliases=["dm"])
     @commands.guild_only()
@@ -66,12 +63,8 @@ class Administration(commands.Cog):
         members = (member for member in role.members if not member.bot)
         count = 0
         for member in members:
-            async with member.typing():
-                characters = len(message)
-                await asyncio.sleep(characters/25)
-            try:
-                await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
-                count += 1
+            async with member.typing(): characters = len(message); await asyncio.sleep(characters/25)
+            try: await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True)); count += 1
             except discord.errors.Forbidden: pass
         embed=discord.Embed(color=0x80ff80)
         embed.add_field(name="Sent Message", value=message, inline=False)
@@ -133,23 +126,11 @@ class Administration(commands.Cog):
     @commands.cooldown(1, 86400, commands.BucketType.guild)
     async def poll(self, ctx, question, *choices: str): # p!poll
         "Sends a poll to the specified voting channel.\nThis command is only usable by staff members."
-        if len(choices) <= 1:
-            return await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
-        elif len(choices) > 10:
-            return await ctx.send(f"{ctx.author.mention}, you cannot make a poll with more than ten choices!")
+        if len(choices) <= 1: return await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
+        elif len(choices) > 10: return await ctx.send(f"{ctx.author.mention}, you cannot make a poll with more than ten choices!")
         else:
-            reactions = [
-            "\U0001F1E6",
-            "\U0001F1E7",
-            "\U0001F1E8",
-            "\U0001F1E9",
-            "\U0001F1EA",
-            "\U0001F1EB",
-            "\U0001F1EC",
-            "\U0001F1ED",
-            "\U0001F1EE",
-            "\U0001F1EF",
-            ]
+            reactions = ["\U0001F1E6", "\U0001F1E7", "\U0001F1E8", "\U0001F1E9", "\U0001F1EA",
+            "\U0001F1EB", "\U0001F1EC", "\U0001F1ED",  "\U0001F1EE", "\U0001F1EF",]
             description = []
             for x, option in enumerate(choices):
                 description += f"\n {reactions[x]} {option}"
@@ -163,7 +144,7 @@ class Administration(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    @commands.cooldown(1, 30, commands.BucketType.guild)
+    @commands.cooldown(1, 15, commands.BucketType.guild)
     async def rolecopy(self, ctx, source: discord.Role, destination: discord.Role): # p!rolecopy
         "Grabs the permissions of one role and copies them to another.\nThis command is only usable by administrators."
         await destination.edit(permissions=source.permissions, hoist=source.hoist, mentionable=source.mentionable)

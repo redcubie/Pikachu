@@ -10,7 +10,7 @@ class Friends(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def accountlink(self, ctx, system, code): # p!accountlink
-        "Links a friend code or username to the database.\nValid argument options are \"3ds\", \"switch\", \"nx\", and \"wiiu\".\nLinked accounts can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
+        "Links a friend code or username to the database.\nValid systems are \"3ds\", \"switch\", and \"wiiu\".\nLinked accounts can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Friends"]
         async def checkID3DS(code):
@@ -44,7 +44,7 @@ class Friends(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def accountunlink(self, ctx, system): # p!accountunlink
-        "Unlinks a friend code or username from the database.\nValid argument options are \"3ds\", \"switch\", \"nx\", and \"wiiu\".\nLinked accounts can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
+        "Unlinks a friend code or username from the database.\nValid systems are \"3ds\", \"switch\", and \"wiiu\".\nLinked accounts can include \"Nintendo Switch\", \"Nintendo 3DS\", and \"Nintendo Wii U\"."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Friends"]
         if system.lower() == "wiiu": collection = database["Nintendo Wii U"]

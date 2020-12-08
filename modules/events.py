@@ -59,8 +59,10 @@ class Events(commands.Cog):
     async def on_message_delete(self, ctx):
         if not isinstance(ctx.channel, discord.channel.DMChannel):
             currentChannel = ctx.channel.id
-            if currentChannel in arrays.LOGCHANNELS: pass
-            else:
+            if currentChannel in arrays.CHANNELINFORMATION:
+                info = arrays.CHANNELINFORMATION.get(currentChannel)
+                saySetting = info.get("Say")
+                if not saySetting: return None
                 print("Message has been deleted.")
                 logChannel = self.bot.get_channel(variables.MESSAGELOGS)
                 embed=discord.Embed(color=0x80ff80)

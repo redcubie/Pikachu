@@ -1,5 +1,6 @@
 import discord, os, importlib
 from discord.ext import commands
+from manager import check_staff_member
 import configuration.arrays as arrays
 
 class Errors(commands.Cog):
@@ -8,12 +9,8 @@ class Errors(commands.Cog):
 
     @commands.Cog.listener() # Ignore wrong commands.
     async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.CommandNotFound):
-            pass
-        elif isinstance(error, commands.CommandOnCooldown):
-            for role in ctx.author.roles:
-                if role.id in arrays.STAFFROLES:
-                    return await ctx.reinvoke()
+        if isinstance(error, commands.CommandOnCooldown):
+            if check_staff_member(ctx.author): return await ctx.reinvoke()
             return await ctx.send(f"{ctx.author.mention}, this command is on cooldown. Please try again in {error.retry_after:.0f} seconds.")
         elif isinstance(error, commands.MissingPermissions):
             ctx.command.reset_cooldown(ctx)
@@ -29,5 +26,6 @@ class Errors(commands.Cog):
             ctx.command.reset_cooldown(ctx)
             await ctx.send(f"{ctx.author.mention}, you provided an invalid argument for this command.")
             return await ctx.send_help(ctx.command)
+        elif isinstance(error, commands.CommandNotFound): pass
 
 def setup(bot): bot.add_cog(Errors(bot))

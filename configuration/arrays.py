@@ -1,66 +1,44 @@
 import discord
 import configuration.variables as variables
 
-# Group Configuration
-STAFFROLES = [
-    variables.SERVEROWNER, # Role @Server Owner.
-    variables.SERVERMODERATOR, # Role @Server Moderator.
-    variables.SERVERBOT, # Role @Server Bot.
-]
-
-BOTCHANNELS = [
-    variables.TRUSTEDCHAT, # Channel #trusted-chat.
-    variables.MODERATORCHAT, # Channel #moderator-chat.
-    variables.BOTCOMMANDS, # Channel #bot-commands.
-    variables.BOTDISCUSSION, # Channel #bot-discussion.
-]
-
-LOCKDOWNCHANNELS = [
-    variables.GENERALCHAT, # Channel #general-chat.
-    variables.RANDOMCHAT, # Channel #random-chat.
-    variables.BOTCOMMANDS, # Channel #bot-commands.
-    variables.SMASHGENERAL, # Channel #smash-general.
-    variables.SMASHBATTLES, # Channel #smash-battles.
-    variables.POKEMONGENERAL, # Channel #pokémon-general.
-    variables.POKEMONTRADES, # Channel #pokémon-trades.
-    variables.POKEMONBATTLES, # Channel #pokémon-battles.
-    variables.DIRECTCHAT, # Channel #direct-chat.
-    variables.EVENTCHAT, # Channel #event-chat.
-]
-
-LOGCHANNELS = [
-    variables.BOTLOGS, # Channel #bot-logs.
-    variables.REQUESTLOGS, # Channel #request-logs.
-    variables.ACTIONLOGS, # Channel #action-logs.
-    variables.MESSAGELOGS, # Channel #message-logs.
-    variables.SERVERLOGS, # Channel #server-logs.
-]
-
-UNFILTERCHANNELS = [
-    variables.BOTDISCUSSION, # Channel #bot-discussion.
-    variables.TRUSTEDCHAT, # Channel #trusted-chat.
-    variables.MODERATORCHAT, # Channel #moderator-chat.
-    variables.BOTLOGS, # Channel #bot-logs.
-    variables.REQUESTLOGS, # Channel #request-logs.
-    variables.ACTIONLOGS, # Channel #action-logs.
-    variables.MESSAGELOGS, # Channel #message-logs.
-    variables.SERVERLOGS, # Channel #server-logs.
-]
-
-# Program Directories
-ROLEINFORMATION = {
-    variables.SERVERBOT: {"Nick": "Bot", "Public": False, "Private": False}, # Role @Server Bot.
-    variables.SERVEROWNER: {"Nick": "Owner", "Public": False, "Private": False}, # Role @Server Owner.
-    variables.SERVERMODERATOR: {"Nick": "Moderator", "Public": False, "Private": False}, # Role @Server Moderator.
-    variables.SERVERAFFILIATE: {"Nick": "Affiliate", "Public": False, "Private": True}, # Role @Server Affiliate.
-    variables.BOTCONTRIBUTOR: {"Nick": "Contributor", "Public": False, "Private": True}, # Role @Bot Contributor.
-    variables.CONTENTCREATOR: {"Nick": "Creator", "Public": False, "Private": True}, # Role @Content Creator.
-    variables.TRUSTEDMEMBER: {"Nick": "Trusted", "Public": False, "Private": True}, # Role @Trusted Member.
-    variables.PROJECTDEVELOPER: {"Nick": "Developer", "Public": False, "Private": True}, # Role @Project Developer.
-    variables.GAMENIGHTPLAYER: {"Nick": "GameNight", "Public": True, "Private": True}, # Role @Game Night Player.
+# Dictionary Configuration
+CHANNELINFORMATION = {
+    variables.SERVERRULES: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #server-rules
+    variables.ANNOUNCEMENTS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": True}, # Channel #announcements.
+    variables.EVERYBODYVOTES: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #everybody-votes.
+    variables.GENERALCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #general-chat.
+    variables.RANDOMCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #random-chat.
+    variables.TRUSTEDCHAT: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #trusted-chat.
+    variables.MODERATORCHAT: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #moderator-chat.
+    variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Filter": True, "Say": True}, # Channel #bot-commands.
+    variables.BOTDISCUSSION: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #bot-discussion.
+    variables.SMASHGENERAL: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #smash-general.
+    variables.SMASHBATTLES: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #smash-battles.
+    variables.POKEMONGENERAL: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #pokémon-general.
+    variables.POKEMONTRADES: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #pokémon-trades.
+    variables.POKEMONBATTLES: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #pokémon-battles.
+    variables.DIRECTCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #direct-chat.
+    variables.EVENTCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #event-chat.
+    variables.BOTLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #bot-logs.
+    variables.REQUESTLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #request-logs.
+    variables.ACTIONLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #action-logs.
+    variables.MESSAGELOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #message-logs.
+    variables.SERVERLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #server-logs.
 }
 
-# Filter Configuration
+ROLEINFORMATION = {
+    variables.SERVERBOT: {"Nick": "Bot", "Staff": True, "Public": False}, # Role @Server Bot.
+    variables.SERVEROWNER: {"Nick": "Owner", "Staff": True, "Public": False}, # Role @Server Owner.
+    variables.SERVERMODERATOR: {"Nick": "Moderator", "Staff": True, "Public": False}, # Role @Server Moderator.
+    variables.SERVERAFFILIATE: {"Nick": "Affiliate", "Staff": False, "Public": False}, # Role @Server Affiliate.
+    variables.SERVERBOOSTER: {"Nick": "Booster", "Staff": False, "Public": False}, # Role @Server Booster.
+    variables.BOTCONTRIBUTOR: {"Nick": "Contributor", "Staff": False, "Public": False}, # Role @Bot Contributor.
+    variables.CONTENTCREATOR: {"Nick": "Creator", "Staff": False, "Public": False}, # Role @Content Creator.
+    variables.TRUSTEDMEMBER: {"Nick": "Trusted", "Staff": False, "Public": False}, # Role @Trusted Member.
+    variables.GAMENIGHTPLAYER: {"Nick": "GameNight", "Staff": False, "Public": True}, # Role @Game Night Player.
+}
+
+# Array Configuration
 MESSAGEFILTER = [
     "freeshop",
     "friishop",
@@ -101,3 +79,10 @@ MESSAGEFILTER = [
     "easymode9",
     "sysconfig",
 ] # The filter is mostly just piracy-related terms. I'll probably add more soon.
+
+# Other Settings
+INVITECODES = {
+    "Nincord": "mYjeaZQ",
+    "Apple": "cnNdKdg",
+    "Resistance": "ab6P4gB",
+}

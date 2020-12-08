@@ -7,11 +7,10 @@ class Games(commands.Cog):
 
     @commands.command(aliases=["guess"])
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def guessing(self, ctx, difficulty = "normal"):
         "A simple number guessing game that you can play.\nValid difficulties are \"easy\", \"normal\", \"hard\", and \"extreme\"."
-        guessList = []
-        guessCounter = 0
+        guessList = []; guessCounter = 0
         if difficulty.lower() == "easy": difficultyNumber = 10
         elif difficulty.lower() == "hard": difficultyNumber = 1000
         elif difficulty.lower() == "extreme": difficultyNumber = 10000
@@ -35,8 +34,7 @@ class Games(commands.Cog):
                 else:
                     if guessCounter <= 8:
                         if str(guess) not in guessList:
-                            guessList.append(str(guess))
-                            guessCounter += 1
+                            guessList.append(str(guess)); guessCounter += 1
                         guessList.sort(key=int)
                         if guess > number:
                             await guessEmbed()

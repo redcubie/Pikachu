@@ -1,5 +1,6 @@
 import discord, os, importlib, re
 from discord.ext import commands; from string import printable
+from manager import check_staff_member
 import configuration.variables as variables
 import configuration.arrays as arrays
 
@@ -15,9 +16,11 @@ class Filters(commands.Cog):
         filterAlert = any(x in messageNoSeparators for x in arrays.MESSAGEFILTER)
         if filterAlert:
             try:
-                for role in ctx.author.roles:
-                    if role.id in arrays.STAFFROLES: return None
-                if ctx.channel.id in arrays.UNFILTERCHANNELS: return None
+                if check_staff_member(ctx.author): return None
+                if ctx.channel.id in arrays.CHANNELINFORMATION:
+                    info = arrays.CHANNELINFORMATION.get(ctx.channel.id)
+                    filterSetting = info.get("Filter")
+                    if filterSetting: return None
                 print("Filter has been set off.")
                 await ctx.delete()
                 embed = discord.Embed(color=0xff8080)
@@ -36,9 +39,11 @@ class Filters(commands.Cog):
             filterAlert = any(x in messageNoSeparators for x in arrays.MESSAGEFILTER)
             if filterAlert:
                 try:
-                    for role in before.author.roles:
-                        if role.id in arrays.STAFFROLES: return None
-                    if before.channel.id in arrays.UNFILTERCHANNELS: return None
+                    if check_staff_member(before.author): return None
+                    if before.channel.id in arrays.CHANNELINFORMATION:
+                        info = arrays.CHANNELINFORMATION.get(before.channel.id)
+                        filterSetting = info.get("Filter")
+                        if filterSetting: return None
                     print("Filter has been set off.")
                     await after.delete()
                     embed = discord.Embed(color=0xff8080)
