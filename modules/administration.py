@@ -29,19 +29,18 @@ class Administration(commands.Cog):
     @is_staff_member()
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
         "Sends a message to a specified channel.\nThis command is only usable by staff members."
-        checkChannel = self.bot.get_channel(channel.id)
-        pollChannel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
-        if checkChannel == pollChannel or checkChannel.id in arrays.LOGCHANNELS:
-            await ctx.send(f"{ctx.author.mention}, you are not allowed to send messages to {channel.mention}.")
-        else:
-            async with channel.typing():
-                characters = len(message)
-                await asyncio.sleep(characters/25)
-            await channel.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
-            if channel != ctx.channel:
-                embed=discord.Embed(color=0x80ff80)
-                embed.add_field(name="Sent Message", value=message, inline=False)
-                await ctx.send(f"{ctx.author.mention}, successfully sent the message to {channel.mention}.", embed=embed)
+        if channel.id in arrays.CHANNELINFORMATION:
+            info = arrays.CHANNELINFORMATION.get(channel.id)
+            saySetting = info.get("Say")
+            if not saySetting: return await ctx.send(f"{ctx.author.mention}, you are not allowed to send messages to {channel.mention}.")
+        async with channel.typing():
+            characters = len(message)
+            await asyncio.sleep(characters/25)
+        await channel.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
+        if channel != ctx.channel:
+            embed=discord.Embed(color=0x80ff80)
+            embed.add_field(name="Sent Message", value=message, inline=False)
+            await ctx.send(f"{ctx.author.mention}, successfully sent the message to {channel.mention}.", embed=embed)
 
     @commands.command(aliases=["dm"])
     @commands.guild_only()

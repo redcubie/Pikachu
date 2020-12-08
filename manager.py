@@ -6,25 +6,37 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=("P!", "p!"), case_insensitive=True, allowed_mentions=discord.AllowedMentions.none(), intents=intents)
 bot.help_command = commands.DefaultHelpCommand(no_category="Other")
 
-def is_staff_member(): # The staff member check.
+def is_staff_member(): # The staff member permission check.
     async def predicate(ctx):
-        if ctx.author == ctx.guild.owner: return True
         for role in ctx.author.roles:
-            if role.id in arrays.STAFFROLES:
-                return True
+            if role.id in arrays.ROLEINFORMATION:
+                info = arrays.ROLEINFORMATION.get(role.id)
+                staffSetting = info.get("Staff")
+                if staffSetting: return True
         else: return False
     return commands.check(predicate)
+
+def check_staff_member(user): # The staff member status check.
+    for role in user.roles:
+        if role.id in arrays.ROLEINFORMATION:
+            info = arrays.ROLEINFORMATION.get(role.id)
+            staffSetting = info.get("Staff")
+            if staffSetting: return True
+    else: return False
 
 @bot.event # The #bot-commands check.
 async def on_message(ctx):
     if not isinstance(ctx.channel, discord.channel.DMChannel):
         if ctx.content.lower().startswith("p!"):
             try:
-                for role in ctx.author.roles:
-                    if role.id in arrays.STAFFROLES:
-                        await bot.process_commands(ctx)
-                        return ctx.command.reset_cooldown(ctx)
-                if ctx.channel.id in arrays.BOTCHANNELS: return await bot.process_commands(ctx)
+                if check_staff_member(ctx.author):
+                    await bot.process_commands(ctx)
+                    return ctx.command.reset_cooldown(ctx)
+                if ctx.channel.id in arrays.CHANNELINFORMATION:
+                    info = arrays.CHANNELINFORMATION.get(ctx.channel.id)
+                    botSetting = info.get("Bot")
+                    if botSetting: return await bot.process_commands(ctx)
+                    else: return None
             except AttributeError: pass # Doesn't really help, but I'll figure it out eventually.
 
 @bot.command(hidden=True)
@@ -58,46 +70,29 @@ async def reload(ctx, extension): # p!reload
     print(f"{extension.capitalize()} module has been reloaded.")
     await ctx.send(f"{ctx.author.mention}, the {extension} module has been reloaded.")
 
-@bot.command(aliases=["arrays"], hidden=True)
+@bot.command(aliases=["keys", "key"], hidden=True)
 @commands.has_permissions(administrator=True)
-async def array(ctx, action, array, variable = None): # p!key
-    "Allows viewing and temporary editing of arrays.\nThis command is only usable by administrators."
-    array = array.upper()
-    try: result = getattr(arrays, array)
-    except: result = None
-    if variable != None:
-        if variable.isdigit() == False:
-            variable = variable.upper()
-            try: variable = getattr(variables, variable)
-            except: variable = None
-        else: variable = int(variable)
-    if action.lower() == "list":
-        if result == None: return await ctx.send(f"{ctx.author.mention}, here is the list of contents in your specified array.\n```Input: {array}\nOutput: None```")
-        else: await ctx.send(f"{ctx.author.mention}, here is the list of contents in your specified array.\n```Input: {array}\nOutput: {result}```")
-    elif action.lower() == "add":
-        if variable != None:
-            try: result.append(variable)
-            except: return await ctx.send(f"{ctx.author.mention}, an error has occurred updating the array. No changes have been made.\n```Input: {array}\nOutput: {result}```")
-        else: return await ctx.send(f"{ctx.author.mention}, an error has occurred updating the array. No changes have been made.\n```Input: {array}\nOutput: {result}```")
-        await ctx.send(f"{ctx.author.mention}, here is the array with the updated variables.\n```Input: {array} + {variable}\nOutput: {result}```")
-    elif action.lower() == "remove":
-        if variable != None:
-            try: result.remove(variable)
-            except: return await ctx.send(f"{ctx.author.mention}, an error has occurred updating the array. No changes have been made.\n```Input: {array}\nOutput: {result}```")
-        else: return await ctx.send(f"{ctx.author.mention}, an error has occurred updating the array. No changes have been made.\n```Input: {array}\nOutput: {result}```")
-        await ctx.send(f"{ctx.author.mention}, here is the array with the updated variables.\n```Input: {array} - {variable}\nOutput: {result}```")
-
-@bot.command(aliases=["dictionaries", "key", "keys"], hidden=True)
-@commands.has_permissions(administrator=True)
-async def dictionary(ctx, variable, attribute = None): # p!key
-    "Allows viewing of dictionary keys and values.\nThis command is only usable by administrators."
-    variable = variable.upper()
-    try: variable = getattr(variables, variable); result = arrays.ROLEINFORMATION.get(variable)
-    except: result = None
+async def dictionary(ctx, dictionary, variable, attribute = None, setting: bool = None): # p!key
+    "Allows viewing and editing of dictionary keys and values.\nValid dictionaries include \"role\" and \"channel\".\nAny attribute of a variable using boolean settings can be edited.\nThis command is only usable by administrators."
+    if dictionary.lower() == "role" or dictionary.upper() == "ROLEINFORMATION":
+        dictionary = "ROLEINFORMATION"
+        try: variable = getattr(variables, variable.upper()); result = arrays.ROLEINFORMATION.get(variable)
+        except: result = None
+    elif dictionary.lower() == "channel" or dictionary.upper() == "CHANNELINFORMATION":
+        dictionary = "CHANNELINFORMATION"
+        try: variable = getattr(variables, variable.upper()); result = arrays.CHANNELINFORMATION.get(variable)
+        except: result = None
+    else: return await ctx.send(f"{ctx.author.mention}, the dictionary you have specified is not a valid option.")
     if attribute != None:
         attribute = attribute.capitalize()
         try: result = result.get(attribute)
         except: attribute = None
+    if setting != None:
+        if dictionary == "ROLEINFORMATION": result = arrays.ROLEINFORMATION.get(variable)
+        elif dictionary == "CHANNELINFORMATION": result = arrays.CHANNELINFORMATION.get(variable)
+        if not isinstance(result[attribute], bool): return await ctx.send(f"{ctx.author.mention}, this value tied to the role cannot be edited.")
+        else: result[attribute] = setting
+        return await ctx.send(f"{ctx.author.mention}, here are the keys and values for your specified dictionary.\n```Input: {variable}\nOutput: {attribute} = {result[attribute]}```")
     if result == None: await ctx.send(f"{ctx.author.mention}, here are the keys and values for your specified dictionary.\n```Input: {variable}\nOutput: None```")
     elif attribute == None: await ctx.send(f"{ctx.author.mention}, here are the keys and values for your specified dictionary.\n```Input: {variable}\nOutput: {result}```")
     else: await ctx.send(f"{ctx.author.mention}, here are the keys and values for your specified dictionary.\n```Input: {variable}\nOutput: {attribute} = {result}```")

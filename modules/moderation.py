@@ -1,6 +1,6 @@
 import discord, os, importlib, asyncio, pymongo, re, typing
 from discord.ext import commands; from pymongo import MongoClient
-from manager import is_staff_member
+from manager import is_staff_member, check_staff_member
 import configuration.variables as variables
 import configuration.arrays as arrays
 
@@ -29,9 +29,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        for role in member.roles:
-            if role.id in arrays.STAFFROLES:
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         if collection.count_documents({"_id": member.id}, limit = 1) == 0:
             post = {"_id": member.id, "Warn 1": None, "Warn 2": None, "Warn 3": None}
             collection.insert_one(post)
@@ -84,9 +82,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        for role in member.roles:
-            if role.id in arrays.STAFFROLES:
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         if collection.count_documents({"_id": member.id}, limit = 1) == 1:
             results = collection.find({"_id": member.id})
             for result in results:
@@ -139,20 +135,17 @@ class Moderation(commands.Cog):
                 embed.set_footer(text="To appeal a warn, speak to a staff member.")
                 if member == ctx.author: await ctx.send(f"{ctx.author.mention}, here's all recorded warnings.", embed=embed)
                 else: await ctx.send(f"{ctx.author.mention}, here are all recorded warnings for {member.mention}.", embed=embed)
-        for role in ctx.author.roles:
-            if role.id in arrays.STAFFROLES:
-                if member == None: member = ctx.author
-                for role in member.roles:
-                    if role.id in arrays.STAFFROLES:
-                        return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
-                return await userWarnList(member)
+        if check_staff_member(ctx.author):
+            if member == None: member = ctx.author
+            if check_staff_member(member):
+                return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+            return await userWarnList(member)
         if member != None:
             return await ctx.send(f"{ctx.author.mention}, using this command on others is only allowed for staff members.")
         else:
             member = ctx.author
-            for role in member.roles:
-                if role.id in arrays.STAFFROLES: return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
-                else: return await userWarnList(member)
+            if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+            else: return await userWarnList(member)
 
     @commands.command(aliases=["clearwarns"])
     @commands.guild_only()
@@ -163,9 +156,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        for role in member.roles:
-            if role.id in arrays.STAFFROLES:
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
         if collection.count_documents({"_id": member.id}, limit = 1) != 0:
             results = collection.find({"_id": member.id})
             for result in results:
@@ -187,9 +178,7 @@ class Moderation(commands.Cog):
     async def kick(self, ctx, member: discord.Member, *, reason = None): # p!kick
         "Kicks a user from the server.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        for role in member.roles:
-            if role.id in arrays.STAFFROLES:
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
+        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
         if reason != None:
             embed = discord.Embed(color=0xff8080)
             embed.add_field(name="Reason", value=reason, inline=False)
@@ -222,9 +211,7 @@ class Moderation(commands.Cog):
             except discord.errors.NotFound:
                 return await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
         if isinstance(member, discord.Member):
-            for role in member.roles:
-                if role.id in arrays.STAFFROLES:
-                    return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
+            if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
             try:
                 if reason != None: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.", embed=embed)
                 else: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
@@ -242,17 +229,13 @@ class Moderation(commands.Cog):
     async def silentkick(self, ctx, member: discord.Member, *, reason = None): # p!silentkick
         "Kicks a member from the server without messaging.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        for role in member.roles:
-            if role.id in arrays.STAFFROLES:
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
+        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
         await member.kick(reason=reason)
         embed = discord.Embed(color=0xff8080)
         embed.add_field(name="Reason", value=reason, inline=False)
         await ctx.send(f"{ctx.author.mention}, {member.mention} has been kicked from the server.")
-        if reason != None:
-            await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).", embed=embed)
-        else:
-            await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).")
+        if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).", embed=embed)
+        else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).")
 
     @commands.command(aliases=["quietban"])
     @commands.guild_only()
@@ -260,9 +243,7 @@ class Moderation(commands.Cog):
     async def silentban(self, ctx, member: discord.Member, *, reason = None): # p!silentban
         "Bans a member from the server without messaging.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        for role in ctx.author.roles:
-            if role.id in arrays.STAFFROLES:
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
+        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
         await ctx.guild.ban(member, reason=reason)
         embed = discord.Embed(color=0xff8080)
         embed.add_field(name="Reason", value=reason, inline=False)
@@ -282,8 +263,7 @@ class Moderation(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
             try: await member.send(f"You have been unbanned from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.")
             except discord.errors.Forbidden: pass
-        except discord.errors.NotFound:
-            await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
+        except discord.errors.NotFound: await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
         await ctx.guild.unban(member, reason=reason)
         embed = discord.Embed(color=0xff8080)
         embed.add_field(name="Reason", value=reason, inline=False)
@@ -312,7 +292,10 @@ class Moderation(commands.Cog):
         "Toggles sending messages in the specified channel for members.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         if channel == None: channel = ctx.channel
-        if channel.id in arrays.LOCKDOWNCHANNELS:
+        if channel.id in arrays.CHANNELINFORMATION:
+            info = arrays.CHANNELINFORMATION.get(channel.id)
+            lockdownSetting = info.get("Lockdown")
+            if not lockdownSetting: return await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
             sendpermissions = channel.overwrites_for(ctx.guild.default_role)
             if sendpermissions.send_messages == None: sendpermissions.send_messages = False
             else: sendpermissions.send_messages = None
@@ -333,20 +316,17 @@ class Moderation(commands.Cog):
     @commands.cooldown(1, 3600, commands.BucketType.guild)
     async def sendrules(self, ctx):
         "Sends the rule messages in the specified rules channel.\nThis command is only usable by staff members."
-        rulesChannel = self.bot.get_channel(variables.SERVERRULES) # Channel #rules.
-        staffList = []
-        dupeChecker = []
-        staffBotFailsafe = False
-        if variables.SERVERBOT in arrays.STAFFROLES:
-            staffBotFailsafe = True
-            arrays.STAFFROLES.remove(variables.SERVERBOT)
-        for staffRole in arrays.STAFFROLES:
-            staffRole = discord.utils.get(ctx.guild.roles, id=staffRole)
-            for member in staffRole.members: dupeChecker.append(f"{member.mention}")
-        if staffBotFailsafe == True: arrays.STAFFROLES.append(variables.SERVERBOT)
+        rulesChannel = self.bot.get_channel(variables.SERVERRULES) # Channel #server-rules.
+        staffList = []; dupeChecker = []
+        for role in arrays.ROLEINFORMATION:
+            if role != variables.SERVERBOT:
+                info = arrays.ROLEINFORMATION.get(role)
+                staffSetting = info.get("Staff")
+                if staffSetting:
+                    staffRole = discord.utils.get(ctx.guild.roles, id=role)
+                    for member in staffRole.members: dupeChecker.append(f"{member.mention}")
         for user in dupeChecker: 
-            if user not in staffList: 
-                staffList.append(user)
+            if user not in staffList: staffList.append(user)
         await rulesChannel.purge(limit=20)
         await rulesChannel.send(f"__**Introduction:**__\nHello, and welcome to {ctx.guild.name}, our small but amazing Discord server where you can talk about anything related to Nintendo and their franchises! We mainly focus on competitive gaming, but you can talk about the games casually as well. Here, we host clubs, tournaments, and more! If you need a small space to talk about your favorite Nintendo games, this is the place for you!")
         await rulesChannel.send(f"__**Rules:**__\n**<:smash_mario:665610205509451790> 1. Use common sense.**\nIf it isn't right, don't do it. If it can hurt someone else, or make someone feel uncomfortable, don't say it. Everyone has rights to have different opinions, but any hate speech with intentions to do bad will not, and never will be tolerated. This also includes mini-modding. If something's wrong, just ping a staff role without spamming them. Don't ask for roles either.\n**<:smash_donkey_kong:665610202187431939>  2. No spamming, copypasta, flooding, ectara.**\nRepeating your message over and over is not polite. Spreading copypasta or flooding channels with messages is also not tolerated. Please be respectful with your messages in the server channels so that they don't disrupt the flow of the conversation.\n**<:smash_link:665610203634335799>  3. Advertising is available, with permission that is.**\nBefore you advertise, please inform a staff member. Don't post the link yourself, you'll get warned without permission. Same with advertising your server randomly in someone else's private messages. Note that this will not help you become an affiliate.")
@@ -366,8 +346,7 @@ class Moderation(commands.Cog):
                 self.bot.load_extension("modules.filters")
                 self.bot.unload_extension("modules.filters")
                 return await ctx.send(f"{ctx.author.mention}, the filters module is currently unloaded.")
-            except commands.ExtensionAlreadyLoaded:
-                return await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
+            except commands.ExtensionAlreadyLoaded: return await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
         elif action.lower() == "toggle":
             try:
                 self.bot.load_extension("modules.filters")
