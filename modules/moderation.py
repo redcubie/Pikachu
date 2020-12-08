@@ -310,6 +310,30 @@ class Moderation(commands.Cog):
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled off lockmode in {channel.mention}.", embed=embed)
         else: await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
 
+    @commands.command(aliases=["filter"])
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def filtermode(self, ctx, action): # p!filtermode
+        "Toggles the filter module for the bot.\nThis command is only usable by staff members.\nPass \"check\" as an argument to see if the filter is loaded, \"toggle\" to change the status of the filter, or \"list\" to see all filtered phrases."
+        if action.lower() == "check":
+            try:
+                self.bot.load_extension("modules.filters")
+                self.bot.unload_extension("modules.filters")
+                return await ctx.send(f"{ctx.author.mention}, the filters module is currently unloaded.")
+            except commands.ExtensionAlreadyLoaded: return await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
+        elif action.lower() == "toggle":
+            try:
+                self.bot.load_extension("modules.filters")
+                print(f"Filters module has been loaded.")
+                return await ctx.send(f"{ctx.author.mention}, the filters module has been loaded.")
+            except commands.ExtensionAlreadyLoaded:
+                self.bot.unload_extension("modules.filters")
+                print(f"Filters module has been unloaded.")
+                return await ctx.send(f"{ctx.author.mention}, the filters module has been unloaded.")        
+        elif action.lower() == "list":
+            return await ctx.send(f"{ctx.author.mention}, the following phrases are automatically detected while the filter is loaded.\n```" + ", ".join(arrays.MESSAGEFILTER) + "```")
+        else: await ctx.send(f"{ctx.author.mention}, that is not a valid action for the filter.")
+
     @commands.command()
     @commands.guild_only()
     @is_staff_member()
@@ -335,29 +359,5 @@ class Moderation(commands.Cog):
         await rulesChannel.send(f"__**Staff Team:**__\nPlease do not message staff unless it is necessary. You can view this list by running `p!liststaff`.\n" + "\n".join(staffList))
         await rulesChannel.send(f"__**Agreement:**__\nWhen agreeing to the server rules, you are accepting the fact that members of staff can and will take action against you if necessary, and can punish you for any reason. You are also allowing all bots on the server to store data about you, such as, your user ID, messages, and anything necessary to perform proper server functions. The server is required to inform you to accept the collecting of this data, per Discord's Developer Terms of Service (<https://discordapp.com/developers/docs/legal>). We also require you to agree and abide by Discord's Terms of Service (<https://discordapp.com/terms>) Finally, we are required by Discord's new Terms of Service to ask you to agree to the Children's Online Privacy Protection Rule (<https://www.ftc.gov/enforcement/rules/rulemaking-regulatory-reform-proceedings/childrens-online-privacy-protection-rule>). These documents, as well as these rules, will change over time. If you do not agree to these terms, please leave the server.")
         await ctx.send(f"{ctx.author.mention}, the rules have successfully been sent to {rulesChannel.mention}.")
-
-    @commands.command(aliases=["filter"])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
-    async def filters(self, ctx, action): # p!filter
-        "Toggles the filter module for the bot.\nThis command is only usable by staff members.\nPass \"check\" as an argument to see if the filter is loaded, \"toggle\" to change the status of the filter, or \"list\" to see all filtered phrases."
-        if action.lower() == "check":
-            try:
-                self.bot.load_extension("modules.filters")
-                self.bot.unload_extension("modules.filters")
-                return await ctx.send(f"{ctx.author.mention}, the filters module is currently unloaded.")
-            except commands.ExtensionAlreadyLoaded: return await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
-        elif action.lower() == "toggle":
-            try:
-                self.bot.load_extension("modules.filters")
-                print(f"Filters module has been loaded.")
-                return await ctx.send(f"{ctx.author.mention}, the filters module has been loaded.")
-            except commands.ExtensionAlreadyLoaded:
-                self.bot.unload_extension("modules.filters")
-                print(f"Filters module has been unloaded.")
-                return await ctx.send(f"{ctx.author.mention}, the filters module has been unloaded.")        
-        elif action.lower() == "list":
-            return await ctx.send(f"{ctx.author.mention}, the following phrases are automatically detected while the filter is loaded.\n```" + ", ".join(arrays.MESSAGEFILTER) + "```")
-        else: await ctx.send(f"{ctx.author.mention}, that is not a valid action for the filter.")
 
 def setup(bot): bot.add_cog(Moderation(bot))
