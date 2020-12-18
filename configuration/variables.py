@@ -23,6 +23,7 @@ GENERALCHAT = 469302882974433290 # The ID of the #general-chat text channel.
 RANDOMCHAT = 450875176486305792 # The ID of the #random-chat text channel.
 TRUSTEDCHAT = 742819077009047666 # The ID of the #trusted-chat channel.
 MODERATORCHAT = 478388911350087709 # The ID of the #moderator-chat text channel.
+NOMICROPHONE = 767236139525472306 # The ID of the #no-microphone channel.
 BOTCOMMANDS = 707036038295584889 # The ID of the #bot-commands text channel.
 BOTDISCUSSION = 770115158713303110 # The ID of the #bot-discussion channel.
 SMASHGENERAL = 552296826376814592 # The ID of the #smash-general channel.

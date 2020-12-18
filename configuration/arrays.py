@@ -10,6 +10,7 @@ CHANNELINFORMATION = {
     variables.RANDOMCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #random-chat.
     variables.TRUSTEDCHAT: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #trusted-chat.
     variables.MODERATORCHAT: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #moderator-chat.
+    variables.NOMICROPHONE: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #no-microphone.
     variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Filter": True, "Say": True}, # Channel #bot-commands.
     variables.BOTDISCUSSION: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #bot-discussion.
     variables.SMASHGENERAL: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #smash-general.
