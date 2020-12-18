@@ -28,7 +28,7 @@ class Friends(commands.Cog):
             if not await checkID3DS(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
             if len(code) == 12: code = "-".join((code[0:4], code[4:8], code[8:12]))
         elif system.lower() == "switch" or system.lower() == "nx":
-            collection = database["Nintendo Switch"]
+            collection = database["Nintendo Switch"]; code = code.upper()
             if not await checkIDSwitch(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
             if len(code) == 12: code = "-".join(("SW", code[0:4], code[4:8], code[8:12]))
             elif len(code) == 14 and code.startswith("SW"): code = "-".join((code[0:2], code[2:6], code[6:10], code[10:14]))
