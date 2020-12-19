@@ -2,7 +2,7 @@ import discord, os
 
 # General Configuration
 STATUSTYPE = discord.ActivityType.watching # The current action type that appears by default.
-STATUSACTIVITY = "Nincord" + " (p!)" # The current action activity that appears by default.
+STATUSACTIVITY = "Nincord" # The current action activity that appears by default.
 
 # Role Definitions
 SERVERBOT = 450886915340763151 # The ID of the @Server Bot role.
