@@ -13,11 +13,6 @@ CHANNELINFORMATION = {
     variables.NOMICROPHONE: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #no-microphone.
     variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Filter": True, "Say": True}, # Channel #bot-commands.
     variables.BOTDISCUSSION: {"Bot": True, "Lockdown": False, "Filter": False, "Say": True}, # Channel #bot-discussion.
-    variables.SMASHGENERAL: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #smash-general.
-    variables.SMASHBATTLES: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #smash-battles.
-    variables.POKEMONGENERAL: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #pokémon-general.
-    variables.POKEMONTRADES: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #pokémon-trades.
-    variables.POKEMONBATTLES: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #pokémon-battles.
     variables.DIRECTCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #direct-chat.
     variables.EVENTCHAT: {"Bot": False, "Lockdown": True, "Filter": True, "Say": True}, # Channel #event-chat.
     variables.BOTLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #bot-logs.
