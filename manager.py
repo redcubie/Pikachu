@@ -17,12 +17,14 @@ def is_staff_member(): # The staff member permission check.
     return commands.check(predicate)
 
 def check_staff_member(user): # The staff member status check.
-    for role in user.roles:
-        if role.id in arrays.ROLEINFORMATION:
-            info = arrays.ROLEINFORMATION.get(role.id)
-            staffSetting = info.get("Staff")
-            if staffSetting: return True
-    else: return False
+    try:
+        for role in user.roles:
+            if role.id in arrays.ROLEINFORMATION:
+                info = arrays.ROLEINFORMATION.get(role.id)
+                staffSetting = info.get("Staff")
+                if staffSetting: return True
+        else: return False
+    except: return False
 
 @bot.event # The #bot-commands check.
 async def on_message(ctx):
