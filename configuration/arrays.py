@@ -18,7 +18,6 @@ CHANNELINFORMATION = {
     variables.BOTLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #bot-logs.
     variables.REQUESTLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #request-logs.
     variables.ACTIONLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #action-logs.
-    variables.MESSAGELOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #message-logs.
     variables.SERVERLOGS: {"Bot": False, "Lockdown": False, "Filter": False, "Say": False}, # Channel #server-logs.
 }
 

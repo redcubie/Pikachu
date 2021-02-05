@@ -42,34 +42,6 @@ class Events(commands.Cog):
         await self.userJoinLeaveInfo(user)
         await channel.send(f"{user.mention} ({user.id}) has left the server.", embed=embed)
 
-    @commands.Cog.listener() # When a message is edited.
-    async def on_message_edit(self, before, after):
-        if not isinstance(after.channel, discord.channel.DMChannel):
-            if before.content.strip() != after.content.strip():
-                print("Message has been edited.")
-                logChannel = self.bot.get_channel(variables.MESSAGELOGS) # Channel #message-logs.
-                embed=discord.Embed(color=0x80ff80)
-                embed.add_field(name="Message Before", value=before.content, inline=False)
-                embed.add_field(name="Message After", value=after.content, inline=False)
-                try: await logChannel.send(f"A message by {before.author.mention} ({before.author.id}) has been edited in {before.channel.mention}.", embed=embed)
-                except AttributeError: pass
-            else: pass
-
-    @commands.Cog.listener() # When a message is deleted.
-    async def on_message_delete(self, ctx):
-        if not isinstance(ctx.channel, discord.channel.DMChannel):
-            currentChannel = ctx.channel.id
-            if currentChannel in arrays.CHANNELINFORMATION:
-                info = arrays.CHANNELINFORMATION.get(currentChannel)
-                saySetting = info.get("Say")
-                if not saySetting: return None
-                print("Message has been deleted.")
-                logChannel = self.bot.get_channel(variables.MESSAGELOGS)
-                embed=discord.Embed(color=0x80ff80)
-                embed.add_field(name="Deleted Message", value=ctx.content, inline=False)
-                try: await logChannel.send(f"A message by {ctx.author.mention} ({ctx.author.id}) has been deleted in {ctx.channel.mention}.", embed=embed)
-                except AttributeError: pass
-
     @commands.Cog.listener() # When a member update is detected.
     async def on_member_update(self, before, after):
         pass

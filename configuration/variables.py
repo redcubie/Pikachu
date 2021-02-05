@@ -31,7 +31,6 @@ EVENTCHAT = 649020355310125067 # The ID of the #event-chat text channel.
 BOTLOGS = 725045178720583756 # The ID of the #bot-logs channel.
 REQUESTLOGS = 707106126902198302 # The ID of the #request-logs channel.
 ACTIONLOGS = 772214347363516418 # The ID of the #action-logs channel.
-MESSAGELOGS = 772229066924228608 # The ID of the #message-logs channel.
 SERVERLOGS = 772229127138443264 # The ID of the #server-logs channel.
 
 # Essential Configuration

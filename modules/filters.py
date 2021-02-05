@@ -10,7 +10,7 @@ class Filters(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, ctx): # Initial message filtering.
-        logChannel = self.bot.get_channel(variables.MESSAGELOGS) # Channel #message-logs.
+        logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #message-logs.
         messageCheck = "".join(char for char in ctx.content.lower() if char in printable)
         messageNoSeparators = re.sub(r"[ \*_\-~.!`@#$%^&+=?/|)(]", "", messageCheck)
         filterAlert = any(x in messageNoSeparators for x in arrays.MESSAGEFILTER)
@@ -33,7 +33,7 @@ class Filters(commands.Cog):
     @commands.Cog.listener() # Message edit filtering.
     async def on_message_edit(self, before, after):
         if before.content.strip() != after.content.strip():
-            logChannel = self.bot.get_channel(variables.MESSAGELOGS) # Channel #message-logs.
+            logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #message-logs.
             messageCheck = "".join(char for char in after.content.lower() if char in printable)
             messageNoSeparators = re.sub(r"[ \*_\-~.!`@#$%^&+=?/|)(]", "", messageCheck)
             filterAlert = any(x in messageNoSeparators for x in arrays.MESSAGEFILTER)
