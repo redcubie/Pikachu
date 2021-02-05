@@ -27,7 +27,7 @@ class Friends(commands.Cog):
             collection = database["Nintendo 3DS"]
             if not await checkID3DS(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
             if len(code) == 12: code = "-".join((code[0:4], code[4:8], code[8:12]))
-        elif system.lower() == "switch" or system.lower() == "nx":
+        elif system.lower() in {"switch", "nx"}:
             collection = database["Nintendo Switch"]; code = code.upper()
             if not await checkIDSwitch(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
             if len(code) == 12: code = "-".join(("SW", code[0:4], code[4:8], code[8:12]))
@@ -49,7 +49,7 @@ class Friends(commands.Cog):
         database = cluster["Friends"]
         if system.lower() == "wiiu": collection = database["Nintendo Wii U"]
         elif system.lower() == "3ds": collection = database["Nintendo 3DS"]
-        elif system.lower() == "switch" or system.lower() == "nx": collection = database["Nintendo Switch"]
+        elif system.lower() in {"switch", "nx"}: collection = database["Nintendo Switch"]
         if collection.count_documents({"_id": ctx.author.id}, limit = 1) == 1:
             collection.delete_one({"_id": ctx.author.id})
             return await ctx.send(f"{ctx.author.mention}, your account has been unlinked successfully.")
