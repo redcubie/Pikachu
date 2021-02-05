@@ -52,7 +52,7 @@ class Games(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def magicball(self, ctx):
-        "Randomly selects a prediction from a list."
+        "Randomly selects a response."
         magicAnswers = [
             "As I see it, yes.",
             "Ask again later.",
