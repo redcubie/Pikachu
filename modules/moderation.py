@@ -310,30 +310,6 @@ class Moderation(commands.Cog):
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled off lockmode in {channel.mention}.", embed=embed)
         else: await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
 
-    @commands.command(aliases=["filter"])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
-    async def filtermode(self, ctx, action): # p!filtermode
-        "Toggles the filter module for the bot.\nThis command is only usable by staff members.\nPass \"check\" as an argument to see if the filter is loaded, \"toggle\" to change the status of the filter, or \"list\" to see all filtered phrases."
-        if action.lower() == "check":
-            try:
-                self.bot.load_extension("modules.filters")
-                self.bot.unload_extension("modules.filters")
-                return await ctx.send(f"{ctx.author.mention}, the filters module is currently unloaded.")
-            except commands.ExtensionAlreadyLoaded: return await ctx.send(f"{ctx.author.mention}, the filters module is currently loaded.")
-        elif action.lower() == "toggle":
-            try:
-                self.bot.load_extension("modules.filters")
-                print(f"Filters module has been loaded.")
-                return await ctx.send(f"{ctx.author.mention}, the filters module has been loaded.")
-            except commands.ExtensionAlreadyLoaded:
-                self.bot.unload_extension("modules.filters")
-                print(f"Filters module has been unloaded.")
-                return await ctx.send(f"{ctx.author.mention}, the filters module has been unloaded.")        
-        elif action.lower() == "list":
-            return await ctx.send(f"{ctx.author.mention}, the following phrases are automatically detected while the filter is loaded.\n```" + ", ".join(arrays.MESSAGEFILTER) + "```")
-        else: await ctx.send(f"{ctx.author.mention}, that is not a valid action for the filter.")
-
     @commands.command()
     @commands.guild_only()
     @is_staff_member()

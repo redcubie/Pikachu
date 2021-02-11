@@ -42,8 +42,4 @@ class Events(commands.Cog):
         await self.userJoinLeaveInfo(user)
         await channel.send(f"{user.mention} ({user.id}) has left the server.", embed=embed)
 
-    @commands.Cog.listener() # When a member update is detected.
-    async def on_member_update(self, before, after):
-        pass
-
 def setup(bot): bot.add_cog(Events(bot))
