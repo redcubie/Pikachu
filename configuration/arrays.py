@@ -12,7 +12,6 @@ CHANNELINFORMATION = {
     variables.MODERATORCHAT: {"Bot": True, "Lockdown": False, "Say": True}, # Channel #moderator-chat.
     variables.NOMICROPHONE: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #no-microphone.
     variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Say": True}, # Channel #bot-commands.
-    variables.BOTDISCUSSION: {"Bot": True, "Lockdown": False, "Say": True}, # Channel #bot-discussion.
     variables.DIRECTCHAT: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #direct-chat.
     variables.EVENTCHAT: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #event-chat.
     variables.GITHUBLOGS: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #bot-logs.

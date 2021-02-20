@@ -25,7 +25,6 @@ TRUSTEDCHAT = 742819077009047666 # The ID of the #trusted-chat channel.
 MODERATORCHAT = 478388911350087709 # The ID of the #moderator-chat text channel.
 NOMICROPHONE = 767236139525472306 # The ID of the #no-microphone channel.
 BOTCOMMANDS = 707036038295584889 # The ID of the #bot-commands text channel.
-BOTDISCUSSION = 770115158713303110 # The ID of the #bot-discussion channel.
 DIRECTCHAT = 734148916559478845 # The ID of the #direct-chat text channel.
 EVENTCHAT = 649020355310125067 # The ID of the #event-chat text channel.
 GITHUBLOGS = 725045178720583756 # The ID of the #github-logs channel.
