@@ -36,6 +36,6 @@ ROLEINFORMATION = {
 # Other Settings
 INVITECODES = {
     "Nincord": "mYjeaZQ",
-    "Apple": "cnNdKdg",
+    "Puginator": "Yh2zWxugVE",
     "Resistance": "ab6P4gB",
 }
