@@ -7,7 +7,7 @@ class Games(commands.Cog):
 
     @commands.command(aliases=["guess"])
     @commands.guild_only()
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def guessing(self, ctx, difficulty = "normal"):
         "A simple number guessing game that you can play.\nValid difficulties are \"easy\", \"normal\", \"hard\", and \"extreme\"."
         guessList = []; guessCounter = 0
@@ -50,7 +50,7 @@ class Games(commands.Cog):
 
     @commands.command(aliases=["8ball"])
     @commands.guild_only()
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def magicball(self, ctx):
         "Randomly selects a prediction/response using magic."
         magicAnswers = [
