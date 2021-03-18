@@ -22,7 +22,7 @@ class Administration(commands.Cog):
             if days == 1: await ctx.send(f"{ctx.author.mention}, over the past {days} day, approximately {ctx.guild.member_count-count:,} members were counted as active.")
             else: await ctx.send(f"{ctx.author.mention}, over the past {days} days, approximately {ctx.guild.member_count-count:,} members were counted as active.")
 
-    @commands.command()
+    @commands.command(aliases=["speak"])
     @commands.guild_only()
     @is_staff_member()
     async def say(self, ctx, channel: discord.TextChannel, *, message): # p!say
