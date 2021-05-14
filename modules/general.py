@@ -137,7 +137,7 @@ class General(commands.Cog):
         for user in dupeChecker: 
             if user not in staffList: staffList.append(user)
         embed = discord.Embed(title=f"{ctx.guild.name} Staff Team", description="\n".join(staffList), color=0xffff40)
-        await ctx.send(f"{ctx.author.mention}, here's the staff team of {ctx.guild.name}.", embed=embed)
+        await ctx.send(f"{ctx.author.mention}, here's the staff team of {ctx.guild.name}.", allowed_mentions=discord.AllowedMentions(users=True), embed=embed)
 
     @commands.command(aliases=["togglerole", "role"])
     @commands.guild_only()
