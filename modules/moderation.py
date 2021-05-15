@@ -196,32 +196,33 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: typing.Union[discord.Member, int], *, reason = None): # p!ban
+    async def ban(self, ctx, member: typing.Union[discord.Member, int, str], *, reason = None): # p!ban
         "Bans a member from the server.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        if isinstance(member, int):
-            try:
-                member = await self.bot.fetch_user(member)
-                await ctx.guild.ban(member, reason=reason)
-                embed = discord.Embed(color=0xff8080)
-                embed.add_field(name="Reason", value=reason, inline=False)
+        try:
+            if isinstance(member, int): member = await self.bot.fetch_user(member)
+            elif isinstance(member, str): member = await self.bot.fetch_user(member[3:-1])
+            embed = discord.Embed(color=0xff8080)
+            embed.add_field(name="Reason", value=reason, inline=False)
+            if isinstance(member, int):
+                try:
+                    await ctx.guild.ban(member, reason=reason)
+                    await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
+                    if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).", embed=embed)
+                    else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).")
+                except discord.errors.NotFound:
+                    return await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
+            if isinstance(member, discord.Member):
+                if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
+                try:
+                    if reason != None: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.", embed=embed)
+                    else: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
+                except discord.errors.Forbidden: pass
+                await ctx.guild.ban(member, reason=reason, delete_message_days=0)
                 await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
                 if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).", embed=embed)
                 else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).")
-            except discord.errors.NotFound:
-                return await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
-        if isinstance(member, discord.Member):
-            if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
-            try:
-                if reason != None: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.", embed=embed)
-                else: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
-            except discord.errors.Forbidden: pass
-            await ctx.guild.ban(member, reason=reason, delete_message_days=0)
-            embed = discord.Embed(color=0xff8080)
-            embed.add_field(name="Reason", value=reason, inline=False)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
-            if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).", embed=embed)
-            else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).")
+        except: return await ctx.send(f"{ctx.author.mention}, there was an error finding the user associated with your request.")
 
     @commands.command(aliases=["quietkick"])
     @commands.guild_only()
@@ -254,22 +255,23 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, member: typing.Union[discord.User, int], *, reason = None): # p!unban
+    async def unban(self, ctx, member: typing.Union[discord.User, int, str], *, reason = None): # p!unban
         "Unbans a member from the server.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         try:
-            member = await self.bot.fetch_user(member)
+            if isinstance(member, str): member = await self.bot.fetch_user(member[3:-1])
+            else: member = await self.bot.fetch_user(member)
             await ctx.guild.unban(member, reason=reason)
             await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
             try: await member.send(f"You have been unbanned from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.")
             except discord.errors.Forbidden: pass
-        except discord.errors.NotFound: await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
-        await ctx.guild.unban(member, reason=reason)
-        embed = discord.Embed(color=0xff8080)
-        embed.add_field(name="Reason", value=reason, inline=False)
-        await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
-        if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has unbanned {member.mention} ({member.id}).", embed=embed)
-        else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has unbanned {member.mention} ({member.id}).")
+            await ctx.guild.unban(member, reason=reason)
+            embed = discord.Embed(color=0xff8080)
+            embed.add_field(name="Reason", value=reason, inline=False)
+            await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
+            if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has unbanned {member.mention} ({member.id}).", embed=embed)
+            else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has unbanned {member.mention} ({member.id}).")
+        except: return await ctx.send(f"{ctx.author.mention}, there was an error finding the user associated with your request.")
 
     @commands.command()
     @commands.guild_only()

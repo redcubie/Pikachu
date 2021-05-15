@@ -57,53 +57,56 @@ class General(commands.Cog):
     @commands.command(aliases=["ui"])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
-    async def userinfo(self, ctx, user: typing.Union[discord.Member, discord.User, int] = None): # p!userinfo
+    async def userinfo(self, ctx, user: typing.Union[discord.Member, discord.User, int, str] = None): # p!userinfo
         "Displays information regarding a user's account.\nStaff members can use this command on others."
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if isinstance(user, (discord.User, int)): user = await self.bot.fetch_user(user)
-        async def showUserProfile(user):
-            if isinstance(user, discord.Member):
-                role = user.top_role.name
-                embed=discord.Embed(title=user.display_name, description=role, color=0xffff00)
-            else: embed=discord.Embed(title=user.display_name, color=0xffff00)
-            embed.set_thumbnail(url=user.avatar_url_as(static_format="png"))
-            embed.add_field(name="Account Name", value=user.name, inline=True)
-            embed.add_field(name="Discriminator", value="#"+user.discriminator, inline=False)
-            embed.add_field(name="Account Identification", value=user.id, inline=False)
-            formatCreate = user.created_at
-            formatCreate2 = formatCreate.strftime("%B %d, %Y (%I:%M %p)")
-            if isinstance(user, discord.Member): formatJoin = user.joined_at
-            if isinstance(user, discord.Member): formatJoin2 = formatJoin.strftime("%B %d, %Y (%I:%M %p)")
-            embed.add_field(name="Created", value="{}".format(formatCreate2), inline=False)
-            if isinstance(user, discord.Member):
-                embed.add_field(name="Joined", value="{}".format(formatJoin2), inline=False)
-            if not check_staff_member(user):
-                if collection.count_documents({"_id": user.id}, limit = 1) != 0:
-                    results = collection.find({"_id": user.id})
-                    for result in results:
-                        checkWarn1 = result["Warn 1"]
-                        checkWarn2 = result["Warn 2"]
-                        checkWarn3 = result["Warn 3"]
-                    if checkWarn3 != None: warns = "3"
-                    elif checkWarn3 == None and checkWarn2 != None: warns = "2"
-                    elif checkWarn2 == None and checkWarn1 != None: warns = "1"
-                    embed.add_field(name="Warns", value=warns, inline=False)
-                else: embed.add_field(name="Warns", value="0", inline=False)
-            if not isinstance(user, discord.Member):
-                try:
-                    banned = await ctx.guild.fetch_ban(user)
-                    embed.add_field(name="Banned", value=f"{banned.reason}", inline=False)
-                except discord.NotFound: banned = None
-            if user == ctx.author: await ctx.send(f"{ctx.author.mention}, here's some information about you.", embed=embed)
-            else: await ctx.send(f"{ctx.author.mention}, here's some information about {user.mention}.", embed=embed)
-        if check_staff_member(ctx.author):
-            if user == None: user = ctx.author
-            return await showUserProfile(user)
-        if user != ctx.author and user != None:
-            return await ctx.send(f"{ctx.author.mention}, using this command on others is only allowed for staff members.")
-        user = ctx.author; return await showUserProfile(user)
+        try:
+            if isinstance(user, (discord.User, int)): user = await self.bot.fetch_user(user)
+            elif isinstance(user, (str)): user = await self.bot.fetch_user(user[3:-1])
+            async def showUserProfile(user):
+                if isinstance(user, discord.Member):
+                    role = user.top_role.name
+                    embed=discord.Embed(title=user.display_name, description=role, color=0xffff00)
+                else: embed=discord.Embed(title=user.display_name, color=0xffff00)
+                embed.set_thumbnail(url=user.avatar_url_as(static_format="png"))
+                embed.add_field(name="Account Name", value=user.name, inline=True)
+                embed.add_field(name="Discriminator", value="#"+user.discriminator, inline=False)
+                embed.add_field(name="Account Identification", value=user.id, inline=False)
+                formatCreate = user.created_at
+                formatCreate2 = formatCreate.strftime("%B %d, %Y (%I:%M %p)")
+                if isinstance(user, discord.Member): formatJoin = user.joined_at
+                if isinstance(user, discord.Member): formatJoin2 = formatJoin.strftime("%B %d, %Y (%I:%M %p)")
+                embed.add_field(name="Created", value="{}".format(formatCreate2), inline=False)
+                if isinstance(user, discord.Member):
+                    embed.add_field(name="Joined", value="{}".format(formatJoin2), inline=False)
+                if not check_staff_member(user):
+                    if collection.count_documents({"_id": user.id}, limit = 1) != 0:
+                        results = collection.find({"_id": user.id})
+                        for result in results:
+                            checkWarn1 = result["Warn 1"]
+                            checkWarn2 = result["Warn 2"]
+                            checkWarn3 = result["Warn 3"]
+                        if checkWarn3 != None: warns = "3"
+                        elif checkWarn3 == None and checkWarn2 != None: warns = "2"
+                        elif checkWarn2 == None and checkWarn1 != None: warns = "1"
+                        embed.add_field(name="Warns", value=warns, inline=False)
+                    else: embed.add_field(name="Warns", value="0", inline=False)
+                if not isinstance(user, discord.Member):
+                    try:
+                        banned = await ctx.guild.fetch_ban(user)
+                        embed.add_field(name="Banned", value=f"{banned.reason}", inline=False)
+                    except discord.NotFound: banned = None
+                if user == ctx.author: await ctx.send(f"{ctx.author.mention}, here's some information about you.", embed=embed)
+                else: await ctx.send(f"{ctx.author.mention}, here's some information about {user.mention}.", embed=embed)
+            if check_staff_member(ctx.author):
+                if user == None: user = ctx.author
+                return await showUserProfile(user)
+            if user != ctx.author and user != None:
+                return await ctx.send(f"{ctx.author.mention}, using this command on others is only allowed for staff members.")
+            user = ctx.author; return await showUserProfile(user)
+        except: return await ctx.send(f"{ctx.author.mention}, there was an error finding the user associated with your request.")
 
     @commands.command(aliases=["si"])
     @commands.guild_only()
