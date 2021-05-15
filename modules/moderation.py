@@ -293,21 +293,30 @@ class Moderation(commands.Cog):
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         if channel == None: channel = ctx.channel
         if channel.id in arrays.CHANNELINFORMATION:
-            info = arrays.CHANNELINFORMATION.get(channel.id)
-            lockdownSetting = info.get("Lockdown")
-            if not lockdownSetting: return await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
-            sendpermissions = channel.overwrites_for(ctx.guild.default_role)
-            if sendpermissions.send_messages == None: sendpermissions.send_messages = False
-            else: sendpermissions.send_messages = None
-            await channel.set_permissions(ctx.guild.default_role, overwrite=sendpermissions)
+            textChannel = channel; info = arrays.CHANNELINFORMATION.get(textChannel.id)
+            lockdownSetting = info.get("Lockdown"); voiceSetting = info.get("Voice")
+            if not lockdownSetting:
+                return await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
+            if voiceSetting:
+                voiceChannel = self.bot.get_channel(voiceSetting)
+                talkPermissions = voiceChannel.overwrites_for(ctx.guild.default_role)
+            sendPermissions = textChannel.overwrites_for(ctx.guild.default_role)
+            if sendPermissions.send_messages == None:
+                if voiceSetting: talkPermissions.connect = False
+                sendPermissions.send_messages = False
+            else:
+                if voiceSetting: talkPermissions.connect = None
+                sendPermissions.send_messages = None
+            if voiceSetting: await voiceChannel.set_permissions(ctx.guild.default_role, overwrite=talkPermissions)
+            await textChannel.set_permissions(ctx.guild.default_role, overwrite=sendPermissions)
             embed = discord.Embed(color=0xff8080)
             embed.add_field(name="Reason", value=reason, inline=False)
-            if sendpermissions.send_messages is False:
+            if sendPermissions.send_messages is False:
                 await ctx.send(f"{ctx.author.mention}, the channel has successfully been locked down.")
-                await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled on lockmode in {channel.mention}.", embed=embed)
+                await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled on lockmode in {textChannel.mention}.", embed=embed)
             else:
                 await ctx.send(f"{ctx.author.mention}, the channel has successfully been unlocked.")
-                await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled off lockmode in {channel.mention}.", embed=embed)
+                await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled off lockmode in {textChannel.mention}.", embed=embed)
         else: await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
 
     @commands.command()

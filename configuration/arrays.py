@@ -3,21 +3,21 @@ import configuration.variables as variables
 
 # Dictionary Configuration
 CHANNELINFORMATION = {
-    variables.SERVERRULES: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #server-rules
-    variables.ANNOUNCEMENTS: {"Bot": False, "Lockdown": False, "Say": True}, # Channel #announcements.
-    variables.EVERYBODYVOTES: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #everybody-votes.
-    variables.GENERALCHAT: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #general-chat.
-    variables.RANDOMCHAT: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #random-chat.
-    variables.TRUSTEDCHAT: {"Bot": True, "Lockdown": False, "Say": True}, # Channel #trusted-chat.
-    variables.MODERATORCHAT: {"Bot": True, "Lockdown": False, "Say": True}, # Channel #moderator-chat.
-    variables.NOMICROPHONE: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #no-microphone.
-    variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Say": True}, # Channel #bot-commands.
-    variables.DIRECTCHAT: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #direct-chat.
-    variables.EVENTCHAT: {"Bot": False, "Lockdown": True, "Say": True}, # Channel #event-chat.
-    variables.GITHUBLOGS: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #bot-logs.
-    variables.REQUESTLOGS: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #request-logs.
-    variables.ACTIONLOGS: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #action-logs.
-    variables.SERVERLOGS: {"Bot": False, "Lockdown": False, "Say": False}, # Channel #server-logs.
+    variables.SERVERRULES: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #server-rules
+    variables.MESSAGEBOARD: {"Bot": False, "Lockdown": False, "Say": True, "Voice": None}, # Channel #message-board.
+    variables.EVERYBODYVOTES: {"Bot": False, "Lockdown": False, "Say": False}, "Voice": None, # Channel #everybody-votes.
+    variables.GENERALHANGOUT: {"Bot": False, "Lockdown": True, "Say": True, "Voice": variables.GENERALVCHAT}, # Channel #general-hangout.
+    variables.RANDOMHANGOUT: {"Bot": False, "Lockdown": True, "Say": True, "Voice": variables.RANDOMVCHAT}, # Channel #random-hangout.
+    variables.ELITEHANGOUT: {"Bot": True, "Lockdown": False, "Say": True, "Voice": variables.ELITEVCHAT}, # Channel #elite-hangout.
+    variables.STAFFHANGOUT: {"Bot": True, "Lockdown": False, "Say": True, "Voice": variables.STAFFVCHAT}, # Channel #staff-hangout.
+    variables.NOMICROPHONE: {"Bot": False, "Lockdown": True, "Say": True, "Voice": None}, # Channel #no-microphone.
+    variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Say": True, "Voice": None}, # Channel #bot-commands.
+    variables.DIRECTHANGOUT: {"Bot": False, "Lockdown": True, "Say": True, "Voice": variables.DIRECTVCHAT}, # Channel #direct-hangout.
+    variables.EVENTHANGOUT: {"Bot": False, "Lockdown": True, "Say": True, "Voice": variables.EVENTVCHAT}, # Channel #event-hangout.
+    variables.GITHUBLOGS: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #bot-logs.
+    variables.REQUESTLOGS: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #request-logs.
+    variables.ACTIONLOGS: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #action-logs.
+    variables.SERVERLOGS: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #server-logs.
 }
 
 ROLEINFORMATION = {
@@ -28,7 +28,7 @@ ROLEINFORMATION = {
     variables.SERVERBOOSTER: {"Nick": "Booster", "Staff": False, "Public": False}, # Role @Server Booster.
     variables.BOTCONTRIBUTOR: {"Nick": "Contributor", "Staff": False, "Public": False}, # Role @Bot Contributor.
     variables.CONTENTCREATOR: {"Nick": "Creator", "Staff": False, "Public": False}, # Role @Content Creator.
-    variables.TRUSTEDMEMBER: {"Nick": "Trusted", "Staff": False, "Public": False}, # Role @Trusted Member.
+    variables.ELITEMEMBER: {"Nick": "Elite", "Staff": False, "Public": False}, # Role @Elite Member.
     variables.GAMENIGHTPLAYER: {"Nick": "GameNight", "Staff": False, "Public": True}, # Role @Game Night Player.
 }
 
