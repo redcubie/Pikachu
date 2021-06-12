@@ -12,7 +12,6 @@ CHANNELINFORMATION = {
     variables.STAFFHANGOUT: {"Bot": True, "Lockdown": False, "Say": True, "Voice": variables.STAFFVCHAT}, # Channel #staff-hangout.
     variables.NOMICROPHONE: {"Bot": False, "Lockdown": True, "Say": True, "Voice": None}, # Channel #no-microphone.
     variables.BOTCOMMANDS: {"Bot": True, "Lockdown": True, "Say": True, "Voice": None}, # Channel #bot-commands.
-    variables.DIRECTHANGOUT: {"Bot": False, "Lockdown": True, "Say": True, "Voice": variables.DIRECTVCHAT}, # Channel #direct-hangout.
     variables.EVENTHANGOUT: {"Bot": False, "Lockdown": True, "Say": True, "Voice": variables.EVENTVCHAT}, # Channel #event-hangout.
     variables.GITHUBLOGS: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #bot-logs.
     variables.REQUESTLOGS: {"Bot": False, "Lockdown": False, "Say": False, "Voice": None}, # Channel #request-logs.

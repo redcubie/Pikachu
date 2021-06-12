@@ -25,7 +25,6 @@ ELITEHANGOUT = 742819077009047666 # The ID of the #elite-hangout channel.
 STAFFHANGOUT = 478388911350087709 # The ID of the #staff-hangout text channel.
 NOMICROPHONE = 767236139525472306 # The ID of the #no-microphone channel.
 BOTCOMMANDS = 707036038295584889 # The ID of the #bot-commands text channel.
-DIRECTHANGOUT = 734148916559478845 # The ID of the #direct-hangout text channel.
 EVENTHANGOUT = 649020355310125067 # The ID of the #event-hangout text channel.
 GITHUBLOGS = 725045178720583756 # The ID of the #github-logs channel.
 REQUESTLOGS = 707106126902198302 # The ID of the #request-logs channel.
@@ -37,7 +36,6 @@ GENERALVCHAT = 453355810794242059 # The ID of the #general-hangout voice channel
 RANDOMVCHAT = 450910610251710465 # The ID of the #random-hangout voice channel.
 ELITEVCHAT = 743275160790106261 # The ID of the #elite-hangout channel.
 STAFFVCHAT = 482916026674053120 # The ID of the #staff-hangout voice channel.
-DIRECTVCHAT = 551841037363052546 # The ID of the #direct-hangout voice channel.
 EVENTVCHAT = 551841124608901150 # The ID of the #event-hangout voice channel.
 
 # Essential Configuration
