@@ -14,13 +14,13 @@ class Administration(commands.Cog):
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def activecount(self, ctx, days = 30): # p!checkactivity
         "Estimates the amount of active members on the server.\nThis command is only usable by staff members."
-        if days < 1: return await ctx.send(f"{ctx.author.mention}, the minimum allowed days is 1.")
-        if days > 30: return await ctx.send(f"{ctx.author.mention}, the maximum allowed days is 30.")
+        if days < 1: return await ctx.reply(f"The minimum allowed days is 1.")
+        if days > 30: return await ctx.reply(f"The maximum allowed days is 30.")
         async with ctx.channel.typing():
             count = await ctx.guild.estimate_pruned_members(days=days)
             await asyncio.sleep(1)
-            if days == 1: await ctx.send(f"{ctx.author.mention}, over the past {days} day, approximately {ctx.guild.member_count-count:,} members were counted as active.")
-            else: await ctx.send(f"{ctx.author.mention}, over the past {days} days, approximately {ctx.guild.member_count-count:,} members were counted as active.")
+            if days == 1: await ctx.reply(f"Over the past {days} day, approximately {ctx.guild.member_count-count:,} members were counted as active.")
+            else: await ctx.reply(f"Over the past {days} days, approximately {ctx.guild.member_count-count:,} members were counted as active.")
 
     @commands.command(aliases=["speak"])
     @commands.guild_only()
@@ -30,7 +30,7 @@ class Administration(commands.Cog):
         if channel.id in arrays.CHANNELINFORMATION:
             info = arrays.CHANNELINFORMATION.get(channel.id)
             saySetting = info.get("Say")
-            if not saySetting: return await ctx.send(f"{ctx.author.mention}, you are not allowed to send messages to {channel.mention}.")
+            if not saySetting: return await ctx.reply(f"You are not allowed to send messages to {channel.mention}.")
         async with channel.typing():
             characters = len(message)
             await asyncio.sleep(characters/25)
@@ -38,7 +38,7 @@ class Administration(commands.Cog):
         if channel != ctx.channel:
             embed=discord.Embed(color=0x80ff80)
             embed.add_field(name="Sent Message", value=message, inline=False)
-            await ctx.send(f"{ctx.author.mention}, successfully sent the message to {channel.mention}.", embed=embed)
+            await ctx.reply(f"The message was successfully sent to {channel.mention}.", embed=embed)
 
     @commands.command(aliases=["dm"])
     @commands.guild_only()
@@ -52,7 +52,7 @@ class Administration(commands.Cog):
             await member.send(message, allowed_mentions=discord.AllowedMentions(everyone=True, roles=True, users=True))
             embed=discord.Embed(color=0x80ff80)
             embed.add_field(name="Sent Message", value=message, inline=False)
-            await ctx.send(f"{ctx.author.mention}, successfully sent the message to {member.mention}.", embed=embed)
+            await ctx.reply(f"The message was successfully sent to {member.mention}.", embed=embed)
         except discord.errors.Forbidden: pass
 
     @commands.command(aliases=["dmrole"])
@@ -68,8 +68,8 @@ class Administration(commands.Cog):
             except discord.errors.Forbidden: pass
         embed=discord.Embed(color=0x80ff80)
         embed.add_field(name="Sent Message", value=message, inline=False)
-        if count == 1: await ctx.send(f"{ctx.author.mention}, successfully sent the message to {count} user.", embed=embed)
-        else: await ctx.send(f"{ctx.author.mention}, successfully sent the message to {count} users.", embed=embed)
+        if count == 1: await ctx.reply(f"The message was successfully sent to {count} user.", embed=embed)
+        else: await ctx.reply(f"The message was successfully sent to {count} users.", embed=embed)
 
     @commands.command()
     @commands.guild_only()
@@ -81,20 +81,20 @@ class Administration(commands.Cog):
         if action == "playing" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.playing)
             await self.bot.change_presence(activity=activity)
-            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Playing {text}\".")
+            return await ctx.reply(f"The activity has been successfully changed to \"Playing {text}\".")
         elif action == "watching" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.watching)
             await self.bot.change_presence(activity=activity)
-            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Watching {text}\".")
+            return await ctx.reply(f"The activity has been successfully changed to \"Watching {text}\".")
         elif action == "listening" and text != None:
             activity = discord.Activity(name=text, type=discord.ActivityType.listening)
             await self.bot.change_presence(activity=activity)
-            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Listening to {text}\".")
+            return await ctx.reply(f"The activity has been successfully changed to \"Listening to {text}\".")
         elif action == "default" and text == None:
             activity = discord.Activity(name=variables.STATUSACTIVITY, type=variables.STATUSTYPE)
             await self.bot.change_presence(activity=activity)
-            return await ctx.send(f"{ctx.author.mention}, the activity has been successfully changed to \"Watching {variables.STATUSACTIVITY}\".")
-        else: return await ctx.send(f"{ctx.author.mention}, that is not a valid action for the activity.") # Some simple error handling.
+            return await ctx.reply(f"The activity has been successfully changed to \"Watching {variables.STATUSACTIVITY}\".")
+        else: return await ctx.reply(f"That is not a valid action for the activity.") # Some simple error handling.
         
     @commands.command()
     @commands.guild_only()
@@ -105,20 +105,20 @@ class Administration(commands.Cog):
         status = status.lower()
         if status == "online":
             await self.bot.change_presence(status=discord.Status.online)
-            await ctx.send(f"{ctx.author.mention}, the status has been successfully changed to show as online.")
+            await ctx.reply(f"The status has been successfully changed to show as online.")
         elif status == "idle":
             await self.bot.change_presence(status=discord.Status.idle)
-            await ctx.send(f"{ctx.author.mention}, the status has been successfully changed to show as idle.")
+            await ctx.reply(f"The status has been successfully changed to show as idle.")
         elif status == "dnd" or status == "do-not-disturb":
             await self.bot.change_presence(status=discord.Status.dnd)
-            await ctx.send(f"{ctx.author.mention}, the status has been successfully changed to show as do not disturb.")
+            await ctx.reply(f"The status has been successfully changed to show as do not disturb.")
         elif status == "invisible":
             await self.bot.change_presence(status=discord.Status.invisible)
-            await ctx.send(f"{ctx.author.mention}, the status has been successfully changed to show as invisible.")
+            await ctx.reply(f"The status has been successfully changed to show as invisible.")
         elif status == "offline":
             await self.bot.change_presence(status=discord.Status.offline)
-            await ctx.send(f"{ctx.author.mention}, the status has been successfully changed to show as offline.")
-        else: return await ctx.send(f"{ctx.author.mention}, that is not a valid status for the bot.") # Some simple error handling.
+            await ctx.reply(f"The status has been successfully changed to show as offline.")
+        else: return await ctx.reply(f"That is not a valid status for the bot.") # Some simple error handling.
 
     @commands.command(aliases=["vote"])
     @commands.guild_only()
@@ -126,8 +126,8 @@ class Administration(commands.Cog):
     @commands.cooldown(1, 86400, commands.BucketType.guild)
     async def poll(self, ctx, question, *choices: str): # p!poll
         "Sends a poll to the specified voting channel.\nThis command is only usable by staff members."
-        if len(choices) <= 1: return await ctx.send(f"{ctx.author.mention}, you need more than one choice to make a poll!")
-        elif len(choices) > 10: return await ctx.send(f"{ctx.author.mention}, you cannot make a poll with more than ten choices!")
+        if len(choices) <= 1: return await ctx.reply(f"You need more than one choice to make a poll!")
+        elif len(choices) > 10: return await ctx.reply(f"You cannot make a poll with more than ten choices!")
         else:
             reactions = ["\U0001F1E6", "\U0001F1E7", "\U0001F1E8", "\U0001F1E9", "\U0001F1EA",
             "\U0001F1EB", "\U0001F1EC", "\U0001F1ED",  "\U0001F1EE", "\U0001F1EF",]
@@ -139,7 +139,7 @@ class Administration(commands.Cog):
             pollChannel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
             pollMessage = await pollChannel.send(embed=embed)
             for reaction in reactions[:len(choices)]: await pollMessage.add_reaction(reaction)
-            if checkChannel != pollChannel: return await ctx.send(f"{ctx.author.mention}, successfully sent the poll to {pollChannel.mention}. A preview is attached.", embed=embed)
+            if checkChannel != pollChannel: return await ctx.reply(f"The poll was successfully sent to {pollChannel.mention}. A preview is attached.", embed=embed)
 
     @commands.command()
     @commands.guild_only()
@@ -148,7 +148,7 @@ class Administration(commands.Cog):
     async def rolecopy(self, ctx, source: discord.Role, destination: discord.Role): # p!rolecopy
         "Grabs the permissions of one role and copies them to another.\nThis command is only usable by administrators."
         await destination.edit(permissions=source.permissions, hoist=source.hoist, mentionable=source.mentionable)
-        await ctx.send(f"{ctx.author.mention}, role permissions from {source.mention} have sucessfully been copied to {destination.mention}.")
+        await ctx.reply(f"Role permissions from {source.mention} have sucessfully been copied to {destination.mention}.")
 
     @commands.command()
     @commands.guild_only()
@@ -156,7 +156,7 @@ class Administration(commands.Cog):
     async def shutdown(self, ctx): # p!reboot
         "Shutdowns and logs out of the bot's Discord account.\nThis command is only usable by administrators."
         print("Bot shutdown has been requested.")
-        await ctx.send(f"{ctx.author.mention}, shutting down the system. Please wait a moment.")
+        await ctx.reply(f"Shutting down the system. Please wait a moment.")
         await ctx.bot.logout()
     
 def setup(bot): bot.add_cog(Administration(bot))

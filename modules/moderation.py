@@ -29,7 +29,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+        if check_staff_member(member): return await ctx.reply(f"This user cannot be warned in the server.")
         if collection.count_documents({"_id": member.id}, limit = 1) == 0:
             post = {"_id": member.id, "Warn 1": None, "Warn 2": None, "Warn 3": None}
             collection.insert_one(post)
@@ -45,7 +45,7 @@ class Moderation(commands.Cog):
                 try: await member.send(f"You have been warned in {ctx.guild.name}. This is your first warning and only warning without an automatic punishment. Please reconsider the rules before participating in the server. Your next offense will result in an automatic kick.", embed=embed)
                 except discord.errors.Forbidden: pass
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}).", embed=embed)
-                await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}.")
+                await ctx.reply(f"A warning has been given to {member.mention}.")
         else:
             results = collection.find({"_id": member.id})
             for result in results:
@@ -60,7 +60,7 @@ class Moderation(commands.Cog):
                 except discord.errors.Forbidden: pass
                 await logChannel.send(f"{ctx.author} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}). A kick has been initiated automatically.", embed=embed)
                 await member.kick(reason=f"Automatically kicked. ({checkWarn1}, {reason})")
-                await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}. A kick has been initiated automatically.")
+                await ctx.reply(f"A warning has been given to {member.mention}. A kick has been initiated automatically.")
             elif checkWarn3 == None and checkWarn2 != None:
                 collection.update_one({"_id": member.id}, {"$set":{"Warn 3": reason}})
                 embed = discord.Embed(color=0xff8080)
@@ -69,9 +69,9 @@ class Moderation(commands.Cog):
                 except discord.errors.Forbidden: pass
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has given a warning to {member.mention} ({member.id}). A ban has been initiated automatically.", embed=embed)
                 await member.ban(reason=f"Automatically banned. ({checkWarn1}, {checkWarn2}, {reason})")
-                await ctx.send(f"{ctx.author.mention}, a warning has been given to {member.mention}. A ban has been initiated automatically.")
+                await ctx.reply(f"A warning has been given to {member.mention}. A ban has been initiated automatically.")
             elif checkWarn3 != None and checkWarn2 != None:
-                await ctx.send(f"{ctx.author.mention}, there are too many warnings recorded for {member.mention}.")
+                await ctx.reply(f"There are too many warnings recorded for {member.mention}.")
                     
     @commands.command(aliases=["removewarn"])
     @commands.guild_only()
@@ -82,7 +82,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+        if check_staff_member(member): return await ctx.reply(f"This user cannot be warned in the server.")
         if collection.count_documents({"_id": member.id}, limit = 1) == 1:
             results = collection.find({"_id": member.id})
             for result in results:
@@ -94,21 +94,21 @@ class Moderation(commands.Cog):
                 embed.add_field(name="Warning 3", value=checkWarn3, inline=False)
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                 collection.update_one({"_id": member.id}, {"$set":{"Warn 3": None}})
-                return await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
+                return await ctx.reply(f"The latest warning given to {member.mention} has been removed successfully.")
             elif checkWarn2 != None and checkWarn3 == None:
                 embed = discord.Embed(color=0xff8080)
                 embed.add_field(name="Warning 2", value=checkWarn2, inline=False)
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                 collection.update_one({"_id": member.id}, {"$set":{"Warn 2": None}})
-                return await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
+                return await ctx.reply(f"The latest warning given to {member.mention} has been removed successfully.")
             elif checkWarn1 != None and checkWarn2 == None:
                 embed = discord.Embed(color=0xff8080)
                 embed.add_field(name="Warning 1", value=checkWarn1, inline=False)
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has pardoned a warning from {member.mention} ({member.id}).", embed=embed)
                 collection.delete_one({"_id": member.id})
-                return await ctx.send(f"{ctx.author.mention}, the latest warning given to {member.mention} has been removed successfully.")
-            else: return await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")            
-        else: return await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")
+                return await ctx.reply(f"The latest warning given to {member.mention} has been removed successfully.")
+            else: return await ctx.reply(f"There are no warnings recorded for {member.mention}.")            
+        else: return await ctx.reply(f"There are no warnings recorded for {member.mention}.")
                     
     @commands.command(aliases=["listwarns"])
     @commands.guild_only()
@@ -120,8 +120,8 @@ class Moderation(commands.Cog):
         collection = database["Warns"]
         async def userWarnList(user):
             if collection.count_documents({"_id": member.id}, limit = 1) == 0:
-                if member == ctx.author: await ctx.send(f"{ctx.author.mention}, there are no warnings recorded.")
-                else: await ctx.send(f"{ctx.author.mention}, there are no warnings recorded for {member.mention}.")
+                if member == ctx.author: await ctx.reply(f"There are no warnings recorded.")
+                else: await ctx.reply(f"There are no warnings recorded for {member.mention}.")
             else:
                 results = collection.find({"_id": member.id})
                 for result in results:
@@ -133,18 +133,18 @@ class Moderation(commands.Cog):
                 if checkWarn2 != None: embed.add_field(name="Warning 2", value=checkWarn2, inline=False)
                 if checkWarn3 != None: embed.add_field(name="Warning 3", value=checkWarn3, inline=False)
                 embed.set_footer(text="To appeal a warn, speak to a staff member.")
-                if member == ctx.author: await ctx.send(f"{ctx.author.mention}, here's all recorded warnings.", embed=embed)
-                else: await ctx.send(f"{ctx.author.mention}, here are all recorded warnings for {member.mention}.", embed=embed)
+                if member == ctx.author: await ctx.reply(f"Here are all recorded warnings.", embed=embed)
+                else: await ctx.reply(f"Here are all recorded warnings for {member.mention}.", embed=embed)
         if check_staff_member(ctx.author):
             if member == None: member = ctx.author
             if check_staff_member(member):
-                return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+                return await ctx.reply(f"This user cannot be warned in the server.")
             return await userWarnList(member)
         if member != None:
-            return await ctx.send(f"{ctx.author.mention}, using this command on others is only allowed for staff members.")
+            return await ctx.reply(f"Using this command on others is only allowed for staff members.")
         else:
             member = ctx.author
-            if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+            if check_staff_member(member): return await ctx.reply(f"This user cannot be warned in the server.")
             else: return await userWarnList(member)
 
     @commands.command(aliases=["clearwarns"])
@@ -156,7 +156,7 @@ class Moderation(commands.Cog):
         cluster = MongoClient(variables.DBACCOUNT)
         database = cluster["Moderation"]
         collection = database["Warns"]
-        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be warned in the server.")
+        if check_staff_member(member): return await ctx.reply(f"This user cannot be warned in the server.")
         if collection.count_documents({"_id": member.id}, limit = 1) != 0:
             results = collection.find({"_id": member.id})
             for result in results:
@@ -169,8 +169,8 @@ class Moderation(commands.Cog):
             if checkWarn3 != None: embed.add_field(name="Warning 3", value=checkWarn3, inline=False)
             collection.delete_one({"_id": member.id})
             await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has cleared all warnings from {member.mention} ({member.id}).", embed=embed)
-            await ctx.send(f"{ctx.author.mention}, all warnings given to {member.mention} have been cleared sucessfully.")
-        else: await ctx.send(f"{ctx.author.mention}, there are no warnings given to {member.mention}.")
+            await ctx.reply(f"All warnings given to {member.mention} have been cleared sucessfully.")
+        else: await ctx.reply(f"There are no warnings recorded for {member.mention}.")
 
     @commands.command()
     @commands.guild_only()
@@ -178,19 +178,19 @@ class Moderation(commands.Cog):
     async def kick(self, ctx, member: discord.Member, *, reason = None): # p!kick
         "Kicks a user from the server.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
+        if check_staff_member(member): return await ctx.send(f"This user cannot be kicked from the server.")
         if reason != None:
             embed = discord.Embed(color=0xff8080)
             embed.add_field(name="Reason", value=reason, inline=False)
             await member.send(f"You have been kicked from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.", embed=embed)
             await member.kick(reason=reason)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been kicked from the server.")
+            await ctx.reply(f"{member.mention} has been kicked from the server.")
             await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has kicked {member.mention} ({member.id}).", embed=embed)
         else:
             try: await member.send(f"You have been kicked from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.")
             except discord.errors.Forbidden: pass
             await member.kick(reason=reason)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been kicked from the server.")
+            await ctx.reply(f"{member.mention} has been kicked from the server.")
             await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has kicked {member.mention} ({member.id}).")
 
     @commands.command()
@@ -207,22 +207,22 @@ class Moderation(commands.Cog):
             if isinstance(member, int):
                 try:
                     await ctx.guild.ban(member, reason=reason)
-                    await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
+                    await ctx.reply(f"{member.mention} has been banned from the server.")
                     if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).", embed=embed)
                     else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).")
                 except discord.errors.NotFound:
-                    return await ctx.send(f"{ctx.author.mention}, there is no user associated with ID {member}.")
+                    return await ctx.reply(f"There is no user associated with ID {member}.")
             if isinstance(member, discord.Member):
-                if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
+                if check_staff_member(member): return await ctx.reply(f"This user cannot be banned from the server.")
                 try:
                     if reason != None: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.", embed=embed)
                     else: await member.send(f"You have been banned from {ctx.guild.name}. If you wish to rejoin, you must reach out to a member of the moderation team.")
                 except discord.errors.Forbidden: pass
                 await ctx.guild.ban(member, reason=reason, delete_message_days=0)
-                await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
+                await ctx.reply(f"{member.mention} has been banned from the server.")
                 if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).", embed=embed)
                 else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has banned {member.mention} ({member.id}).")
-        except: return await ctx.send(f"{ctx.author.mention}, there was an error finding the user associated with your request.")
+        except: return await ctx.reply(f"There was an error finding the user associated with your request.")
 
     @commands.command(aliases=["quietkick"])
     @commands.guild_only()
@@ -230,12 +230,12 @@ class Moderation(commands.Cog):
     async def silentkick(self, ctx, member: discord.Member, *, reason = None): # p!silentkick
         "Kicks a member from the server without messaging.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be kicked from the server.")
+        if check_staff_member(member): return await ctx.reply(f"This user cannot be kicked from the server.")
         await member.kick(reason=reason)
         embed = discord.Embed(color=0xff8080)
         embed.add_field(name="Reason", value=reason, inline=False)
-        await ctx.send(f"{ctx.author.mention}, {member.mention} has been kicked from the server.")
-        if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).", embed=embed)
+        await ctx.reply(f"{member.mention} has been kicked from the server.")
+        if reason != None: await logChannel.reply(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).", embed=embed)
         else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently kicked {member.mention} ({member.id}).")
 
     @commands.command(aliases=["quietban"])
@@ -244,11 +244,11 @@ class Moderation(commands.Cog):
     async def silentban(self, ctx, member: discord.Member, *, reason = None): # p!silentban
         "Bans a member from the server without messaging.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
-        if check_staff_member(member): return await ctx.send(f"{ctx.author.mention}, this user cannot be banned from the server.")
+        if check_staff_member(member): return await ctx.reply(f"This user cannot be banned from the server.")
         await ctx.guild.ban(member, reason=reason)
         embed = discord.Embed(color=0xff8080)
         embed.add_field(name="Reason", value=reason, inline=False)
-        await ctx.send(f"{ctx.author.mention}, {member.mention} has been banned from the server.")
+        await ctx.reply(f"{member.mention} has been banned from the server.")
         if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently banned {member.mention} ({member.id}).", embed=embed)
         else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has silently banned {member.mention} ({member.id}).")
 
@@ -262,16 +262,16 @@ class Moderation(commands.Cog):
             if isinstance(member, str): member = await self.bot.fetch_user(member[3:-1])
             else: member = await self.bot.fetch_user(member)
             await ctx.guild.unban(member, reason=reason)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
+            await ctx.reply(f"{member.mention} has been unbanned from the server.")
             try: await member.send(f"You have been unbanned from {ctx.guild.name}. You may rejoin, however please read the #rules channel before participating in the server.")
             except discord.errors.Forbidden: pass
             await ctx.guild.unban(member, reason=reason)
             embed = discord.Embed(color=0xff8080)
             embed.add_field(name="Reason", value=reason, inline=False)
-            await ctx.send(f"{ctx.author.mention}, {member.mention} has been unbanned from the server.")
+            await ctx.reply(f"{member.mention} has been unbanned from the server.")
             if reason != None: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has unbanned {member.mention} ({member.id}).", embed=embed)
             else: await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has unbanned {member.mention} ({member.id}).")
-        except: return await ctx.send(f"{ctx.author.mention}, there was an error finding the user associated with your request.")
+        except: return await ctx.reply(f"There was an error finding the user associated with your request.")
 
     @commands.command()
     @commands.guild_only()
@@ -280,11 +280,11 @@ class Moderation(commands.Cog):
         "Adjusts the slowmode time in the specified channel.\nThis command is only usable by staff members."
         logChannel = self.bot.get_channel(variables.ACTIONLOGS) # Channel #action-logs.
         if channel == None: channel = ctx.channel
-        if time > 21600: return await ctx.send(f"{ctx.author.mention}, you cannot set a slowmode for this amount of time!")
+        if time > 21600: return await ctx.reply(f"You cannot set a slowmode for this amount of time!")
         await channel.edit(slowmode_delay=time)
         embed = discord.Embed(color=0xff8080)
         embed.add_field(name="Reason", value=reason, inline=False)
-        await ctx.send(f"{ctx.author.mention}, slowmode has been adjusted to {time} seconds.")
+        await ctx.reply(f"Slowmode has been adjusted to {time} seconds.")
         await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has adjusted slowmode in {channel.mention} to {time} seconds.", embed=embed)
 
     @commands.command()
@@ -298,7 +298,7 @@ class Moderation(commands.Cog):
             textChannel = channel; info = arrays.CHANNELINFORMATION.get(textChannel.id)
             lockdownSetting = info.get("Lockdown"); voiceSetting = info.get("Voice")
             if not lockdownSetting:
-                return await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
+                return await ctx.reply(f"The channel cannot be locked down.")
             if voiceSetting:
                 voiceChannel = self.bot.get_channel(voiceSetting)
                 talkPermissions = voiceChannel.overwrites_for(ctx.guild.default_role)
@@ -314,12 +314,12 @@ class Moderation(commands.Cog):
             embed = discord.Embed(color=0xff8080)
             embed.add_field(name="Reason", value=reason, inline=False)
             if sendPermissions.send_messages is False:
-                await ctx.send(f"{ctx.author.mention}, the channel has successfully been locked down.")
+                await ctx.reply(f"The channel has successfully been locked down.")
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled on lockmode in {textChannel.mention}.", embed=embed)
             else:
-                await ctx.send(f"{ctx.author.mention}, the channel has successfully been unlocked.")
+                await ctx.reply(f"The channel has successfully been unlocked.")
                 await logChannel.send(f"{ctx.author.mention} ({ctx.author.id}) has toggled off lockmode in {textChannel.mention}.", embed=embed)
-        else: await ctx.send(f"{ctx.author.mention}, the channel cannot be locked down.")
+        else: await ctx.reply(f"The channel cannot be locked down.")
 
     @commands.command()
     @commands.guild_only()
@@ -343,6 +343,6 @@ class Moderation(commands.Cog):
         await rulesChannel.send(f"__**Rules:**__\n**<:smash_mario:665610205509451790> 1. Use common sense.**\nIf it isn't right, don't do it. If it can hurt someone else, or make someone feel uncomfortable, don't say it. Everyone has rights to have different opinions, but any hate speech with intentions to do bad will not, and never will be tolerated. This also includes actions such as mini-modding, spreading copypasta, and flooding channels.\n**<:smash_donkey_kong:665610202187431939> 2. Advertising is available, with permission that is.**\nBefore you advertise, please inform a staff member. Don't post the link yourself, it is considered to be rude. Same with advertising your server randomly in someone else's private messages. Note that this will not help you become an affiliate.\n**<:smash_link:665610203634335799> 3. Refrain from inappropriate topics.**\nDo not send, upload content, or set profile information that is inappropriate or NSFW. This includes but not limited to, sex or sexual themes, nudity, extreme violence, illegal content, and the like. Swearing is okay, slurs are not.\n**<:smash_samus:665610206369153064> 4. Mark spoilers as needed, and no leaks!**\nAll spoilers for unreleased and leaked content must be formatted as spoilers until permission has been given to post the information without proper formatting. To do this, put two |s, then your spoilers, then another two |s. Discussion of leaked content obtained through illegal means (pirated content, etc.) will not be allowed under any circumstances.")
         await rulesChannel.send(f"__**Staff Team:**__\nPlease do not message staff unless it is necessary. You can view this list by running `p!liststaff`.\n" + "\n".join(staffList), allowed_mentions=discord.AllowedMentions(users=True))
         await rulesChannel.send(f"__**Agreement:**__\nWhen agreeing to the server rules, you are accepting the fact that members of staff can and will take action against you if necessary, and can punish you for any reason. You are also allowing all bots on the server to store data about you, such as, your user ID, messages, and anything necessary to perform proper server functions. The server is required to inform you to accept the collecting of this data, per Discord's Developer Terms of Service (<https://discordapp.com/developers/docs/legal>). We also require you to agree and abide by Discord's Terms of Service (<https://discordapp.com/terms>) Finally, we are required by Discord's new Terms of Service to ask you to agree to the Children's Online Privacy Protection Rule (<https://www.ftc.gov/enforcement/rules/rulemaking-regulatory-reform-proceedings/childrens-online-privacy-protection-rule>). These documents, as well as these rules, will change over time. If you do not agree to these terms, please leave the server.")
-        await ctx.send(f"{ctx.author.mention}, the rules have successfully been sent to {rulesChannel.mention}.")
+        await ctx.reply(f"The rules have successfully been sent to {rulesChannel.mention}.")
 
 def setup(bot): bot.add_cog(Moderation(bot))

@@ -24,25 +24,25 @@ class General(commands.Cog):
             except: commit = "Unknown"; branch = "Unknown"
         embed=discord.Embed(title="Pikachu", url="https://github.com/NoahAbc12345/Pikachu", description="A utility bot for the Nincord server.", color=0xffff00)
         embed.set_author(name="NoahAbc12345 (Maintainer)", icon_url="https://avatars3.githubusercontent.com/u/63483138?s=460&u=2efd374ab56a340cc3f9e8dd5aa359307a9d1523&v=4")
-        embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/b9825ad0c7e74b25f14f2e189c4fff13.webp?size=512")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/697972897075036161/072fcb3a230a18753f3e0ab789afa860.png?size=512")
         embed.add_field(name="Branch", value=branch, inline=True)
         if commit != "Unknown": embed.add_field(name="Commit", value=commit[0:7], inline=True)
         else: embed.add_field(name="Commit", value=commit, inline=True)
         embed.set_footer(text=f"Check out my source code on GitHub!")
-        await ctx.send(f"{ctx.author.mention}, here's some information about me!", embed=embed)
+        await ctx.reply(f"Here's some information about me!", embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def ping(self, ctx): # p!ping
         "Shows the bot's ping on the network."
-        await ctx.send(f"{ctx.author.mention}, pong! {round(self.bot.latency*1000)}ms.")
+        await ctx.reply(f"Pong! {round(self.bot.latency*1000)}ms.")
 
     @commands.command(aliases=["mc"])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def membercount(self, ctx): # p!membercount
         "Counts the amount of members currently on the server."
-        await ctx.send(f"{ctx.author.mention}, {ctx.guild.name} has {ctx.guild.member_count} members at this moment!")
+        await ctx.reply(f"{ctx.guild.name} has {ctx.guild.member_count} members at this moment!")
 
     @commands.command()
     @commands.guild_only()
@@ -51,8 +51,8 @@ class General(commands.Cog):
         "Shares a link to an invite for this server or affiliates.\nServers include \"apple\" and \"resistance\"."
         if server != None: code = arrays.INVITECODES.get(server.capitalize())
         if server == None or code == None: server = "Nincord"; code = arrays.INVITECODES.get(server.capitalize())
-        if server.capitalize() == "Nincord": await ctx.send(f"{ctx.author.mention}, share this link to invite people to our server! https://discord.gg/{code}")
-        else: await ctx.send(f"{ctx.author.mention}, here is the link for the affiliated server you requested! https://discord.gg/{code}")
+        if server.capitalize() == "Nincord": await ctx.reply(f"Share this link to invite people to our server! https://discord.gg/{code}")
+        else: await ctx.reply(f"Here is the link for the affiliated server you requested! https://discord.gg/{code}")
 
     @commands.command(aliases=["ui"])
     @commands.guild_only()
@@ -63,7 +63,7 @@ class General(commands.Cog):
         database = cluster["Moderation"]
         collection = database["Warns"]
         try:
-            if isinstance(user, (discord.User, int)): user = await self.bot.fetch_user(user)
+            if isinstance(user, (discord.User, int)): user = await self.bot.fetch_user(user); print("here")
             elif isinstance(user, (str)): user = await self.bot.fetch_user(user[3:-1])
             async def showUserProfile(user):
                 if isinstance(user, discord.Member):
@@ -98,31 +98,31 @@ class General(commands.Cog):
                         banned = await ctx.guild.fetch_ban(user)
                         embed.add_field(name="Banned", value=f"{banned.reason}", inline=False)
                     except discord.NotFound: banned = None
-                if user == ctx.author: await ctx.send(f"{ctx.author.mention}, here's some information about you.", embed=embed)
-                else: await ctx.send(f"{ctx.author.mention}, here's some information about {user.mention}.", embed=embed)
+                if user == ctx.author: await ctx.reply(f"Here's some information about you.", embed=embed)
+                else: await ctx.reply(f"Here's some information about {user.mention}.", embed=embed)
             if check_staff_member(ctx.author):
                 if user == None: user = ctx.author
                 return await showUserProfile(user)
             if user != ctx.author and user != None:
-                return await ctx.send(f"{ctx.author.mention}, using this command on others is only allowed for staff members.")
+                return await ctx.reply(f"Using this command on others is only allowed for staff members.")
             user = ctx.author; return await showUserProfile(user)
-        except: return await ctx.send(f"{ctx.author.mention}, there was an error finding the user associated with your request.")
+        except: return await ctx.reply(f"There was an error finding the user associated with your request.")
 
     @commands.command(aliases=["si"])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def serverinfo(self, ctx): # p!serverinfo
         "Displays information regarding the server, such as role count."
+        serverCreate = ctx.guild.created_at
+        serverCreate2 = serverCreate.strftime("%B %d, %Y (%I:%M %p)")
         embed = discord.Embed(title=ctx.guild.name, color=0xffff00)
         embed.add_field(name="Server Owner", value=ctx.guild.owner.mention, inline=False)
         embed.add_field(name="Server Identification", value=ctx.guild.id, inline=True)
-        servercreate = ctx.guild.created_at
-        servercreate2 = servercreate.strftime("%B %d, %Y (%I:%M %p)")
-        embed.add_field(name="Created", value="{}".format(servercreate2), inline=False)
+        embed.add_field(name="Created", value="{}".format(serverCreate2), inline=False)
         embed.add_field(name="Members", value= ctx.guild.member_count)
         embed.add_field(name="Role Count", value=len(ctx.guild.roles), inline=True)
         embed.set_thumbnail(url=ctx.guild.icon_url_as(static_format="png"))
-        await ctx.send(f"{ctx.author.mention}, here's some information about the server.", embed=embed)
+        await ctx.reply(f"Here's some information about the server.", embed=embed)
 
     @commands.command(aliases=["stafflist"])
     @commands.guild_only()
@@ -140,7 +140,7 @@ class General(commands.Cog):
         for user in dupeChecker: 
             if user not in staffList: staffList.append(user)
         embed = discord.Embed(title=f"{ctx.guild.name} Staff Team", description="\n".join(staffList), color=0xffff40)
-        await ctx.send(f"{ctx.author.mention}, here's the staff team of {ctx.guild.name}.", allowed_mentions=discord.AllowedMentions(users=True), embed=embed)
+        await ctx.reply(f"Here's the staff team of {ctx.guild.name}.", allowed_mentions=discord.AllowedMentions(users=True), embed=embed)
 
     @commands.command(aliases=["togglerole", "role"])
     @commands.guild_only()
@@ -156,11 +156,11 @@ class General(commands.Cog):
                 role = discord.utils.get(ctx.guild.roles, id=dictionary)
                 if role in ctx.author.roles:
                     await ctx.author.remove_roles(role)
-                    return await ctx.send(f"{ctx.author.mention}, you have lost the <@&{role.id}> role.")
+                    return await ctx.reply(f"You have lost the <@&{role.id}> role.")
                 else:
                     await ctx.author.add_roles(role)
-                    return await ctx.send(f"{ctx.author.mention}, you have gained the <@&{role.id}> role.")
-        await ctx.send(f"{ctx.author.mention}, this is not a valid togglable role.")
+                    return await ctx.reply(f"You have gained the <@&{role.id}> role.")
+        await ctx.reply(f"This is not a valid togglable role.")
 
     @commands.command()
     @commands.guild_only()
@@ -173,6 +173,6 @@ class General(commands.Cog):
         suggestion = await requestLog.send(f"{ctx.author.mention} ({ctx.author.id}) has submitted a suggestion for the server.", embed=embed)
         await suggestion.add_reaction("\U0001F44D")
         await suggestion.add_reaction("\U0001F44E")
-        await ctx.send(f"{ctx.author.mention}, your suggestion has successfully been submitted. It will be reviewed internally.")
+        await ctx.reply(f"Your suggestion has successfully been submitted. It will be reviewed internally.")
 
 def setup(bot): bot.add_cog(General(bot))

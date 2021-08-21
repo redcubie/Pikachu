@@ -22,23 +22,23 @@ class Friends(commands.Cog):
             return (False if re.search(r"^[\.\-\_]|[\.\-\_]$", code) or re.search(r"[\.\-\_][\.\-\_]", code) else True)
         if system.lower() == "wiiu":
             collection = database["Nintendo Wii U"]
-            if not await checkIDWiiU(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
+            if not await checkIDWiiU(code): return await ctx.reply(f"The account you have provided is invalid.")
         elif system.lower() == "3ds":
             collection = database["Nintendo 3DS"]
-            if not await checkID3DS(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
+            if not await checkID3DS(code): return await ctx.reply(f"The account you have provided is invalid.")
             if len(code) == 12: code = "-".join((code[0:4], code[4:8], code[8:12]))
         elif system.lower() in {"switch", "nx"}:
             collection = database["Nintendo Switch"]; code = code.upper()
-            if not await checkIDSwitch(code): return await ctx.send(f"{ctx.author.mention}, the account you have provided is invalid.")
+            if not await checkIDSwitch(code): return await ctx.reply(f"The account you have provided is invalid.")
             if len(code) == 12: code = "-".join(("SW", code[0:4], code[4:8], code[8:12]))
             elif len(code) == 14 and code.startswith("SW"): code = "-".join((code[0:2], code[2:6], code[6:10], code[10:14]))
             elif len(code) == 14 and not code.startswith("SW"): code = "SW-" + code
-        else: await ctx.send(f"{ctx.author.mention}, the system you have specified is not supported.")
+        else: await ctx.reply(f"The system you have specified is not supported.")
         if collection.count_documents({"_id": ctx.author.id}, limit = 1) == 0:
             post = {"_id": ctx.author.id, "Account": None}
             collection.insert_one(post)
         collection.update_one({"_id": ctx.author.id}, {"$set":{"Account": code}})
-        await ctx.send(f"{ctx.author.mention}, your account has been linked successfully.")
+        await ctx.reply(f"Your account has been linked successfully.")
 
     @commands.command(aliases=["friendunlink", "fcremove"])
     @commands.guild_only()
@@ -52,8 +52,8 @@ class Friends(commands.Cog):
         elif system.lower() in {"switch", "nx"}: collection = database["Nintendo Switch"]
         if collection.count_documents({"_id": ctx.author.id}, limit = 1) == 1:
             collection.delete_one({"_id": ctx.author.id})
-            return await ctx.send(f"{ctx.author.mention}, your account has been unlinked successfully.")
-        else: return await ctx.send(f"{ctx.author.mention}, no account for this system has been linked.")
+            return await ctx.reply(f"Your account has been unlinked successfully.")
+        else: return await ctx.reply(f"No account for this system has been linked.")
 
     @commands.command(aliases=["friendcheck", "fc"])
     @commands.guild_only()
@@ -84,9 +84,9 @@ class Friends(commands.Cog):
             for result in results: accountCode = result["Account"]
             embed.add_field(name="Nintendo Wii U (Username)", value=accountCode, inline=False)
         embed.set_footer(text=f"Update accounts with p!accountlink.")
-        if accountCounter > 0 and member == ctx.author: return await ctx.send(f"{ctx.author.mention}, here's your list of linked accounts.", embed=embed)
-        elif accountCounter > 0 and member != ctx.author: return await ctx.send(f"{ctx.author.mention}, here's the list of linked accounts for {member.mention}.", embed=embed)
-        elif accountCounter == 0 and member != ctx.author: return await ctx.send(f"{ctx.author.mention}, {member.mention} has not linked any accounts.")
-        else: await ctx.send(f"{ctx.author.mention}, you have not linked any acccounts.")
+        if accountCounter > 0 and member == ctx.author: return await ctx.reply(f"Here's your list of linked accounts.", embed=embed)
+        elif accountCounter > 0 and member != ctx.author: return await ctx.reply(f"Here's the list of linked accounts for {member.mention}.", embed=embed)
+        elif accountCounter == 0 and member != ctx.author: return await ctx.reply(f"{member.mention} has not linked any accounts.")
+        else: await ctx.reply(f"You have not linked any acccounts.")
     
 def setup(bot): bot.add_cog(Friends(bot))
