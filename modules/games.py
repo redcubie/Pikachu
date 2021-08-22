@@ -38,14 +38,14 @@ class Games(commands.Cog):
                         guessList.sort(key=int)
                         if guess > number:
                             await guessEmbed()
-                            await ctx.reply(f"Your guess is too high. Enter another guess!", embed=embed)   
+                            await response.reply(f"Your guess is too high. Enter another guess!", embed=embed)   
                         elif guess < number:
                             await guessEmbed()
-                            await ctx.reply(f"Your guess is too low. Enter another guess!", embed=embed)
-                        else: return await ctx.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
+                            await response.reply(f"Your guess is too low. Enter another guess!", embed=embed)
+                        else: return await response.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
                     else:
-                        if guess == number: return await ctx.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
-                        else: return await ctx.reply(f"You were unable to guess the integer. The correct integer is {number}.")
+                        if guess == number: return await response.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
+                        else: return await response.reply(f"You were unable to guess the integer. The correct integer is {number}.")
             else: pass
 
     @commands.command(aliases=["8ball"])
