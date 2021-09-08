@@ -155,7 +155,7 @@ class Administration(commands.Cog):
             embed.set_footer(text = f"This poll was posted by {ctx.author}.")
 
             current_channel = self.bot.get_channel(ctx.channel.id)
-            poll_channel = self.bot.get_channel(variables.STAFFHANGOUT) # Channel #everybody-votes.
+            poll_channel = self.bot.get_channel(variables.EVERYBODYVOTES) # Channel #everybody-votes.
             poll_message = await poll_channel.send(embed = embed)
 
             for reaction in reactions[:len(choices)]:
