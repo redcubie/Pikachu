@@ -14,17 +14,17 @@ class Errors(commands.Cog):
             return await ctx.reply(f"This command is on cooldown. Please try again in {error.retry_after:.0f} seconds.")
         elif isinstance(error, commands.MissingPermissions):
             ctx.command.reset_cooldown(ctx)
-            return await ctx.reply(f"You don't have permission to use this command.")
+            return await ctx.reply("You don't have permission to use this command.")
         elif isinstance(error, commands.CheckFailure):
             ctx.command.reset_cooldown(ctx)
-            return await ctx.reply(f"You don't have permission to use this command.")
+            return await ctx.reply("You don't have permission to use this command.")
         elif isinstance(error, commands.MissingRequiredArgument):
             ctx.command.reset_cooldown(ctx)
-            await ctx.reply(f"You missed a required argument for this command.")
+            await ctx.reply("You missed a required argument for this command.")
             return await ctx.send_help(ctx.command)
         elif isinstance(error, commands.BadArgument):
             ctx.command.reset_cooldown(ctx)
-            await ctx.reply(f"You provided an invalid argument for this command.")
+            await ctx.reply("You provided an invalid argument for this command.")
             return await ctx.send_help(ctx.command)
         elif isinstance(error, commands.CommandNotFound): pass
 
