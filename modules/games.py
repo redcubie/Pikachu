@@ -23,6 +23,7 @@ class Games(commands.Cog):
             if len(guessList) != 0: embed.add_field(name = "Attempted Guesses", value = f", ".join(guessList), inline = False)
             else: embed.add_field(name = "Attempted Guesses", value = "None", inline = False)
         await ctx.reply(f"A random integer has been generated from 1 to {difficultyNumber}. Enter your guess!")
+
         while True:
             response = await self.bot.wait_for("message")
             if ctx.author.id == response.author.id and ctx.channel.id == response.channel.id:
@@ -35,18 +36,20 @@ class Games(commands.Cog):
                     if guessCounter <= 8:
                         if str(guess) not in guessList:
                             guessList.append(str(guess)); guessCounter += 1
-                        guessList.sort(key=int)
+                        guessList.sort(key = int)
+
                         if guess > number:
                             await guessEmbed()
                             await response.reply("Your guess is too high. Enter another guess!", embed = embed)   
                         elif guess < number:
                             await guessEmbed()
                             await response.reply("Your guess is too low. Enter another guess!", embed = embed)
-                        else: return await response.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
+                        else:
+                            return await response.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
                     else:
-                        if guess == number: return await response.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
+                        if guess == number:
+                            return await response.reply(f"You guessed the integer correctly! The correct integer is {guess}.")
                         else: return await response.reply(f"You were unable to guess the integer. The correct integer is {number}.")
-            else: pass
 
     @commands.command(aliases = ["8ball"])
     @commands.guild_only()
@@ -76,8 +79,10 @@ class Games(commands.Cog):
             "You may rely on it.",
         ]
         magicAnswer = random.choice(magicAnswers)
-        if random.randint(1, 100) == 1: magicAnswer = "My uncle says it's confirmed." # Secret prediction. :)
-        elif random.randint(1, 100) == 2: magicAnswer = "My uncle says it's deconfirmed." # Secret prediction. :)
+        if random.randint(1, 100) == 1:
+            magicAnswer = "My uncle says it's confirmed." # Secret prediction. :)
+        elif random.randint(1, 100) == 2:
+            magicAnswer = "My uncle says it's deconfirmed." # Secret prediction. :)
         embed = discord.Embed(color = 0xffff00)
         embed.add_field(name = "Prediction", value = magicAnswer)
         await ctx.reply("The magical ball has spoken!", embed = embed)
