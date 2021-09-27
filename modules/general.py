@@ -55,7 +55,7 @@ class General(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.channel)
     async def invite(self, ctx, server = None): # p!invite
-        "Shares a link to an invite for this server or affiliates.\nServers include \"apple\" and \"resistance\"."
+        "Shares a link to an invite for this server or affiliates.\nServers include \"puginator\" and \"resistance\"."
         if server != None:
             code = arrays.INVITECODES.get(server.capitalize())
         if server == None or code == None:
